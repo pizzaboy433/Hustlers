@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="7955b7454e">
+  <meta name="build-id" content="437dfdc23d">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -6834,7 +6834,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         if (kind === "prestige") { const m = this.getPrestigeMin(); STATE.stats.runRevenue = Math.max(STATE.stats.runRevenue || 0, m); STATE.stats.lifetimeRevenue = Math.max(STATE.stats.lifetimeRevenue || 0, m); return "Umsatz für Prestige"; }
         if (kind === "rivals") {
           names.slice(0, 3).forEach((n, i) => { const id = SOC.newId(); so.rivals[id] = { id, name: n, city: ["Köln", "Hamburg", "Wien"][i], style: 0, pre: i, rev: Math.pow(10, 7 + i * 4 + Math.random() * 2), ts: Date.now() }; });
-          return "3 Test-Rivalen";
+          return "3 Test-Freunde";
         }
         if (kind === "pkg0" || kind === "pkg1" || kind === "pkg2") {
           const n = Math.floor(Math.random() * 65536);
@@ -7948,7 +7948,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
             const r = rv[bucket % rv.length];
             const mine = STATE.stats.lifetimeRevenue || 0;
             const ahead = (r.rev || 0) > mine;
-            out.push({ kind: "city", key: "rival", tag: L("RIVALE", "RIVAL"), text: L(
+            out.push({ kind: "city", key: "rival", tag: L("FREUND", "FRIEND"), text: L(
               `${r.name}${r.city ? " aus " + r.city : ""} ${ahead ? "liegt im Umsatz vor dir (" + formatNumber(r.rev || 0) + " €). Das lässt du dir nicht gefallen." : "liegt hinter dir (" + formatNumber(r.rev || 0) + " €). Noch."}`,
               `${r.name}${r.city ? " from " + r.city : ""} ${ahead ? "is ahead of you in revenue (" + formatNumber(r.rev || 0) + " €). You won't stand for that." : "is behind you (" + formatNumber(r.rev || 0) + " €). For now."}`) });
           }
@@ -10335,7 +10335,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
                 ver: en ? "Code from a newer version" : "Code von neuerer Version",
                 type: en ? "Not a business card" : "Keine Visitenkarte",
                 self: en ? "That's your own card" : "Das ist deine eigene Karte",
-                full: en ? "Rival list full (50)" : "Rivalenliste voll (50)",
+                full: en ? "Friend list full (50)" : "Freundesliste voll (50)",
                 other: en ? "This package isn't for you" : "Das Päckchen ist nicht für dich",
                 dupe: en ? "Package already received" : "Päckchen schon erhalten",
                 daily: en ? "Only one package per friend per day" : "Pro Freund nur ein Päckchen am Tag",
@@ -11489,7 +11489,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
                   return grp(en ? "Time & cooldowns" : "Zeit & Cooldowns", [["time1h", "+1 Std vorspulen", "Skip +1 h"], ["time8h", "+8 Std vorspulen", "Skip +8 h"], ["cd", "Cooldowns auf 0", "Reset cooldowns"], ["boost", "Boost +10 Min", "Boost +10 min"], ["mission", "Coup sofort fertig", "Finish heist"], ["prestige", "Umsatz für Prestige", "Revenue for prestige"]])
                     + grp(en ? "Spawn" : "Auslösen", [["insp", "Steuerprüfer", "Tax auditor"], ["insp_off", "Prüfer entfernen", "Remove auditor"], ["dealer", "Händler-Event", "Dealer event"], ["raid", "Razzia-Warnung", "Raid warning"], ["bomb", "Büro-Bombe", "Office bomb"], ["war", "Revierkampf", "Turf war"], ["weekdone", "Wochenziele erfüllen", "Complete weekly goals"], ["vault", "Tresor-Spiel", "Safe game"], ["run", "Schmuggel-Fahrt", "Smuggling run"], ["defuse", "Bomben-Päckchen", "Bomb package"], ["cups", "Becher-Spiel", "Cup game"], ["escape", "Fluchtweg-Spiel", "Escape game"], ["box", "Boxkampf", "Boxing match"], ["hen", "Hahnenkampf", "Cockfight"], ["dog", "Hunderennen", "Dog race"], ["dice", "Straßenwürfeln", "Street dice"], ["dart", "Dart", "Darts"]])
                     + grp(en ? "Progress" : "Fortschritt", [["lv10", "Betriebe +10 Lvl", "Businesses +10 lvl"], ["lv100", "Betriebe +100 Lvl", "Businesses +100 lvl"], ["items", "Alle Items", "All items"], ["office", "Büro auf Max", "Office max"]])
-                    + grp(en ? "Friends" : "Freunde", [["rivals", "3 Test-Rivalen", "3 test rivals"], ["pkg0", "Päckchen: Geschenk", "Package: gift"], ["pkg1", "Päckchen: Prüfer", "Package: auditor"], ["pkg2", "Päckchen: Bombe", "Package: bomb"], ["team", "Tagesjob: 2 Partner", "Daily job: 2 partners"], ["jobreset", "Tagesjob zurücksetzen", "Reset daily job"]])
+                    + grp(en ? "Friends" : "Freunde", [["rivals", "3 Test-Freunde", "3 test friends"], ["pkg0", "Päckchen: Geschenk", "Package: gift"], ["pkg1", "Päckchen: Prüfer", "Package: auditor"], ["pkg2", "Päckchen: Bombe", "Package: bomb"], ["team", "Tagesjob: 2 Partner", "Daily job: 2 partners"], ["jobreset", "Tagesjob zurücksetzen", "Reset daily job"]])
                     + `<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:6px;"><button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-soc-reset">${en ? "Reset friend limits" : "Freunde-Limits zurück"}</button><button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-soc-favors">${en ? "+20 favors" : "+20 Gefallen"}</button></div>`;
                 })()}
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:4px;">
@@ -13544,7 +13544,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         const req = (Online.st.req || []).map(r => `<div class="on-row"><span class="on-name"><b>${this.onlineEsc(r.name)}</b> <small>${r.id}</small></span><button type="button" class="comic-btn primary" style="min-height:28px;padding:0 10px;" data-action="fr-accept" data-rid="${r.id}">${L("ANNEHMEN", "ACCEPT")}</button><button type="button" class="comic-btn" style="min-height:28px;padding:0 10px;" data-action="fr-decline" data-rid="${r.id}">X</button></div>`).join("");
         const out = (Online.st.out || []).length ? `<p class="on-note" style="margin-top:6px;">${L("Wartet auf Antwort: ", "Waiting for reply: ")}${(Online.st.out || []).join(", ")}</p>` : "";
         return `<section class="biz-card" style="padding:10px;">
-          <h3 class="panel-title" style="margin:0 0 6px;">${L("Freunde online", "Friends online")}</h3>
+          <h3 class="panel-title" style="margin:0 0 6px;">${L("Freund per ID hinzufügen", "Add friend by ID")}</h3>
           <p class="on-note">${L("Deine ID: ", "Your ID: ")}<b class="num" style="font-size:15px;user-select:all;">${id}</b></p>
           <div style="display:flex;gap:8px;margin-top:6px;">
             <input id="fr-input" class="code-textarea" type="text" maxlength="6" autocomplete="off" autocapitalize="characters" placeholder="${L("ID des Freundes", "Friend's ID")}" style="flex:1;min-width:0;box-sizing:border-box;text-transform:uppercase;margin:0;">
@@ -13773,7 +13773,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         const body = document.getElementById("app-modal-body");
         body.innerHTML = `
           <h2 class="panel-title">${L("Wie nennt man dich?", "What do they call you?")}</h2>
-          <p>${L("Dein Name erscheint bei Freunden und Rivalen. 2–16 Zeichen.", "Your name shows up for friends and rivals. 2–16 characters.")}</p>
+          <p>${L("Dein Name erscheint bei deinen Freunden und in der Rangliste. 2–16 Zeichen.", "Your name shows up for your friends and on the leaderboard. 2–16 characters.")}</p>
           <input id="name-prompt-input" class="code-textarea" type="text" maxlength="16" autocomplete="off" autocapitalize="words" value="${cur.replace(/"/g, "")}" placeholder="${L("Dein Name", "Your name")}" style="width:100%; margin:8px 0; box-sizing:border-box;">
           <button type="button" class="comic-btn primary" data-action="save-name-prompt">${L("Los geht's", "Let's go")}</button>
         `;
@@ -13849,7 +13849,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
             ${so.inbox.map(e => e.opened ? `<div class="bd-row" style="align-items:center; gap:6px;"><span><b>${esc(e.name)}</b><br><small>${esc(e.res)}</small></span><button type="button" class="comic-btn" style="min-height:28px; padding:0 8px;" data-action="soc-send" data-rid="${e.from}">${L("REVANCHIEREN", "RETURN")}</button></div>` : `<div class="bd-row" style="align-items:center;"><span><b>${L("Päckchen von", "Package from")} ${esc(e.name)}</b></span><button type="button" class="comic-btn primary" style="min-height:30px;" data-action="soc-open" data-pk="${e.k}">${L("ÖFFNEN", "OPEN")}</button></div>`).join("")}
           </section>` : ""}
           <section class="biz-card" style="padding:10px;">
-            <h3 class="panel-title" style="margin:0 0 6px;">${L("Rivalen", "Rivals")} (${list.length})</h3>
+            <h3 class="panel-title" style="margin:0 0 6px;">${L("Freunde", "Friends")} (${list.length})</h3>
             ${rows || `<p style="opacity:.7;">${L("Noch keine Freunde. Tausche Visitenkarten, um eine Rangliste aufzumachen.", "No friends yet. Swap cards to start a leaderboard.")}</p>`}
           </section>`;
       },
