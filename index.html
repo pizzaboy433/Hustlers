@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="857a101a23">
+  <meta name="build-id" content="dd9de2de39">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2616,13 +2616,9 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 .bottom-nav.nav-single{display:none}
 .nav-tab.tab-locked{display:none}
 
-/* Vollbild (zum Home-Bildschirm hinzugefuegt): iPhone liefert hier mit 100dvh eine zu kleine Hoehe. App fest an die Raender setzen. */
-@media all and (display-mode: standalone) {
-  html, body { height: 100%; }
-  #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right: 0; height: auto; margin: 0 auto; }
-}
-html.standalone, html.standalone body { height: 100%; }
-html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right: 0; height: auto; margin: 0 auto; }
+.mini-hustle-btn.hb-locked,.hustle-btn.hb-locked{background:#C4C4C4!important;color:#7A7A7A!important;box-shadow:none!important;cursor:not-allowed;animation:none!important}
+.mini-hustle-btn.hb-locked svg,.hustle-btn.hb-locked svg{opacity:.5}
+html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hustle-btn.hb-locked{background:#3B3B3B!important;color:#8A8A8A!important}
 </style>
   <script data-goatcounter="https://hustlers.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -2828,43 +2824,6 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
   </div>
 
   <script>
-    try { if (navigator.standalone === true) document.documentElement.classList.add("standalone"); } catch (e) {}
-    // iPhone-Vollbild: Wenn der sichtbare Bereich laut visualViewport groesser ist als die Layout-Hoehe, App darauf strecken.
-    window.safeTop = function () {
-      if (window.__satTest != null) return window.__satTest;
-      try { var pr = document.createElement("div"); pr.style.cssText = "position:fixed;visibility:hidden;padding-top:env(safe-area-inset-top,0px);"; document.body.appendChild(pr); var v = parseFloat(getComputedStyle(pr).paddingTop) || 0; pr.remove(); return v; } catch (e) { return 0; }
-    };
-    window.fitShell = function () {
-      try {
-        var sh = document.getElementById("app-shell"); if (!sh) return;
-        var sa = navigator.standalone === true || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
-        var vv = window.visualViewport, h = window.innerHeight, target = 0;
-        var vh = vv ? Math.round(vv.height + vv.offsetTop) : 0;
-        if (sa && vh > h + 20) target = vh;
-        // iPhone-Fehler: Layout-Hoehe ist genau um die Statusleiste (oberer Sicherheitsrand) kleiner als der Bildschirm
-        var sat = window.safeTop();
-        if (sa && sat > 0 && window.innerHeight > window.innerWidth && Math.abs((screen.height - h) - sat) <= 6) target = Math.max(target, screen.height);
-        if (target) { sh.style.height = target + "px"; sh.style.bottom = "auto"; }
-        else { sh.style.height = ""; sh.style.bottom = ""; }
-      } catch (e) {}
-    };
-    window.vpReport = function () {
-      var o = [], vv = window.visualViewport, sh = document.getElementById("app-shell");
-      var probe = document.createElement("div"); probe.style.cssText = "position:fixed;visibility:hidden;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px) 0;"; document.body.appendChild(probe);
-      var cs = getComputedStyle(probe), sat = cs.paddingTop, sab = cs.paddingBottom; probe.remove();
-      var bid = document.querySelector('meta[name="build-id"]');
-      o.push("build: " + (bid ? bid.content : "lokal"));
-      o.push("standalone: nav=" + String(navigator.standalone) + " mq=" + (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) + " class=" + document.documentElement.classList.contains("standalone"));
-      o.push("innerHeight: " + window.innerHeight + "  innerWidth: " + window.innerWidth);
-      o.push("clientHeight: " + document.documentElement.clientHeight);
-      o.push("visualViewport: " + (vv ? Math.round(vv.height) + " (top " + Math.round(vv.offsetTop) + ")" : "keins"));
-      o.push("screen: " + screen.width + "x" + screen.height + "  dpr " + window.devicePixelRatio);
-      o.push("safe-area top/bottom: " + sat + " / " + sab);
-      if (sh) { var r = sh.getBoundingClientRect(); o.push("app-shell: top " + Math.round(r.top) + ", hoehe " + Math.round(r.height) + ", bottom " + Math.round(r.bottom) + ", " + getComputedStyle(sh).position); }
-      return o.join("\n");
-    };
-  </script>
-  <script>
     "use strict";
 
     // === [SECTION: LAYER_1_REGISTRY_AND_LANG] ===
@@ -2963,9 +2922,9 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
         "tip.buy1.title": "Erster Betrieb",
         "tip.buy1.text": "Kauf deinen ersten Späti. Er verdient ab jetzt von allein.",
         "tip.tap.title": "Tippen",
-        "tip.tap.text": "Tippe auf HUSTLE: Jeder Tipp bringt Schwarzgeld. Schnelle Tipps bauen eine Kombo auf (bis ×4).",
+        "tip.tap.text": "Der HUSTLE-Button ist jetzt frei. Jeder Tipp bringt Schwarzgeld, aber auch etwas Fahndung. Schnelle Tipps bauen eine Kombo auf (bis ×4).",
         "tip.mode.title": "Hustle oder Tarnung",
-        "tip.mode.text": "HUSTLE bringt viel Schwarzgeld, aber die Fahndung steigt. TARNUNG bringt weniger, ist leise und wäscht dein Geld sauber. Der Schalter gilt pro Betrieb.",
+        "tip.mode.text": "Jeder Betrieb startet in TARNUNG: wenig Ertrag, aber leise, und er wäscht dein Geld sauber. HUSTLE bringt viel Schwarzgeld, aber die Fahndung steigt. Der Schalter gilt pro Betrieb. Mit Verstanden schaltest du den HUSTLE-Button frei.",
         "tip.heat.title": "Fahndung",
         "tip.heat.text": "Ab 40 % sinken die Coup-Chancen (dafür mehr Hustle-Ertrag), ab 60 % kosten Waschen und Börse mehr. Über 85 % gibt es eine Razzia und du verlierst Schwarzgeld. TARNUNG senkt die Fahndung.",
         "tip.war.title": "Revierkampf",
@@ -3697,9 +3656,9 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
         "tip.buy1.title": "First business",
         "tip.buy1.text": "Buy your first corner shop. It earns on its own from now on.",
         "tip.tap.title": "Tapping",
-        "tip.tap.text": "Tap HUSTLE: every tap earns dirty cash. Fast taps build a combo (up to ×4).",
+        "tip.tap.text": "The HUSTLE button is unlocked. Every tap earns dirty cash, but also a bit of heat. Fast taps build a combo (up to ×4).",
         "tip.mode.title": "Hustle or cover",
-        "tip.mode.text": "HUSTLE earns lots of dirty cash but raises heat. COVER earns less, stays quiet and launders your money clean. The switch works per business.",
+        "tip.mode.text": "Every business starts in COVER: low income, but quiet, and it launders your money clean. HUSTLE earns lots of dirty cash but raises heat. The switch works per business. Tap Got it to unlock the HUSTLE button.",
         "tip.heat.title": "Heat",
         "tip.heat.text": "From 40% coup odds drop (but hustle earns more), from 60% laundering and the market cost more. Above 85% a raid hits and you lose dirty cash. COVER lowers heat.",
         "tip.war.title": "Turf war",
@@ -5195,34 +5154,52 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
         } catch (_) {}
       },
 
-      // Ohrfeige / Klatschen: harter, heller Rauschknall mit kurzem Körper. step = Kombo (0-6), 6 = Treffer
+      // Ohrfeige / Klatschen (Zeichentrick): knackiger Klatsch mit Flattern, nasser Körper und kurzem "Pwap"-Ton. step = Kombo (0-6), 6 = Treffer
       _slap(step, ctx, dest, now) {
         const k = Math.max(0, Math.min(6, step | 0));
         const hard = k >= 6;
         const rate = ctx.sampleRate;
+        const v = hard ? 1 : 0.75 + k * 0.03;
+        const jit = 0.92 + Math.random() * 0.16;
         const noise = (sec, pow) => {
           const len = Math.floor(rate * sec), buf = ctx.createBuffer(1, len, rate), d = buf.getChannelData(0);
           for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, pow);
           return buf;
         };
-        const layer = (sec, pow, type, f, q, vol, dec, hpf) => {
+        // weiche Sättigung: macht den Knall dichter und lauter, ohne zu übersteuern
+        const sat = ctx.createWaveShaper(); const curve = new Float32Array(257);
+        for (let i = 0; i < 257; i++) { const x = i / 128 - 1; curve[i] = Math.tanh(x * 2.2) / Math.tanh(2.2); }
+        sat.curve = curve; const master = ctx.createGain(); master.gain.value = 0.7; sat.connect(master); master.connect(dest);
+        const burst = (at, sec, pow, type, f, fEnd, q, vol, dec, hpf) => {
           const src = ctx.createBufferSource(); src.buffer = noise(sec, pow);
-          const bp = ctx.createBiquadFilter(); bp.type = type; bp.frequency.value = f; bp.Q.value = q;
-          const g = ctx.createGain(); g.gain.setValueAtTime(vol, now); g.gain.exponentialRampToValueAtTime(0.001, now + dec);
+          const bp = ctx.createBiquadFilter(); bp.type = type; bp.Q.value = q;
+          bp.frequency.setValueAtTime(f, now + at);
+          if (fEnd) bp.frequency.exponentialRampToValueAtTime(fEnd, now + at + sec);
+          const g = ctx.createGain(); g.gain.setValueAtTime(vol, now + at); g.gain.exponentialRampToValueAtTime(0.001, now + at + dec);
           src.connect(bp);
           if (hpf) { const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = hpf; bp.connect(hp); hp.connect(g); } else bp.connect(g);
-          g.connect(dest); src.start(now); src.stop(now + sec);
+          g.connect(sat); src.start(now + at); src.stop(now + at + sec);
         };
-        const jit = 0.9 + Math.random() * 0.2;
-        // 1. scharfer Aufprall (hell, sehr kurz)
-        layer(0.05, 2, "bandpass", (2900 + k * 120) * jit, 0.55, hard ? 0.26 : 0.18, 0.04, 1300);
-        // 2. Klatsch-Körper (mittleres Rauschen, etwas länger)
-        layer(0.10, 2.5, "bandpass", 1100 * jit, 0.9, hard ? 0.14 : 0.09, 0.08, 500);
-        // 3. nur ein Hauch von Wucht darunter
-        const o = ctx.createOscillator(); o.type = "sine";
-        o.frequency.setValueAtTime(150 * jit, now); o.frequency.exponentialRampToValueAtTime(70, now + 0.05);
-        const g2 = ctx.createGain(); g2.gain.setValueAtTime(hard ? 0.07 : 0.045, now); g2.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
-        o.connect(g2); g2.connect(dest); o.start(now); o.stop(now + 0.07);
+        // Zeitdehnung: alles etwas gedehnt, damit der Klatsch nicht so hektisch wirkt
+        const T = 1.35;
+        // 1. Klatsch-Flattern: drei kurze helle Knalle hintereinander (wie Handflächen, die aufeinander treffen)
+        burst(0.000, 0.030 * T, 1.5, "bandpass", 3800 * jit, 0, 0.6, 0.55 * v, 0.025 * T, 1500);
+        burst(0.008 * T, 0.030 * T, 1.5, "bandpass", 3000 * jit, 0, 0.6, 0.38 * v, 0.025 * T, 1500);
+        burst(0.019 * T, 0.040 * T, 1.8, "bandpass", 2400 * jit, 0, 0.6, 0.26 * v, 0.035 * T, 1200);
+        // 2. nasser Klatsch-Körper: Rauschen, das von hoch nach tief rutscht ("ssPATSCH")
+        burst(0.004 * T, 0.110 * T, 2.2, "bandpass", 5200 * jit, 1300, 0.8, 0.40 * v, 0.095 * T, 700);
+        // 3. fleischiger Mittenanteil
+        burst(0.004 * T, 0.090 * T, 2.4, "lowpass", 1700 * jit, 500, 0.7, 0.30 * v, 0.080 * T, 0);
+        // 4. Zeichentrick-"Pwap": schneller Ton, der nach unten kippt
+        const o = ctx.createOscillator(); o.type = "triangle";
+        o.frequency.setValueAtTime(1100 * jit, now); o.frequency.exponentialRampToValueAtTime(240, now + 0.075 * T);
+        const g2 = ctx.createGain(); g2.gain.setValueAtTime(0.22 * v, now); g2.gain.exponentialRampToValueAtTime(0.001, now + 0.085 * T);
+        o.connect(g2); g2.connect(sat); o.start(now); o.stop(now + 0.09 * T);
+        // 5. dumpfer Schlag darunter (Wucht)
+        const o2 = ctx.createOscillator(); o2.type = "sine";
+        o2.frequency.setValueAtTime(190 * jit, now); o2.frequency.exponentialRampToValueAtTime(65, now + 0.07 * T);
+        const g3 = ctx.createGain(); g3.gain.setValueAtTime((hard ? 0.30 : 0.2) * v, now); g3.gain.exponentialRampToValueAtTime(0.001, now + 0.08 * T);
+        o2.connect(g3); g3.connect(sat); o2.start(now); o2.stop(now + 0.09 * T);
       },
 
       // [freq, startSec, durSec, wave, volume, slideToFreq]
@@ -6232,7 +6209,7 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
               branch: null,
               branchCooldown: 0,
               milestonesClaimed: 0,
-              mode: i % 2 === 1 ? "launder" : "hustle"
+              mode: "launder"
             };
           } else {
             const st = STATE.businesses[biz.id];
@@ -8665,12 +8642,12 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
       { id: "buy1", tab: "businesses",
         when: () => !COACH_Q.anyOwned(), done: () => COACH_Q.anyOwned(),
         target: '[data-buy-biz][data-pay="cash"]' },
-      { id: "tap", tab: "businesses",
-        when: () => COACH_Q.anyOwned() && (STATE.stats.totalClicks || 0) < 8, done: () => (STATE.stats.totalClicks || 0) >= 8,
-        target: "#mini-hustle-btn" },
       { id: "mode", tab: "businesses",
-        when: () => COACH_Q.anyOwned() && (STATE.currencies.dirtyCash || 0) >= 25, done: () => COACH_Q.anyLaunder(),
+        when: () => COACH_Q.anyOwned(), done: () => (STATE.stats.totalClicks || 0) >= 1 || (STATE.stats.prestigeCount || 0) > 0,
         target: ".mode-switch-bar" },
+      { id: "tap", tab: "businesses",
+        when: () => hustleOpen() && (STATE.stats.totalClicks || 0) < 8, done: () => (STATE.stats.totalClicks || 0) >= 8,
+        target: "#mini-hustle-btn" },
       { id: "heat",
         when: () => STATE.heat >= 40 || (STATE.stats.razziaCount || 0) > 0, done: () => false,
         target: "#heat-box" },
@@ -9525,6 +9502,12 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
       { k: "hq", lv: 45 },
       { k: "cartel", lv: 55 }
     ];
+    // Hustle-Button: grau bis der erste Betrieb gekauft ist und der Schalter (Hustle/Tarnung) erklärt wurde
+    function hustleOpen() {
+      if (!STATE || !STATE.ui || !COACH_Q.anyOwned()) return false;
+      const tp = STATE.ui.tips || {};
+      return !!(tp.off || (tp.done && tp.done.mode) || (STATE.stats.totalClicks || 0) >= 1 || (STATE.stats.prestigeCount || 0) > 0);
+    }
     function tabOpen(k) { const T = STATE && STATE.ui && STATE.ui.tabs; return k === "businesses" || !T || !!T[k]; }
 
     const View = {
@@ -10067,6 +10050,10 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
             this.updateSprintUI();
             return;
           }
+          if (action === "click-hustle" && (actionEl.id === "mini-hustle-btn" || actionEl.id === "hustle-btn") && !hustleOpen()) {
+            Platform.playTone("deny"); Platform.haptic(8);
+            return;
+          }
           if (action === "click-hustle") {
             const hRes = Engine.clickHustle();
             Platform.playTone("slap", hRes.isCrit ? 6 : hRes.combo);
@@ -10153,7 +10140,7 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
             }
           } else if (action === "coach-ok") {
             if (View._coachId && STATE.ui.tips) STATE.ui.tips.done[View._coachId] = true;
-            View._coachGap = Date.now() + 12000;
+            View._coachGap = View._coachId === "mode" ? 0 : Date.now() + 12000;
             Platform.haptic(8);
             Platform.saveGame(true);
             this.updateCoach();
@@ -10241,19 +10228,6 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
           } else if (action === "online-delete-go") {
             const { L } = this.onlineLang();
             Online.deleteAll().then(ok => { document.getElementById("app-modal").classList.remove("open"); this.toast(ok ? L("Online-Daten gelöscht", "Online data deleted") : L("Löschen nicht möglich", "Delete failed"), ""); this.renderActiveTab(); });
-          } else if (action === "dev-vp") {
-            const rep0 = (window.vpReport ? window.vpReport() : "keine Daten");
-            this.settingsOpen = false;
-            const en0 = STATE.settings && STATE.settings.lang === "EN";
-            document.getElementById("app-modal-body").innerHTML = `<h2 class="panel-title">${en0 ? "Screen diagnostics" : "Anzeige-Diagnose"}</h2>
-              <pre id="vp-rep" style="white-space:pre-wrap;font-size:12px;font-weight:700;user-select:text;-webkit-user-select:text;margin:0;">${String(rep0).replace(/[&<>]/g, "")}</pre>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
-                <button type="button" class="comic-btn primary" data-action="dev-vp-copy">${en0 ? "COPY" : "KOPIEREN"}</button>
-                <button type="button" class="comic-btn" data-action="close-modal">${t("modal.close")}</button>
-              </div>`;
-            document.getElementById("app-modal").classList.add("open");
-          } else if (action === "dev-vp-copy") {
-            const pre = document.getElementById("vp-rep"); if (pre) this.copyText(pre.textContent, "Kopiert");
           } else if (action === "fr-copy-id") {
             const en0 = STATE.settings && STATE.settings.lang === "EN";
             this.copyText(actionEl.getAttribute("data-id") || "", en0 ? "ID copied – send it to your friend" : "ID kopiert – schick sie deinem Freund");
@@ -13209,6 +13183,8 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
         const combo = STATE.hustleCombo || 0;
         const slangDisplay = combo >= 6 ? `${Engine.currentHustleWord} ×4` : Engine.currentHustleWord;
 
+        const hLocked = !hustleOpen();
+        document.querySelectorAll(".mini-hustle-btn,.hustle-btn").forEach(hb => hb.classList.toggle("hb-locked", hLocked));
         const miniHBtn = document.getElementById("mini-hustle-btn");
         if (miniHBtn) miniHBtn.classList.toggle("overdrive", combo >= 6);
         document.querySelectorAll('[data-action="click-hustle"]').forEach(hb => { hb.classList.toggle("combo-2", combo >= 3 && combo < 6); hb.classList.toggle("combo-4", combo >= 6); });
@@ -13666,7 +13642,6 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
                     + `<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:6px;"><button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-soc-reset">${en ? "Reset friend limits" : "Freunde-Limits zurück"}</button><button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-soc-favors">${en ? "+20 favors" : "+20 Gefallen"}</button></div>`;
                 })()}
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:4px;">
-                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px; grid-column:1 / -1;" data-action="dev-vp">${en ? "Screen diagnostics" : "Anzeige-Diagnose"}</button>
                   <button type="button" class="comic-btn primary" style="min-height:34px; font-size:11px;" data-action="run-diagnostics">${t("archive.dev.run")}</button>
                   <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="inject-mod-biz">${t("archive.dev.mod")}</button>
                 </div>
@@ -14293,11 +14268,6 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
       else Engine.ensureStateIntegrity();
       View.init();
       Online.start();
-      try {
-        fitShell(); setTimeout(fitShell, 300); setTimeout(fitShell, 1500);
-        window.addEventListener("resize", fitShell); window.addEventListener("orientationchange", () => setTimeout(fitShell, 200));
-        if (window.visualViewport) window.visualViewport.addEventListener("resize", fitShell);
-      } catch (e) {}
 
       setInterval(() => {
         if (!document.hidden) STATE.stats.playSec = (STATE.stats.playSec || 0) + 0.1;
