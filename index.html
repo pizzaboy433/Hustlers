@@ -7,6 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
+  <meta name="build-id" content="8e80ae8350">
   <meta name="description" content="Hustlers: Urban Edition – ein Idle-Spiel im Comic-Look: Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2490,7 +2491,14 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
   .heat-overlay-text{font-size:10.5px!important;letter-spacing:-.01em}
   .heat-trend-pill{font-size:10.5px!important;padding:1px 4px!important}
 }
+
+/* v40f: Update-Hinweis */
+.update-banner{width:max-content;position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 8px);z-index:99998;display:flex;align-items:center;gap:10px;
+  background:#FFCE3B;color:#1A1A1A;border:2.5px solid #1A1A1A;border-radius:12px;padding:8px 10px 8px 14px;box-shadow:3px 3px 0 #1A1A1A;
+  font-weight:900;font-size:13px;text-transform:uppercase;letter-spacing:.03em;max-width:92vw}
+.update-banner button{background:#1A1A1A;color:#FBF8F0;border:none;border-radius:8px;padding:8px 14px;font-weight:900;font-size:13px;text-transform:uppercase;min-height:36px;touch-action:manipulation}
 </style>
+  <script data-goatcounter="https://hustlers.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
   <script>
@@ -2763,6 +2771,8 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "ui.boss.quote.trend_up": "„Achtung! Der Fahndungs-Trend ist ins Plus gekippt — schalte auf TARNUNG!“",
         "ui.boss.quote.razzia": "„GROSSRAZZIA in {city}! Ungesichertes Schwarzgeld beschlagnahmt!“",
         "ui.heat.low": "UNAUFFÄLLIG",
+        "update.msg": "Neue Version verfügbar",
+        "update.btn": "Neu laden",
         "ui.heat.mid": "IM VISIER",
         "ui.heat.high": "RAZZIA DROHT!",
         "ui.heat.cooldown": "SCHUTZ ({sec}s)",
@@ -3495,6 +3505,8 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "ui.boss.quote.trend_up": "„Watch out! Heat trend just turned positive — flip fronts to COVER!“",
         "ui.boss.quote.razzia": "„MAJOR RAID in {city}! Unlaundered Dirty Cash seized!“",
         "ui.heat.low": "LOW PROFILE",
+        "update.msg": "New version available",
+        "update.btn": "Reload",
         "ui.heat.mid": "ON RADAR",
         "ui.heat.high": "RAID IMMINENT!",
         "ui.heat.cooldown": "SHIELD ({sec}s)",
@@ -12452,6 +12464,37 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           Platform.saveGame(true);
         }
       }, 100);
+
+      // === Update-Hinweis: fragt die Seite selbst ab und bietet Neuladen an, wenn eine neue Version online ist ===
+      (function () {
+        const meta = typeof document !== "undefined" && document.querySelector('meta[name="build-id"]');
+        const mine = meta && meta.getAttribute("content");
+        if (!mine || typeof location === "undefined" || !/^https?:$/.test(location.protocol)) return; // nur auf der Website, nicht lokal
+        let shown = false;
+        function showBanner() {
+          if (shown) return; shown = true;
+          const el = document.createElement("div");
+          el.className = "update-banner";
+          el.innerHTML = '<span></span><button type="button"></button>';
+          el.firstChild.textContent = t("update.msg");
+          const btn = el.lastChild; btn.textContent = t("update.btn");
+          btn.addEventListener("click", () => { try { Platform.saveGame(true); } catch (e) {} location.reload(); });
+          document.body.appendChild(el);
+        }
+        async function check() {
+          if (shown) return;
+          try {
+            const r = await fetch(location.pathname + "?_=" + Date.now(), { cache: "no-store" });
+            if (!r.ok) return;
+            const txt = await r.text();
+            const m = txt.match(/<meta name="build-id" content="([^"]+)"/);
+            if (m && m[1] !== mine) showBanner();
+          } catch (e) {}
+        }
+        setTimeout(check, 30000);
+        setInterval(check, 10 * 60 * 1000);
+        document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") setTimeout(check, 1500); });
+      })();
     })();
   </script>
 </body>
