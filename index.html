@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="588b5564f6">
+  <meta name="build-id" content="7955b7454e">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2595,6 +2595,19 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 .hint-txt{flex:1 1 auto;min-width:0;font-size:11.5px;font-weight:800;line-height:1.3}
 .hint-btn{flex-shrink:0;background:#1A1A1A;color:#FBF8F0;border:none;border-radius:0;padding:7px 11px;font-weight:900;font-size:12px;text-transform:uppercase;min-height:34px;touch-action:manipulation;font-family:inherit}
 .hint-x{flex-shrink:0;background:transparent;border:var(--border-comic);border-radius:0;width:34px;height:34px;font-size:18px;font-weight:900;line-height:1;color:inherit;touch-action:manipulation;font-family:inherit}
+
+/* === v48: Online === */
+.on-row{display:flex;align-items:center;gap:8px;padding:6px 8px;border-top:1px dashed var(--line);font-size:12.5px;font-weight:800}
+.on-row.me{background:rgba(91,150,40,.28)}
+.on-row .on-rank{flex:0 0 28px;font-weight:900}
+.on-row .on-name{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.on-row .on-val{flex:0 0 auto;font-weight:900}
+.on-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:6px 0}
+.on-tabs .comic-btn.sel{background:#1A1A1A;color:#FBF8F0}
+.on-code{font-size:22px;font-weight:900;letter-spacing:.08em;text-align:center;padding:10px 6px;user-select:all;word-break:break-all}
+.on-bar{height:16px;border:var(--border-comic);background:var(--bg-paper);position:relative;overflow:hidden}
+.on-bar i{position:absolute;left:0;top:0;bottom:0;background:#5B9628;display:block}
+.on-note{font-size:11.5px;font-weight:700;line-height:1.35;opacity:.85}
 </style>
   <script data-goatcounter="https://hustlers.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -5042,7 +5055,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 
       exportSaveBase64() {
         this.saveGame(false);
-        const json = JSON.stringify(STATE);
+        const json = JSON.stringify(STATE, (k, v) => (k === "token" || k === "rcode") ? undefined : v);
         const bytes = new TextEncoder().encode(json);
         let bin = "";
         for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
@@ -7836,7 +7849,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           businesses: bizBadge,
           logistics: checkNewDot("logistics"),
           turf: turfBadge,
-          cartel: checkNewDot("cartel"),
+          cartel: (activeTab !== "cartel" && STATE.social && ((STATE.social.inbox && STATE.social.inbox.some(e => !e.opened)) || (Online.st.req && Online.st.req.length) || (Online.st.goal && Online.st.goal.claimable))) ? "urgent" : checkNewDot("cartel"),
           hq: hqUrgent && activeTab !== "hq" ? "urgent" : "none"
         };
       },
@@ -8619,7 +8632,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         } catch (e) {}
         let vp = "";
         try { vp = innerWidth + "x" + innerHeight; } catch (e) {}
-        this.add("START", "v3.20.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
+        this.add("START", "v3.24.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
         this.flush();
       },
       flush() {
@@ -8906,6 +8919,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         if (!so.dmg || typeof so.dmg !== "object") so.dmg = { day: "", n: 0 };
         if (!so.streak || typeof so.streak !== "object") so.streak = { last: 0, n: 0 };
         if (!so.job || typeof so.job !== "object") so.job = { day: 0, score: null, results: {}, claimed: false };
+        if (!so.online || typeof so.online !== "object") so.online = { on: false, token: "", rcode: "", sentAt: 0, lastTotal: 0, saveAt: 0, state: "" };
         if (so.job.day !== this.dayNo()) so.job = { day: this.dayNo(), score: null, results: {}, claimed: false };
         if (!STATE.bombs || typeof STATE.bombs !== "object") STATE.bombs = {};
         return so;
@@ -9211,6 +9225,186 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
       }
     };
     window.SOC = SOC;
+
+    // === ONLINE (Zusatzfunktionen, komplett abschaltbar) ===
+    // Schalter 1: enabled. Bei false passiert nichts Online-Bezogenes (keine Anfragen, keine Menüpunkte).
+    // Schalter 2: Fernschalter. Der Server meldet unter /status, welche Funktionen an sind.
+    // Die Adresse des Servers steht nur hier.
+    const ONLINE = Object.assign({ enabled: true, url: "https://hustlers-online.tkd-272.workers.dev", timeoutMs: 6000 }, (typeof window !== "undefined" && window.__ONLINE_CFG) || {});
+    const Online = {
+      st: { status: null, statusAt: 0, sig: "" },
+      active() { return !!(ONLINE.enabled && ONLINE.url); },
+      feat(k) { const s = this.st.status; return !!(this.active() && s && s.enabled && s[k]); },
+      me() { return SOC.ensure().online; },
+      joined() { const o = this.me(); return !!(o.on && o.token); },
+      randToken() { const a = new Uint8Array(16); (window.crypto && crypto.getRandomValues) ? crypto.getRandomValues(a) : a.forEach((_, i) => a[i] = Math.floor(Math.random() * 256)); return Array.from(a).map(b => b.toString(16).padStart(2, "0")).join(""); },
+      async call(method, path, body) {
+        if (!this.active()) return { ok: false, status: 0, j: {}, net: true };
+        const ctl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+        const to = setTimeout(() => { try { ctl && ctl.abort(); } catch (e) {} }, ONLINE.timeoutMs);
+        try {
+          const r = await fetch(String(ONLINE.url).replace(/\/+$/, "") + path, { method, body: body ? JSON.stringify(body) : undefined, headers: body ? { "Content-Type": "text/plain" } : undefined, signal: ctl ? ctl.signal : undefined, cache: "no-store" });
+          let j = null; try { j = await r.json(); } catch (e) {}
+          return { ok: r.ok, status: r.status, j: j || {} };
+        } catch (e) { return { ok: false, status: 0, j: {}, net: true }; }
+        finally { clearTimeout(to); }
+      },
+      async refreshStatus(force) {
+        if (!this.active()) return;
+        const now = Date.now();
+        if (!force && this.st.statusAt && now - this.st.statusAt < 25 * 60000) return;
+        this.st.statusAt = now;
+        const r = await this.call("GET", "/status");
+        const next = (r.ok && r.j && r.j.v) ? r.j : null;
+        const sig = next ? [next.enabled, next.lb, next.save].join() : "off";
+        this.st.status = next;
+        if (sig !== this.st.sig) { this.st.sig = sig; try { View.onOnlineChange(); } catch (e) {} }
+      },
+      async join(name) {
+        const o = this.me();
+        const token = o.token || this.randToken();
+        const r = await this.call("POST", "/register", { id: SOC.ensure().id, token, name });
+        if (r.ok) { o.token = token; o.on = true; o.state = ""; Platform.saveGame(true); this.report(true); return { ok: true }; }
+        if (r.status === 409) { o.on = false; o.state = "conflict"; return { ok: false, err: "conflict" }; }
+        if (r.status === 400) return { ok: false, err: "name" };
+        return { ok: false, err: r.net ? "net" : "off" };
+      },
+      async report(force) {
+        const o = this.me();
+        if (!this.feat("lb") || !o.on || !o.token) return false;
+        if (!force && document.hidden) return false;
+        const now = Date.now(), total = (STATE.stats && STATE.stats.lifetimeRevenue) || 0;
+        if (!force && (now - o.sentAt < 600000 || total === o.lastTotal)) return false;
+        if (force && now - o.sentAt < 60000) return false;
+        o.sentAt = now; // Sperre gegen Doppelanfragen, wird bei Fehler zurückgesetzt
+        const r = await this.call("POST", "/score", { id: SOC.ensure().id, token: o.token, total, name: STATE.boss.name });
+        if (r.ok) { o.lastTotal = total; return true; }
+        if (r.status === 401) { o.on = false; o.state = "conflict"; }
+        else if (r.status === 429) o.sentAt = now - 540000;
+        else o.sentAt = now - 540000;
+        return false;
+      },
+      async saveCloud(silent) {
+        const o = this.me();
+        if (!this.feat("save") || !o.on || !o.token) return { ok: false, err: "off" };
+        Platform.saveGame(true);
+        const r = await this.call("POST", "/save", { id: SOC.ensure().id, token: o.token, blob: Platform.exportSaveBase64(), newCode: false });
+        if (r.ok) { o.saveAt = Date.now(); if (r.j.code) o.rcode = r.j.code; Platform.saveGame(true); return { ok: true, code: r.j.code || null }; }
+        if (r.status === 401) { o.on = false; o.state = "conflict"; }
+        return { ok: false, err: r.net ? "net" : (r.status === 400 ? "big" : "off") };
+      },
+      async restore(code) {
+        const r = await this.call("POST", "/restore", { code });
+        if (!r.ok) return { ok: false, err: r.net ? "net" : (r.status === 404 || r.status === 400 ? "code" : "off") };
+        const res = Platform.importSaveBase64(r.j.blob, true);
+        if (!res.ok) return { ok: false, err: "data" };
+        const so = SOC.ensure();
+        so.id = r.j.id; so.named = true;
+        so.online = { on: true, token: r.j.token, rcode: String(code), sentAt: 0, lastTotal: 0, saveAt: Date.now(), state: "" };
+        Platform.saveGame(true);
+        return { ok: true };
+      },
+      // ---- Freunde und Geschenke (live) ----
+      async sync(force) {
+        const o = this.me();
+        if (!this.feat("friends") || !o.on || !o.token) return false;
+        const now = Date.now();
+        if (this._syncing) return false;
+        if (now - (this._syncAt || 0) < (force ? 20000 : 150000)) return false;
+        this._syncAt = now; this._syncing = true;
+        try {
+          const ack = this._ack || [];
+          const r = await this.call("POST", "/sync", { id: SOC.ensure().id, token: o.token, ack });
+          if (!r.ok) { if (r.status === 401) { o.on = false; o.state = "conflict"; } return false; }
+          this._ack = this._ack ? this._ack.filter(x => !ack.includes(x)) : [];
+          const so = SOC.ensure(), j = r.j, seen = {};
+          let newGifts = 0, giftFrom = "";
+          for (const f of (j.friends || [])) {
+            if (!f || !/^[0-9A-Z]{6}$/.test(f.id || "") || f.id === so.id) continue;
+            seen[f.id] = 1;
+            const nm = SOC.cleanName(f.name, 16) || "?";
+            const ex = so.rivals[f.id];
+            if (!ex && Object.keys(so.rivals).length >= 50) continue;
+            so.rivals[f.id] = Object.assign({ id: f.id, city: "", style: 0, pre: 0 }, ex || {}, { name: nm, rev: Math.max(0, +f.rev || 0), ts: now, live: true });
+          }
+          for (const id of Object.keys(so.rivals)) if (so.rivals[id].live && !seen[id]) delete so.rivals[id];
+          this.st.req = (j.requests || []).filter(x => x && /^[0-9A-Z]{6}$/.test(x.id || "")).map(x => ({ id: x.id, name: SOC.cleanName(x.name, 16) || "?" }));
+          this.st.out = (j.out || []).filter(x => /^[0-9A-Z]{6}$/.test(x || ""));
+          for (const g of (j.gifts || [])) {
+            if (!g || !Number.isInteger(g.gid)) continue;
+            this._ack = this._ack || [];
+            if (!this._ack.includes(g.gid)) this._ack.push(g.gid);
+            const res = SOC.importPkg({ to: so.id, from: String(g.from || ""), kind: g.kind | 0, nonce: g.nonce | 0, name: SOC.cleanName(g.name, 16) || "?" });
+            if (res && res.ok) { newGifts++; giftFrom = SOC.cleanName(g.name, 16) || "?"; }
+          }
+          Platform.saveGame(true);
+          if (newGifts) { try { View.onGiftsArrived(newGifts, giftFrom); } catch (e) {} }
+          const sig = [Object.keys(seen).sort().join(), this.st.req.map(x => x.id).join(), this.st.out.join(), newGifts].join("|");
+          if (sig !== this._friendSig) { this._friendSig = sig; try { View.onOnlineChange(); } catch (e) {} }
+          return true;
+        } finally { this._syncing = false; }
+      },
+      async friendCall(path, body) {
+        const o = this.me();
+        if (!this.feat("friends") || !o.on || !o.token) return { ok: false, status: 0, j: {}, net: true };
+        const r = await this.call("POST", path, Object.assign({ id: SOC.ensure().id, token: o.token }, body));
+        if (r.status === 401) { o.on = false; o.state = "conflict"; }
+        return r;
+      },
+      async giftSend(to, kind) { return this.friendCall("/gift/send", { to, kind }); },
+      // ---- Gemeinsames Wochenziel ----
+      async goalLoad(force) {
+        if (!this.feat("goal")) { this.st.goal = null; return false; }
+        const now = Date.now();
+        if (this._goalBusy || (!force && now - (this._goalAt || 0) < 60000)) return false;
+        this._goalAt = now; this._goalBusy = true;
+        try {
+          const o = this.me();
+          const r = await this.call("GET", "/goal" + (o.on ? "?id=" + encodeURIComponent(SOC.ensure().id) : ""));
+          if (!r.ok || !r.j || !Number.isFinite(r.j.total)) return false;
+          const g = r.j, min = g.min || 1e4;
+          const cur = !!(g.me && g.total >= g.target && g.me.rev >= min && !g.me.claimed);
+          const prev = !!(g.prev && g.prev.done && g.me && g.me.prevRev >= min && !g.me.prevClaimed);
+          g.claimable = cur ? g.week : (prev ? g.week - 1 : 0);
+          const sig = [Math.floor(g.total / Math.max(1, g.target) * 100), g.claimable, g.me ? Math.floor(g.me.rev) : -1].join("|");
+          const changed = sig !== this._goalSig; this._goalSig = sig;
+          this.st.goal = g;
+          if (changed) { try { View.onOnlineChange(); } catch (e) {} }
+          return true;
+        } finally { this._goalBusy = false; }
+      },
+      async goalClaim() {
+        const g = this.st.goal;
+        if (!g || !g.claimable) return { ok: false };
+        const o = this.me();
+        const r = await this.call("POST", "/goal/claim", { id: SOC.ensure().id, token: o.token, week: g.claimable });
+        if (!r.ok) { this._goalAt = 0; this.goalLoad(true); return { ok: false, err: r.j && r.j.error }; }
+        const pw = (Engine.getStats().totalPowerCps) || 0;
+        const cash = Math.max(500, pw * 900);
+        STATE.currencies.cash += cash; STATE.currencies.favors += 8;
+        Platform.saveGame(true);
+        this._goalAt = 0; this.goalLoad(true);
+        return { ok: true, cash, favors: 8 };
+      },
+      async deleteAll() {
+        const o = this.me();
+        const r = await this.call("POST", "/delete", { id: SOC.ensure().id, token: o.token });
+        if (r.ok || r.status === 404) { SOC.ensure().online = { on: false, token: "", rcode: "", sentAt: 0, lastTotal: 0, saveAt: 0, state: "" }; Platform.saveGame(true); return true; }
+        return false;
+      },
+      start() {
+        if (!this.active()) return;
+        setTimeout(() => this.refreshStatus(true), 3000);
+        setInterval(() => {
+          this.refreshStatus(false);
+          this.report(false);
+          if (!document.hidden) { this.sync(false); if (Date.now() - (this._goalAt || 0) > 600000) this.goalLoad(false); }
+          const o = this.me();
+          if (this.feat("save") && o.on && o.saveAt > 0 && Date.now() - o.saveAt > 6 * 3600000 && !document.hidden) { o.saveAt = Date.now() - 5 * 3600000; this.saveCloud(true); }
+        }, 30000);
+      }
+    };
+    window.Online = Online;
 
     const View = {
       bindCache: {},
@@ -9827,6 +10021,30 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
               this.syncShellControls();
               this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
             }
+          } else if (action === "goal-claim") {
+            const { L } = this.onlineLang();
+            Online.goalClaim().then(r => {
+              if (r.ok) { Platform.playTone("coin", 8); Platform.haptic(25); this.toast(L("Belohnung abgeholt", "Reward claimed"), "+" + formatNumber(r.cash) + " € · +" + r.favors + " " + L("Gefallen", "favors")); this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet); }
+              else this.toast(L("Das geht gerade nicht", "Not possible right now"), "");
+              this.renderActiveTab();
+            });
+          } else if (action === "fr-request") { this.friendAction("request");
+          } else if (action === "fr-accept") { this.friendAction("accept", actionEl.getAttribute("data-rid"));
+          } else if (action === "fr-decline") { this.friendAction("remove", actionEl.getAttribute("data-rid"));
+          } else if (action === "online-join") { this.showJoinModal();
+          } else if (action === "online-join-go") { this.onlineJoinGo();
+          } else if (action === "online-board") { this.showBoardModal();
+          } else if (action === "online-board-tab") { this.loadBoard(actionEl.getAttribute("data-list") === "all" ? "all" : "week");
+          } else if (action === "online-save") { this.onlineSaveNow();
+          } else if (action === "online-code") { const rc = Online.me().rcode; if (rc) this.showCodeModal(rc, false); else this.onlineSaveNow();
+          } else if (action === "online-code-copy") { const { L } = this.onlineLang(); this.copyText(actionEl.getAttribute("data-code") || "", L("Code kopiert", "Code copied"));
+          } else if (action === "online-restore-open") { this.showRestoreModal(false);
+          } else if (action === "online-restore-back") { this.showIntro();
+          } else if (action === "online-restore-go") { this.onlineRestoreGo();
+          } else if (action === "online-delete-ask") { this.showDeleteModal();
+          } else if (action === "online-delete-go") {
+            const { L } = this.onlineLang();
+            Online.deleteAll().then(ok => { document.getElementById("app-modal").classList.remove("open"); this.toast(ok ? L("Online-Daten gelöscht", "Online data deleted") : L("Löschen nicht möglich", "Delete failed"), ""); this.renderActiveTab(); });
           } else if (action === "goal-go") {
             const g = Engine.nextGoal();
             const tab = g && g.kind === "prestige" ? "hq" : "businesses";
@@ -10194,6 +10412,30 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
             if (r.err) { this.toast(r.err, ""); return; }
             Platform.saveGame(true);
             this.renderActiveTab(); this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
+            const rv0 = SOC.ensure().rivals[rid];
+            if (rv0 && rv0.live && Online.feat("friends") && Online.joined()) {
+              const en0 = STATE.settings && STATE.settings.lang === "EN";
+              document.getElementById("app-modal-body").innerHTML = `<h2 class="panel-title">${en0 ? "Sending …" : "Wird gesendet …"}</h2>`;
+              Online.giftSend(rid, kind).then(gr => {
+                const bodyEl = document.getElementById("app-modal-body");
+                if (gr.ok) {
+                  if (bodyEl && document.getElementById("app-modal").classList.contains("open")) bodyEl.innerHTML = `<h2 class="panel-title">${en0 ? "Package sent!" : "Päckchen verschickt!"}</h2><p>${en0 ? "It shows up in your friend's inbox." : "Es landet direkt im Postfach deines Freundes."}</p><button type="button" class="comic-btn primary" style="width:100%;" data-action="close-modal">${en0 ? "DONE" : "FERTIG"}</button>`;
+                  return;
+                }
+                if (gr.net || gr.status === 0 || gr.status >= 500) {
+                  // Server nicht erreichbar: Rückfall auf den Text zum Weiterschicken
+                  this.pkgText = r.text;
+                  if (bodyEl) bodyEl.innerHTML = `<h2 class="panel-title">${en0 ? "Server unreachable" : "Server nicht erreichbar"}</h2><p>${en0 ? "Send this text to your friend instead:" : "Schick stattdessen diesen Text an deinen Freund:"}</p><div class="cash-hero-box" style="font-size:12px; word-break:break-all; user-select:all;"><span class="num">${String(r.text).replace(/[&<>"']/g, "")}</span></div><button type="button" class="comic-btn primary" style="width:100%; margin:6px 0;" data-action="pkg-copy">${en0 ? "COPY" : "KOPIEREN"}</button><button type="button" class="comic-btn" style="width:100%;" data-action="close-modal">${en0 ? "Close" : "Schließen"}</button>`;
+                  return;
+                }
+                // Server lehnt ab: Kosten zurück
+                STATE.currencies.favors += SOC.SEND_COST; delete SOC.ensure().sent[rid]; Platform.saveGame(true);
+                const msgs = { daily: en0 ? "Your friend already got a package today" : "Dein Freund hat heute schon eins bekommen", full: en0 ? "Your friend's inbox is full" : "Das Postfach deines Freundes ist voll", not_friend: en0 ? "You're not friends online anymore" : "Ihr seid online nicht mehr befreundet" };
+                if (bodyEl) bodyEl.innerHTML = `<h2 class="panel-title">${en0 ? "Not sent" : "Nicht gesendet"}</h2><p>${msgs[gr.j.error] || (en0 ? "That didn't work." : "Das hat nicht geklappt.")} ${en0 ? "Favors refunded." : "Gefallen zurück."}</p><button type="button" class="comic-btn primary" style="width:100%;" data-action="close-modal">OK</button>`;
+                this.renderActiveTab(); this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
+              });
+              return;
+            }
             this.pkgText = r.text;
             const en = STATE.settings && STATE.settings.lang === "EN";
             document.getElementById("app-modal-body").innerHTML = `
@@ -10207,6 +10449,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
             if (action === "pkg-copy") this.copyText(this.pkgText || ""); else this.shareOrCopy(this.pkgText || "");
           } else if (action === "soc-del") {
             const rid = actionEl.getAttribute("data-rid");
+            if (STATE.social && STATE.social.rivals && STATE.social.rivals[rid] && STATE.social.rivals[rid].live) Online.friendCall("/friend/remove", { other: rid });
             if (STATE.social && STATE.social.rivals) delete STATE.social.rivals[rid];
             Platform.saveGame(true);
             this.renderActiveTab();
@@ -11313,6 +11556,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
                 </div>
               </section>
 
+              ${this.onlineCloudCardHTML()}
               <section class="panel-box">
                 <h2 class="panel-title">${t("archive.save.title")}</h2>
                 <textarea id="save-io-box" class="code-textarea" placeholder="${t("archive.save.placeholder")}"></textarea>
@@ -11328,7 +11572,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
               ${devHtml}
 
               <div class="version-footer" data-action="tap-version">
-                Hustlers: Urban Edition • v3.20.0
+                Hustlers: Urban Edition • v3.24.0
               </div>
               <div style="text-align:center;font-size:11px;padding:0 0 22px;"><a href="impressum.html" target="_blank" rel="noopener" style="color:var(--accent-concrete);">Impressum &amp; Datenschutz</a></div>
             `;
@@ -13256,6 +13500,249 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         document.getElementById("app-modal").classList.add("open");
       },
 
+      // ---------- Online-Oberfläche ----------
+      onlineEsc(x) { return String(x == null ? "" : x).replace(/[&<>"']/g, ""); },
+      onlineLang() { const en = STATE.settings && STATE.settings.lang === "EN"; return { en, L: (d, e) => (en ? e : d) }; },
+      onOnlineChange() {
+        const tab = STATE.ui.activeTab;
+        if ((tab === "cartel" && STATE.ui.cartelSubTab === "friends") || (tab === "hq" && STATE.ui.hqSubTab === "vault")) {
+          const m = document.getElementById("app-modal");
+          if (!m || !m.classList.contains("open")) this.renderActiveTab();
+        }
+      },
+      onlineGoalCardHTML() {
+        if (!Online.feat("goal")) return "";
+        const { en, L } = this.onlineLang();
+        const g = Online.st.goal;
+        if (!g) { Online.goalLoad(false); return ""; }
+        const joined = Online.joined();
+        const pct = Math.max(0, Math.min(100, g.total / Math.max(1, g.target) * 100));
+        const done = g.total >= g.target;
+        const left = Math.max(0, g.endsAt - Date.now());
+        const d = Math.floor(left / 86400000), h = Math.floor(left % 86400000 / 3600000);
+        const timeTxt = d > 0 ? d + " " + L("T", "d") + " " + h + " " + L("Std.", "h") : h + " " + L("Std.", "h");
+        const min = g.min || 1e4;
+        let me = "";
+        if (joined && g.me) {
+          me = `<p class="on-note" style="margin-top:6px;">${L("Dein Beitrag: ", "Your share: ")}<b class="num">${formatNumber(g.me.rev)} €</b> ${g.me.rev >= min ? "" : L("(ab " + formatNumber(min) + " € zählst du für die Belohnung)", "(from " + formatNumber(min) + " € you count for the reward)")}</p>`;
+        } else if (!joined) {
+          me = `<p class="on-note" style="margin-top:6px;">${L("Mach online mit, um beizutragen.", "Join online to contribute.")}</p><button type="button" class="comic-btn primary" style="width:100%;margin-top:6px;" data-action="online-join">${L("ONLINE MITMACHEN", "JOIN ONLINE")}</button>`;
+        }
+        const claim = g.claimable ? `<button type="button" class="comic-btn primary" style="width:100%;margin-top:8px;" data-action="goal-claim">${L("BELOHNUNG ABHOLEN", "CLAIM REWARD")}</button>` : "";
+        return `<section class="biz-card" style="padding:10px;">
+          <h3 class="panel-title" style="margin:0 0 6px;">${L("Wochenziel für alle", "Weekly goal for everyone")}</h3>
+          <div class="on-bar"><i style="width:${pct.toFixed(1)}%"></i></div>
+          <div style="display:flex;justify-content:space-between;gap:8px;font-weight:900;font-size:12.5px;margin-top:4px;"><span class="num">${formatNumber(g.total)} / ${formatNumber(g.target)} €</span><span>${done ? L("GESCHAFFT", "DONE") : L("noch ", "") + timeTxt + (en && !done ? " left" : "")}</span></div>
+          <p class="on-note" style="margin-top:4px;">${L("Alle Spieler zählen zusammen. Jeder Beitrag ist pro Spieler begrenzt, damit auch Neulinge viel bewirken.", "All players count together. Each player's share is capped, so newcomers matter too.")}</p>
+          ${me}${claim}
+        </section>`;
+      },
+      onlineFriendsCardHTML() {
+        if (!Online.feat("friends") || !Online.joined()) return "";
+        const { L } = this.onlineLang();
+        const id = SOC.ensure().id;
+        const req = (Online.st.req || []).map(r => `<div class="on-row"><span class="on-name"><b>${this.onlineEsc(r.name)}</b> <small>${r.id}</small></span><button type="button" class="comic-btn primary" style="min-height:28px;padding:0 10px;" data-action="fr-accept" data-rid="${r.id}">${L("ANNEHMEN", "ACCEPT")}</button><button type="button" class="comic-btn" style="min-height:28px;padding:0 10px;" data-action="fr-decline" data-rid="${r.id}">X</button></div>`).join("");
+        const out = (Online.st.out || []).length ? `<p class="on-note" style="margin-top:6px;">${L("Wartet auf Antwort: ", "Waiting for reply: ")}${(Online.st.out || []).join(", ")}</p>` : "";
+        return `<section class="biz-card" style="padding:10px;">
+          <h3 class="panel-title" style="margin:0 0 6px;">${L("Freunde online", "Friends online")}</h3>
+          <p class="on-note">${L("Deine ID: ", "Your ID: ")}<b class="num" style="font-size:15px;user-select:all;">${id}</b></p>
+          <div style="display:flex;gap:8px;margin-top:6px;">
+            <input id="fr-input" class="code-textarea" type="text" maxlength="6" autocomplete="off" autocapitalize="characters" placeholder="${L("ID des Freundes", "Friend's ID")}" style="flex:1;min-width:0;box-sizing:border-box;text-transform:uppercase;margin:0;">
+            <button type="button" class="comic-btn primary" style="flex:0 0 auto;padding:0 12px;" data-action="fr-request">${L("ANFRAGE", "REQUEST")}</button>
+          </div>
+          <div id="fr-msg" style="font-weight:900;min-height:16px;margin-top:6px;font-size:12px;"></div>
+          ${req ? `<div style="margin-top:4px;"><b style="font-size:12px;">${L("Anfragen", "Requests")}</b>${req}</div>` : ""}
+          ${out}
+        </section>`;
+      },
+      onGiftsArrived(n, from) {
+        const { L } = this.onlineLang();
+        Platform.playTone("coin", 3);
+        this.toast(L("Päckchen von ", "Package from ") + from, n > 1 ? "+" + (n - 1) : "");
+        try { Engine.evaluateTabBadges && this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet); } catch (e) {}
+      },
+      async friendAction(kind, rid) {
+        const { L } = this.onlineLang();
+        const msg = document.getElementById("fr-msg");
+        const say = t => { const m = document.getElementById("fr-msg"); if (m) m.textContent = t; };
+        if (kind === "request") {
+          const inp = document.getElementById("fr-input");
+          const id = (inp ? inp.value : "").trim().toUpperCase().replace(/O/g, "0").replace(/[IL]/g, "1");
+          if (!/^[0-9A-Z]{6}$/.test(id)) { say(L("Eine ID hat 6 Zeichen.", "An ID has 6 characters.")); return; }
+          if (id === SOC.ensure().id) { say(L("Das ist deine eigene ID.", "That's your own ID.")); return; }
+          say(L("Einen Moment …", "One moment …"));
+          const r = await Online.friendCall("/friend/request", { to: id });
+          if (r.ok) { say(r.j.accepted || r.j.already ? L("Ihr seid jetzt Freunde.", "You're friends now.") : L("Anfrage gesendet.", "Request sent.")); if (inp) inp.value = ""; Online._syncAt = 0; await Online.sync(true); this.onOnlineChange(); }
+          else say({ 404: L("Diese ID kenne ich nicht.", "I don't know this ID."), 429: L("Zu viele Freunde oder Anfragen.", "Too many friends or requests.") }[r.status] || (r.net ? L("Kein Server erreichbar.", "Server unreachable.") : L("Das geht gerade nicht.", "Not possible right now.")));
+          return;
+        }
+        const r = await Online.friendCall(kind === "accept" ? "/friend/accept" : "/friend/remove", kind === "accept" ? { from: rid } : { other: rid });
+        if (!r.ok) { this.toast(r.status === 429 ? L("Du hast schon die Höchstzahl an Freunden", "You've reached the friend limit") : L("Das geht gerade nicht", "Not possible right now"), ""); return; }
+        Online._syncAt = 0; await Online.sync(true); this.renderActiveTab();
+      },
+
+      onlineBoardCardHTML() {
+        if (!Online.feat("lb")) return "";
+        const { L } = this.onlineLang();
+        const o = Online.me();
+        let inner;
+        if (o.state === "conflict") inner = `<p class="on-note">${L("Dein Online-Konto gehört zu einem anderen Gerät. Stelle es mit deinem Wiederherstellungscode wieder her.", "Your online account belongs to another device. Restore it with your recovery code.")}</p>
+          <button type="button" class="comic-btn" style="width:100%;" data-action="online-restore-open">${L("WIEDERHERSTELLEN", "RESTORE")}</button>`;
+        else if (!o.on) inner = `<p class="on-note">${L("Vergleiche dich mit anderen Spielern. Dafür wird dein Name und dein Umsatz auf einem Server gespeichert.", "Compare yourself with other players. Your name and revenue are stored on a server.")}</p>
+          <button type="button" class="comic-btn primary" style="width:100%;" data-action="online-join">${L("ONLINE MITMACHEN", "JOIN ONLINE")}</button>`;
+        else inner = `<p class="on-note">${L("Zwei Listen: Wochenumsatz (neu ab Montag) und Gesamtumsatz.", "Two lists: weekly revenue (resets Monday) and total revenue.")}</p>
+          <button type="button" class="comic-btn primary" style="width:100%;" data-action="online-board">${L("RANGLISTE ANSEHEN", "VIEW LEADERBOARD")}</button>`;
+        return `<section class="biz-card" style="padding:10px;"><h3 class="panel-title" style="margin:0 0 6px;">${L("Online-Rangliste", "Online leaderboard")}</h3>${inner}</section>`;
+      },
+      onlineCloudCardHTML() {
+        if (!Online.feat("save")) return "";
+        const { en, L } = this.onlineLang();
+        const o = Online.me();
+        let inner;
+        if (o.state === "conflict" || !o.on) {
+          inner = `<p class="on-note">${L("Sichere deinen Spielstand online. Du bekommst einen Code, mit dem du ihn auf jedem Gerät zurückholst. Keine E-Mail nötig.", "Back up your save online. You get a code to restore it on any device. No email needed.")}</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <button type="button" class="comic-btn primary" data-action="${o.state === "conflict" ? "online-restore-open" : "online-join"}">${o.state === "conflict" ? L("WIEDERHERSTELLEN", "RESTORE") : L("MITMACHEN", "JOIN")}</button>
+              <button type="button" class="comic-btn" data-action="online-restore-open">${L("CODE EINGEBEN", "ENTER CODE")}</button>
+            </div>`;
+        } else {
+          const when = o.saveAt ? new Date(o.saveAt).toLocaleString(en ? "en-GB" : "de-DE", { dateStyle: "short", timeStyle: "short" }) : L("noch nie", "never");
+          inner = `<p class="on-note">${L("Letzte Sicherung: ", "Last backup: ")}<b>${this.onlineEsc(when)}</b>${o.saveAt ? L(" (wird danach automatisch aktuell gehalten)", " (kept up to date automatically)") : ""}</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <button type="button" class="comic-btn primary" data-action="online-save">${L("JETZT SICHERN", "BACK UP NOW")}</button>
+              <button type="button" class="comic-btn" data-action="online-code">${L("CODE ANZEIGEN", "SHOW CODE")}</button>
+              <button type="button" class="comic-btn" data-action="online-restore-open">${L("WIEDERHERSTELLEN", "RESTORE")}</button>
+              <button type="button" class="comic-btn danger" data-action="online-delete-ask">${L("ONLINE-DATEN LÖSCHEN", "DELETE ONLINE DATA")}</button>
+            </div>`;
+        }
+        return `<section class="panel-box"><h2 class="panel-title">${L("Cloud-Spielstand", "Cloud save")}</h2>${inner}</section>`;
+      },
+      onlineOpen(html) {
+        const body = document.getElementById("app-modal-body");
+        body.innerHTML = html;
+        document.getElementById("app-modal").classList.add("open");
+        return body;
+      },
+      showJoinModal() {
+        const { L } = this.onlineLang();
+        this.onlineOpen(`
+          <h2 class="panel-title">${L("Online mitmachen", "Join online")}</h2>
+          <p style="font-weight:800;">${L("Wenn du mitmachst, speichert ein Server:", "If you join, a server stores:")}</p>
+          <ul style="margin:4px 0 8px 18px;padding:0;font-weight:700;line-height:1.45;">
+            <li>${L("deinen Namen und deine Spieler-ID", "your name and player ID")}</li>
+            <li>${L("deinen Umsatz (für die Ranglisten)", "your revenue (for the leaderboards)")}</li>
+            <li>${L("deinen Spielstand, wenn du ihn sicherst", "your save, if you back it up")}</li>
+          </ul>
+          <p class="on-note">${L("Keine E-Mail, kein echter Name. Du kannst alles jederzeit wieder löschen.", "No email, no real name. You can delete everything at any time.")}</p>
+          <button type="button" class="comic-btn primary" style="width:100%;margin-top:8px;" data-action="online-join-go">${L("ZUSTIMMEN UND MITMACHEN", "AGREE AND JOIN")}</button>
+          <div id="online-msg" style="font-weight:900;min-height:18px;margin:4px 0;"></div>
+          <button type="button" class="comic-btn" style="width:100%;" data-action="close-modal">${L("Abbrechen", "Cancel")}</button>`);
+      },
+      async onlineJoinGo() {
+        const { L } = this.onlineLang();
+        const msg = document.getElementById("online-msg");
+        if (msg) msg.textContent = L("Einen Moment …", "One moment …");
+        const r = await Online.join(STATE.boss.name);
+        if (r.ok) {
+          document.getElementById("app-modal").classList.remove("open");
+          this.toast(L("Du bist dabei", "You're in"), "");
+          this.renderActiveTab();
+          return;
+        }
+        const m = { conflict: L("Diese Spieler-ID ist schon mit einem anderen Gerät verknüpft. Nutze den Wiederherstellungscode.", "This player ID is linked to another device. Use the recovery code."), name: L("Dieser Name ist nicht erlaubt. Ändere ihn im Büro und versuche es erneut.", "This name is not allowed. Change it in the office and try again."), net: L("Kein Server erreichbar. Versuche es später.", "Server unreachable. Try again later."), off: L("Online ist gerade nicht verfügbar.", "Online is not available right now.") }[r.err] || "";
+        const m2 = document.getElementById("online-msg"); if (m2) m2.textContent = m;
+      },
+      showBoardModal() {
+        const { L } = this.onlineLang();
+        this._boardList = this._boardList || "week";
+        this.onlineOpen(`
+          <h2 class="panel-title">${L("Rangliste", "Leaderboard")}</h2>
+          <div class="on-tabs">
+            <button type="button" class="comic-btn" data-action="online-board-tab" data-list="week" data-bt="week">${L("WOCHE", "WEEK")}</button>
+            <button type="button" class="comic-btn" data-action="online-board-tab" data-list="all" data-bt="all">${L("GESAMT", "TOTAL")}</button>
+          </div>
+          <div id="board-list" style="min-height:120px;"></div>
+          <div class="on-note" id="board-note" style="margin:6px 0;"></div>
+          <button type="button" class="comic-btn" style="width:100%;" data-action="close-modal">${L("Schließen", "Close")}</button>`);
+        this.loadBoard(this._boardList);
+      },
+      async loadBoard(list) {
+        const { L } = this.onlineLang();
+        this._boardList = list;
+        const tok = this._boardTok = (this._boardTok || 0) + 1;
+        document.querySelectorAll("[data-bt]").forEach(b => b.classList.toggle("sel", b.getAttribute("data-bt") === list));
+        const box = document.getElementById("board-list"), note = document.getElementById("board-note");
+        if (!box) return;
+        box.innerHTML = `<p class="on-note">${L("Lade …", "Loading …")}</p>`;
+        if (note) note.textContent = list === "week" ? L("Die Wochenwertung startet jeden Montag neu (0 Uhr UTC).", "The weekly list resets every Monday (00:00 UTC).") : L("Gesamtumsatz aller Zeiten.", "All-time revenue.");
+        await Online.report(true);
+        const o = Online.me();
+        const r = await Online.call("GET", "/top?list=" + list + (o.on ? "&id=" + encodeURIComponent(SOC.ensure().id) : ""));
+        if (tok !== this._boardTok || !document.getElementById("board-list")) return;
+        if (!r.ok || !r.j || !Array.isArray(r.j.top)) { document.getElementById("board-list").innerHTML = `<p class="on-note">${L("Die Rangliste ist gerade nicht erreichbar.", "The leaderboard is not reachable right now.")}</p>`; return; }
+        const myId = SOC.ensure().id;
+        let inTop = false;
+        let html = r.j.top.map((x, i) => { const me = x.id === myId; if (me) inTop = true; return `<div class="on-row${me ? " me" : ""}"><span class="on-rank">${i + 1}.</span><span class="on-name">${this.onlineEsc(x.name)}</span><span class="on-val num">${formatNumber(x.rev || 0)} €</span></div>`; }).join("");
+        if (!r.j.top.length) html = `<p class="on-note">${L("Noch niemand in der Liste. Sei der Erste.", "Nobody on the list yet. Be the first.")}</p>`;
+        if (r.j.me && !inTop) html += `<div class="on-row me"><span class="on-rank">${r.j.me.rank}.</span><span class="on-name">${L("Du", "You")}</span><span class="on-val num">${formatNumber(r.j.me.rev || 0)} €</span></div>`;
+        box.innerHTML = html;
+      },
+      showCodeModal(code, first) {
+        const { L } = this.onlineLang();
+        this.onlineOpen(`
+          <h2 class="panel-title">${first ? L("Spielstand gesichert", "Save backed up") : L("Dein Wiederherstellungscode", "Your recovery code")}</h2>
+          <p style="font-weight:800;">${L("Mit diesem Code holst du deinen Spielstand auf jedem Gerät zurück. Schreibe ihn auf oder speichere ihn in deinen Notizen.", "Use this code to get your save back on any device. Write it down or keep it in your notes.")}</p>
+          <div class="cash-hero-box on-code">${this.onlineEsc(code)}</div>
+          <p class="on-note">${L("Wer den Code kennt, kann deinen Spielstand laden. Gib ihn nicht weiter.", "Anyone with the code can load your save. Don't share it.")}</p>
+          <button type="button" class="comic-btn primary" style="width:100%;margin:6px 0;" data-action="online-code-copy" data-code="${this.onlineEsc(code)}">${L("KOPIEREN", "COPY")}</button>
+          <button type="button" class="comic-btn" style="width:100%;" data-action="close-modal">${L("Fertig", "Done")}</button>`);
+      },
+      showRestoreModal(fromIntro) {
+        const { L } = this.onlineLang();
+        this.onlineOpen(`
+          <h2 class="panel-title">${L("Spielstand wiederherstellen", "Restore save")}</h2>
+          <p style="font-weight:800;">${L("Gib deinen Wiederherstellungscode ein.", "Enter your recovery code.")}</p>
+          ${fromIntro ? "" : `<p class="on-note">${L("Achtung: Der Spielstand auf diesem Gerät wird ersetzt.", "Careful: the save on this device will be replaced.")}</p>`}
+          <input id="restore-input" class="code-textarea" type="text" maxlength="20" autocomplete="off" autocapitalize="characters" placeholder="XXXX-XXXX-XXXX" style="width:100%;margin:8px 0;box-sizing:border-box;text-transform:uppercase;">
+          <button type="button" class="comic-btn primary" style="width:100%;" data-action="online-restore-go">${L("WIEDERHERSTELLEN", "RESTORE")}</button>
+          <div id="online-msg" style="font-weight:900;min-height:18px;margin:4px 0;"></div>
+          <button type="button" class="comic-btn" style="width:100%;" data-action="${fromIntro ? "online-restore-back" : "close-modal"}">${L("Zurück", "Back")}</button>`);
+        setTimeout(() => { const i = document.getElementById("restore-input"); if (i) i.focus(); }, 80);
+      },
+      async onlineRestoreGo() {
+        const { L } = this.onlineLang();
+        const inp = document.getElementById("restore-input"), msg = document.getElementById("online-msg");
+        const code = inp ? inp.value.trim() : "";
+        if (code.replace(/[^0-9A-Za-z]/g, "").length < 12) { if (msg) msg.textContent = L("Der Code hat 12 Zeichen.", "The code has 12 characters."); return; }
+        if (msg) msg.textContent = L("Einen Moment …", "One moment …");
+        const r = await Online.restore(code);
+        if (r.ok) {
+          document.getElementById("app-modal").classList.remove("open");
+          this.syncShellControls(); this.translateStaticDOM(); this.renderActiveTab();
+          this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
+          this.toast(L("Spielstand wiederhergestellt", "Save restored"), "");
+          return;
+        }
+        const m = { code: L("Diesen Code kenne ich nicht.", "I don't know this code."), net: L("Kein Server erreichbar. Versuche es später.", "Server unreachable. Try again later."), off: L("Online ist gerade nicht verfügbar.", "Online is not available right now."), data: L("Der gesicherte Spielstand ist nicht lesbar.", "The stored save is not readable.") }[r.err] || "";
+        const m2 = document.getElementById("online-msg"); if (m2) m2.textContent = m;
+      },
+      async onlineSaveNow() {
+        const { L } = this.onlineLang();
+        this.toast(L("Sichere …", "Backing up …"), "");
+        const r = await Online.saveCloud(false);
+        if (!r.ok) { this.toast(r.err === "net" ? L("Kein Server erreichbar", "Server unreachable") : L("Sichern nicht möglich", "Backup failed"), ""); this.renderActiveTab(); return; }
+        if (r.code) this.showCodeModal(r.code, true); else this.toast(L("Gesichert", "Backed up"), "");
+        this.renderActiveTab();
+      },
+      showDeleteModal() {
+        const { L } = this.onlineLang();
+        this.onlineOpen(`
+          <h2 class="panel-title">${L("Online-Daten löschen?", "Delete online data?")}</h2>
+          <p style="font-weight:800;">${L("Dein Name, deine Ranglistenwerte und dein gesicherter Spielstand werden vom Server gelöscht. Dein Spiel hier bleibt unverändert.", "Your name, leaderboard values and stored save are deleted from the server. Your game here stays unchanged.")}</p>
+          <button type="button" class="comic-btn danger" style="width:100%;margin:6px 0;" data-action="online-delete-go">${L("JA, LÖSCHEN", "YES, DELETE")}</button>
+          <button type="button" class="comic-btn" style="width:100%;" data-action="close-modal">${L("Abbrechen", "Cancel")}</button>`);
+      },
+
       showIntro() {
         const en = STATE.settings && STATE.settings.lang === "EN";
         const L = (d, e) => en ? e : d;
@@ -13270,9 +13757,12 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
             <li>${L("Erledige Aufträge, erobere Reviere und sammle Erfolge.", "Run missions, take turf and earn achievements.")}</li>
           </ul>
           <p style="font-weight:900;font-size:17px;text-align:center;margin:4px 0 10px;">${L("Ziel: ganz nach oben hustlen!", "Goal: hustle your way to the top!")}</p>
-          <button type="button" class="comic-btn primary" style="width:100%;min-height:48px;" data-intro-next>${L("Weiter", "Next")}</button>`;
+          <button type="button" class="comic-btn primary" style="width:100%;min-height:48px;" data-intro-next>${L("Weiter", "Next")}</button>
+          ${(ONLINE.enabled && ONLINE.url) ? `<button type="button" class="comic-btn" style="width:100%;min-height:40px;margin-top:6px;" data-intro-restore>${L("Schon gespielt? Spielstand wiederherstellen", "Played before? Restore your save")}</button>` : ""}`;
         document.getElementById("app-modal").classList.add("open");
         body.querySelector("[data-intro-next]").addEventListener("click", () => { Platform.haptic(8); this.showNamePrompt(); });
+        const rb = body.querySelector("[data-intro-restore]");
+        if (rb) rb.addEventListener("click", () => this.showRestoreModal(true));
       },
 
       showNamePrompt() {
@@ -13327,12 +13817,14 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         const esc = x => String(x).replace(/[&<>"']/g, "");
         const rows = list.map((r, i) => `
           <div class="bd-row" style="align-items:center; gap:6px;">
-            <span><b>${i + 1}. ${esc(r.name)}</b><br><small>${esc(r.city || "—")} · ${L("Akten", "Prestiges")} ${r.pre || 0} · ${L("Stand", "As of")} ${new Date(r.ts).toLocaleDateString(en ? "en-GB" : "de-DE")}</small></span>
+            <span><b>${i + 1}. ${esc(r.name)}</b><br><small>${r.live ? "LIVE · " : ""}${esc(r.city || "—")} · ${L("Akten", "Prestiges")} ${r.pre || 0} · ${L("Stand", "As of")} ${new Date(r.ts).toLocaleDateString(en ? "en-GB" : "de-DE")}</small></span>
             <span class="num">${formatNumber(r.rev || 0)} €</span>
             <button type="button" class="comic-btn" style="min-height:28px; padding:0 8px;" data-action="soc-send" data-rid="${r.id}">${L("Paket", "Pkg")}</button>
             <button type="button" class="comic-btn" style="min-height:28px; padding:0 8px;" data-action="soc-del" data-rid="${r.id}">✕</button>
           </div>`).join("");
-        vp.innerHTML = subNavHtml + `
+        if (Online.feat("friends") && Online.joined()) Online.sync(true);
+        if (Online.feat("goal")) Online.goalLoad(false);
+        vp.innerHTML = subNavHtml + this.onlineGoalCardHTML() + this.onlineBoardCardHTML() + this.onlineFriendsCardHTML() + `
           <section class="biz-card" style="padding:10px;">
             <h3 class="panel-title" style="margin:0 0 6px;">${L("Deine Visitenkarte", "Your business card")}</h3>
             <div class="cash-hero-box" style="font-size:12px; word-break:break-all; user-select:all;"><span class="num" id="soc-code">${code}</span></div>
@@ -13542,6 +14034,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
       if (loaded) Engine.applyLoadedState(loaded, true);
       else Engine.ensureStateIntegrity();
       View.init();
+      Online.start();
 
       setInterval(() => {
         if (!document.hidden) STATE.stats.playSec = (STATE.stats.playSec || 0) + 0.1;
