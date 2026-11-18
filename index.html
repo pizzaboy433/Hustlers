@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="b3fe03a3e2">
+  <meta name="build-id" content="d7db630e54">
   <meta name="description" content="Hustlers: Urban Edition – ein Idle-Spiel im Comic-Look: Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2695,8 +2695,8 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
       <button type="button" class="mini-hustle-btn" id="mini-hustle-btn" data-action="click-hustle">
         <span class="hustle-bubble" data-bind="mini-hustle-word" aria-hidden="true">HUSTLE</span>
         <span class="mini-hustle-top">
-          <svg class="comic-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          <svg class="comic-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 12V6.2a1.6 1.6 0 0 1 3.2 0V11M12.2 10.6a1.5 1.5 0 0 1 3 0M15.2 11.2a1.5 1.5 0 0 1 3 0v3.6c0 3.6-2.6 6-6 6h-1.3c-2 0-3.3-1-4.3-2.6L4.4 14.4a1.4 1.4 0 0 1 2.3-1.6L9 15M6.6 4.2 5.2 2.8M14.8 4.2l1.4-1.4M10.6 3V1.2"/>
           </svg>
           <span class="mini-hustle-val num" data-bind="mini-click-val">+2,50 €</span>
         </span>
@@ -2771,6 +2771,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
     // === [SECTION: LAYER_1_REGISTRY_AND_LANG] ===
     const ICONS = {
       siren: `<svg class="comic-svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M7 18v-5a5 5 0 0 1 10 0v5"/><path d="M4 18h16"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="4.5" y1="5.5" x2="6.5" y2="7.5"/><line x1="19.5" y1="5.5" x2="17.5" y2="7.5"/></svg>`,
+      tap: `<svg class="comic-svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12V6.2a1.6 1.6 0 0 1 3.2 0V11M12.2 10.6a1.5 1.5 0 0 1 3 0M15.2 11.2a1.5 1.5 0 0 1 3 0v3.6c0 3.6-2.6 6-6 6h-1.3c-2 0-3.3-1-4.3-2.6L4.4 14.4a1.4 1.4 0 0 1 2.3-1.6L9 15M6.6 4.2 5.2 2.8M14.8 4.2l1.4-1.4M10.6 3V1.2"/></svg>`,
       bolt: `<svg class="comic-svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
       drop: `<svg class="comic-svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>`,
       lock: `<svg class="comic-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
@@ -10390,7 +10391,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 
                 <div class="mode-switch-bar" data-action="toggle-biz-mode" data-biz="${b.id}">
                   <button type="button" class="mode-switch-opt ${isLaunder ? "active-launder" : ""}">${renderIcon("drop", 11)} ${t("biz.mode.launder")}</button>
-                  <button type="button" class="mode-switch-opt ${!isLaunder ? "active-hustle" : ""}">${renderIcon("bolt", 11)} ${t("biz.mode.hustle")}</button>
+                  <button type="button" class="mode-switch-opt ${!isLaunder ? "active-hustle" : ""}">${renderIcon("tap", 11)} ${t("biz.mode.hustle")}</button>
                 </div>
 
                 ${tagsRowHtml}
