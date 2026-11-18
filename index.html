@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="8959d7e129">
+  <meta name="build-id" content="fb891b105f">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2829,6 +2829,32 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
 
   <script>
     try { if (navigator.standalone === true) document.documentElement.classList.add("standalone"); } catch (e) {}
+    // iPhone-Vollbild: Wenn der sichtbare Bereich laut visualViewport groesser ist als die Layout-Hoehe, App darauf strecken.
+    window.fitShell = function () {
+      try {
+        var sh = document.getElementById("app-shell"); if (!sh) return;
+        var sa = navigator.standalone === true || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+        var vv = window.visualViewport, h = window.innerHeight;
+        var vh = vv ? Math.round(vv.height + vv.offsetTop) : 0;
+        if (sa && vh > h + 20) { sh.style.height = vh + "px"; sh.style.bottom = "auto"; }
+        else { sh.style.height = ""; sh.style.bottom = ""; }
+      } catch (e) {}
+    };
+    window.vpReport = function () {
+      var o = [], vv = window.visualViewport, sh = document.getElementById("app-shell");
+      var probe = document.createElement("div"); probe.style.cssText = "position:fixed;visibility:hidden;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px) 0;"; document.body.appendChild(probe);
+      var cs = getComputedStyle(probe), sat = cs.paddingTop, sab = cs.paddingBottom; probe.remove();
+      var bid = document.querySelector('meta[name="build-id"]');
+      o.push("build: " + (bid ? bid.content : "lokal"));
+      o.push("standalone: nav=" + String(navigator.standalone) + " mq=" + (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) + " class=" + document.documentElement.classList.contains("standalone"));
+      o.push("innerHeight: " + window.innerHeight + "  innerWidth: " + window.innerWidth);
+      o.push("clientHeight: " + document.documentElement.clientHeight);
+      o.push("visualViewport: " + (vv ? Math.round(vv.height) + " (top " + Math.round(vv.offsetTop) + ")" : "keins"));
+      o.push("screen: " + screen.width + "x" + screen.height + "  dpr " + window.devicePixelRatio);
+      o.push("safe-area top/bottom: " + sat + " / " + sab);
+      if (sh) { var r = sh.getBoundingClientRect(); o.push("app-shell: top " + Math.round(r.top) + ", hoehe " + Math.round(r.height) + ", bottom " + Math.round(r.bottom) + ", " + getComputedStyle(sh).position); }
+      return o.join("\n");
+    };
   </script>
   <script>
     "use strict";
@@ -10207,6 +10233,19 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
           } else if (action === "online-delete-go") {
             const { L } = this.onlineLang();
             Online.deleteAll().then(ok => { document.getElementById("app-modal").classList.remove("open"); this.toast(ok ? L("Online-Daten gelöscht", "Online data deleted") : L("Löschen nicht möglich", "Delete failed"), ""); this.renderActiveTab(); });
+          } else if (action === "dev-vp") {
+            const rep0 = (window.vpReport ? window.vpReport() : "keine Daten");
+            this.settingsOpen = false;
+            const en0 = STATE.settings && STATE.settings.lang === "EN";
+            document.getElementById("app-modal-body").innerHTML = `<h2 class="panel-title">${en0 ? "Screen diagnostics" : "Anzeige-Diagnose"}</h2>
+              <pre id="vp-rep" style="white-space:pre-wrap;font-size:12px;font-weight:700;user-select:text;-webkit-user-select:text;margin:0;">${String(rep0).replace(/[&<>]/g, "")}</pre>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+                <button type="button" class="comic-btn primary" data-action="dev-vp-copy">${en0 ? "COPY" : "KOPIEREN"}</button>
+                <button type="button" class="comic-btn" data-action="close-modal">${t("modal.close")}</button>
+              </div>`;
+            document.getElementById("app-modal").classList.add("open");
+          } else if (action === "dev-vp-copy") {
+            const pre = document.getElementById("vp-rep"); if (pre) this.copyText(pre.textContent, "Kopiert");
           } else if (action === "fr-copy-id") {
             const en0 = STATE.settings && STATE.settings.lang === "EN";
             this.copyText(actionEl.getAttribute("data-id") || "", en0 ? "ID copied – send it to your friend" : "ID kopiert – schick sie deinem Freund");
@@ -13619,6 +13658,7 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
                     + `<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:6px;"><button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-soc-reset">${en ? "Reset friend limits" : "Freunde-Limits zurück"}</button><button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-soc-favors">${en ? "+20 favors" : "+20 Gefallen"}</button></div>`;
                 })()}
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:4px;">
+                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px; grid-column:1 / -1;" data-action="dev-vp">${en ? "Screen diagnostics" : "Anzeige-Diagnose"}</button>
                   <button type="button" class="comic-btn primary" style="min-height:34px; font-size:11px;" data-action="run-diagnostics">${t("archive.dev.run")}</button>
                   <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="inject-mod-biz">${t("archive.dev.mod")}</button>
                 </div>
@@ -14245,6 +14285,11 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
       else Engine.ensureStateIntegrity();
       View.init();
       Online.start();
+      try {
+        fitShell(); setTimeout(fitShell, 300); setTimeout(fitShell, 1500);
+        window.addEventListener("resize", fitShell); window.addEventListener("orientationchange", () => setTimeout(fitShell, 200));
+        if (window.visualViewport) window.visualViewport.addEventListener("resize", fitShell);
+      } catch (e) {}
 
       setInterval(() => {
         if (!document.hidden) STATE.stats.playSec = (STATE.stats.playSec || 0) + 0.1;
