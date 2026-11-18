@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="63c4ad69f6">
+  <meta name="build-id" content="8959d7e129">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2615,6 +2615,14 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 .bottom-nav{grid-template-columns:none!important;grid-auto-flow:column;grid-auto-columns:1fr}
 .bottom-nav.nav-single{display:none}
 .nav-tab.tab-locked{display:none}
+
+/* Vollbild (zum Home-Bildschirm hinzugefuegt): iPhone liefert hier mit 100dvh eine zu kleine Hoehe. App fest an die Raender setzen. */
+@media all and (display-mode: standalone) {
+  html, body { height: 100%; }
+  #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right: 0; height: auto; margin: 0 auto; }
+}
+html.standalone, html.standalone body { height: 100%; }
+html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right: 0; height: auto; margin: 0 auto; }
 </style>
   <script data-goatcounter="https://hustlers.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -2819,6 +2827,9 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
     </div>
   </div>
 
+  <script>
+    try { if (navigator.standalone === true) document.documentElement.classList.add("standalone"); } catch (e) {}
+  </script>
   <script>
     "use strict";
 
