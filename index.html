@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="fb891b105f">
+  <meta name="build-id" content="857a101a23">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2830,13 +2830,21 @@ html.standalone #app-shell { position: fixed; top: 0; bottom: 0; left: 0; right:
   <script>
     try { if (navigator.standalone === true) document.documentElement.classList.add("standalone"); } catch (e) {}
     // iPhone-Vollbild: Wenn der sichtbare Bereich laut visualViewport groesser ist als die Layout-Hoehe, App darauf strecken.
+    window.safeTop = function () {
+      if (window.__satTest != null) return window.__satTest;
+      try { var pr = document.createElement("div"); pr.style.cssText = "position:fixed;visibility:hidden;padding-top:env(safe-area-inset-top,0px);"; document.body.appendChild(pr); var v = parseFloat(getComputedStyle(pr).paddingTop) || 0; pr.remove(); return v; } catch (e) { return 0; }
+    };
     window.fitShell = function () {
       try {
         var sh = document.getElementById("app-shell"); if (!sh) return;
         var sa = navigator.standalone === true || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
-        var vv = window.visualViewport, h = window.innerHeight;
+        var vv = window.visualViewport, h = window.innerHeight, target = 0;
         var vh = vv ? Math.round(vv.height + vv.offsetTop) : 0;
-        if (sa && vh > h + 20) { sh.style.height = vh + "px"; sh.style.bottom = "auto"; }
+        if (sa && vh > h + 20) target = vh;
+        // iPhone-Fehler: Layout-Hoehe ist genau um die Statusleiste (oberer Sicherheitsrand) kleiner als der Bildschirm
+        var sat = window.safeTop();
+        if (sa && sat > 0 && window.innerHeight > window.innerWidth && Math.abs((screen.height - h) - sat) <= 6) target = Math.max(target, screen.height);
+        if (target) { sh.style.height = target + "px"; sh.style.bottom = "auto"; }
         else { sh.style.height = ""; sh.style.bottom = ""; }
       } catch (e) {}
     };
