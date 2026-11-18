@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="8e80ae8350">
+  <meta name="build-id" content="b3fe03a3e2">
   <meta name="description" content="Hustlers: Urban Edition – ein Idle-Spiel im Comic-Look: Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2497,6 +2497,83 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
   background:#FFCE3B;color:#1A1A1A;border:2.5px solid #1A1A1A;border-radius:12px;padding:8px 10px 8px 14px;box-shadow:3px 3px 0 #1A1A1A;
   font-weight:900;font-size:13px;text-transform:uppercase;letter-spacing:.03em;max-width:92vw}
 .update-banner button{background:#1A1A1A;color:#FBF8F0;border:none;border-radius:8px;padding:8px 14px;font-weight:900;font-size:13px;text-transform:uppercase;min-height:36px;touch-action:manipulation}
+
+/* v41: Boxen */
+.b-bars{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 0}
+.b-bars span{font-size:11px;font-weight:900;text-transform:uppercase;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.b-bar{height:12px;background:#E9E2D2;border:2.5px solid #1A1A1A;border-radius:7px;overflow:hidden}
+.b-bar i{display:block;height:100%;width:100%;background:#5B9628;transition:width .12s linear}
+.b-bar i.opp{background:#C9442B}
+.b-bar.st{height:9px;margin:2px 0 6px}.b-bar.st i{background:#3F7FBF}
+.b-bar.st.tired i{background:#B5342B}
+.b-arena{position:relative;height:240px;border:3px solid #1A1A1A;border-radius:12px;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;
+  background:linear-gradient(#CFE3F0,#CFE3F0 62%,#BFA77A 62%);}
+.b-arena::before{content:"";position:absolute;left:0;right:0;top:46%;height:6px;background:#B5342B;border-block:2px solid #1A1A1A}
+.b-arena[data-phase="open"]{box-shadow:inset 0 0 0 4px #FFCE3B}
+.b-opp{position:absolute;top:14px;left:50%;width:120px;margin-left:-60px;transition:transform .12s}
+.b-opp svg{width:100%;display:block}.b-opp.hit{transform:translateY(8px) rotate(-3deg)}
+.b-gl{position:absolute;width:34px;height:34px;border-radius:50%;background:#C9442B;border:3px solid #1A1A1A;top:78px;transition:all .18s}
+.b-gl.l{left:calc(50% - 56px)}.b-gl.r{left:calc(50% + 22px)}
+.b-gl.l.wind{left:8%;top:104px;transform:scale(1.7);background:#FF5A3D}
+.b-gl.r.wind{left:calc(92% - 34px);top:104px;transform:scale(1.7);background:#FF5A3D}
+.b-cue{position:absolute;left:0;right:0;top:128px;text-align:center;font-size:54px;font-weight:900;color:#B5342B;text-shadow:3px 3px 0 #1A1A1A;pointer-events:none}
+.b-open{position:absolute;left:50%;top:22px;transform:translateX(-50%) scale(0);font-weight:900;font-size:17px;background:#FFCE3B;border:3px solid #1A1A1A;border-radius:10px;padding:3px 12px;transition:transform .1s;pointer-events:none}
+.b-arena[data-phase="open"] .b-open{transform:translateX(-50%) scale(1)}
+.b-me{position:absolute;bottom:-18px;left:50%;width:120px;margin-left:-60px;display:flex;justify-content:space-between;padding:0 14px;transition:transform .15s;pointer-events:none}
+.b-me i{width:42px;height:42px;border-radius:50%;background:#3F7FBF;border:3px solid #1A1A1A;display:block}
+.b-me.punch{transform:translateY(-34px)}
+.b-flash{position:absolute;inset:0;background:rgba(220,40,40,.45);opacity:0;pointer-events:none}.b-flash.on{animation:bflash .26s ease-out}
+@keyframes bflash{0%{opacity:1}100%{opacity:0}}
+.b-arena.shake{animation:bshake .3s}
+@keyframes bshake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.b-banner{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);font-size:34px;font-weight:900;color:#FFCE3B;text-shadow:3px 3px 0 #1A1A1A;opacity:0;pointer-events:none;white-space:nowrap}
+.b-banner.show{animation:bbanner 1.2s ease-out}
+@keyframes bbanner{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}15%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}80%{opacity:1}100%{opacity:0}}
+.b-hint{text-align:center;font-weight:900;text-transform:uppercase;margin:8px 0 2px;min-height:20px}
+
+.hen-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0}
+.hen-card{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border:3px solid #1A1A1A;border-radius:10px;background:#F3E6C4;font:inherit;min-height:44px;cursor:pointer}
+.hen-card.sel{background:#FFD400;box-shadow:0 0 0 3px #1A1A1A}
+.hen-card b{font-size:11px;line-height:1.1;text-align:center;word-break:break-word}
+.hen-ico{font-size:34px;line-height:1;display:block}.hen-form{font-size:9px;letter-spacing:1px}.hen-odds{font-weight:900;font-size:15px}
+.hen-ring{position:relative;border:3px solid #1A1A1A;border-radius:12px;background:#C9A66B;padding:8px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.hen-pit{position:relative;display:flex;justify-content:space-between;align-items:center;height:70px;font-size:44px;padding:0 24px}
+.hen-a{transform:scaleX(-1);display:inline-block}.hen-b{display:inline-block}
+.hen-fx{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(0);font-size:34px}
+.hen-fx.pop{animation:henPop .5s ease-out}
+@keyframes henPop{0%{transform:translate(-50%,-50%) scale(.2);opacity:1}100%{transform:translate(-50%,-90%) scale(1.5);opacity:0}}
+.hen-a,.hen-b{transition:transform .3s,opacity .3s}
+.hen-a.brawl{animation:henA .18s infinite alternate}.hen-b.brawl{animation:henB .18s infinite alternate}
+@keyframes henA{from{transform:scaleX(-1)}to{transform:scaleX(-1) translate(14px,-8px) rotate(14deg)}}
+@keyframes henB{to{transform:translate(14px,-8px) rotate(-14deg)}}
+.hen-a.down{transform:scaleX(-1) rotate(90deg) translateY(10px);opacity:.55}.hen-b.down{transform:rotate(-90deg) translateY(10px);opacity:.55}
+.hen-a.champ,.hen-b.champ{filter:drop-shadow(0 0 8px #FFD400)}
+.hen-names{display:flex;justify-content:space-between;font-size:11px;padding:0 6px}
+.hen-beat{position:relative;display:block;margin:6px auto 0;width:110px;height:110px;border-radius:50%;border:0;background:transparent;touch-action:manipulation}
+.hen-core{font-weight:900;font-size:13px;position:absolute;inset:25px;border-radius:50%;background:#FFD400;border:4px solid #1A1A1A;display:flex;align-items:center;justify-content:center;font-size:26px}
+.hen-pulse{position:absolute;inset:0;border-radius:50%;border:5px solid #1A1A1A;transform:scale(.55);opacity:0;pointer-events:none}
+.hen-beat.ok .hen-core{background:#7BC043}.hen-beat.bad .hen-core{background:#D9534F}
+.hen-bar{height:14px;border:3px solid #1A1A1A;border-radius:8px;overflow:hidden;background:#fff;margin:8px 0}
+.hen-bar i{display:block;height:100%;width:0;background:#E2A326;transition:width .15s}
+
+.dog-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin:8px 0}
+.dog-track{border:3px solid #1A1A1A;border-radius:12px;background:#C9A66B;padding:4px 6px;margin-bottom:4px}
+.dog-lane{position:relative;display:flex;align-items:center;height:42px;border-bottom:2px dashed rgba(26,26,26,.35);font-size:28px}
+.dog-lane:last-child{border-bottom:0}
+.dog-lane.mine{background:rgba(255,212,0,.35);border-radius:6px}
+.dog-lane.first{background:rgba(123,192,67,.45);border-radius:6px}
+.dog-nm{position:absolute;left:4px;top:1px;font-size:9px;font-weight:900;letter-spacing:.3px;z-index:1}
+.dog-run{display:inline-block;margin-left:4px;margin-top:8px;will-change:transform}
+.dog-fin{position:absolute;right:0;top:0;bottom:0;width:10px;background:repeating-linear-gradient(#1A1A1A 0 6px,#fff 6px 12px)}
+
+.dice-score{display:flex;justify-content:space-between;font-weight:900;font-size:16px}
+.dice-row{display:flex;justify-content:center;gap:14px;min-height:64px;margin:4px 0}
+.die{width:60px;height:60px;border:3px solid #1A1A1A;border-radius:12px;background:#fff;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:7px;gap:2px;cursor:pointer;box-shadow:0 3px 0 #1A1A1A}
+.die.foe{background:#EFE3C4;cursor:default}
+.die i{border-radius:50%}.die i.on{background:#1A1A1A}
+.dice-sum{text-align:center;font-weight:800;margin:0;min-height:1.3em;font-size:13px}
+
+.dart-svg{display:block;width:min(100%,250px);margin:4px auto;touch-action:manipulation}
 </style>
   <script data-goatcounter="https://hustlers.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -2803,6 +2880,8 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "tip.cups.text": "Im Wettbüro kannst du Bargeld auf ein Becher-Spiel setzen. Merk dir den Becher mit dem Geld. Treffer verdoppelt, Daneben verliert den Einsatz.",
         "tip.escape.title": "Fluchtweg",
         "tip.escape.text": "Die Razzia droht. Tippe auf FLUCHTWEG, merk dir die Felder und tippe sie nach. Gelingt es, fällt die Razzia aus. Der Countdown steht still.",
+        "tip.box.title": "Boxkampf",
+        "tip.box.text": "Der Boss bietet einen Kampf um Geld an. Wische vom Schlag weg zum Ausweichen und tippe danach schnell zum Kontern. Wildes Tippen macht müde. Du entscheidest den Einsatz.",
         "tip.pkg.title": "Päckchen",
         "tip.pkg.text": "Ein Freund hat dir ein Päckchen geschickt. Öffne Kartell → Freunde und tippe auf ÖFFNEN. Ob Geschenk, Prüfer oder Bombe, siehst du erst dann.",
         "tip.friends.title": "Freunde",
@@ -3537,6 +3616,8 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "tip.cups.text": "At the betting shop you can stake cash on a cup game. Remember the cup with the money. A hit doubles it, a miss loses the stake.",
         "tip.escape.title": "Escape route",
         "tip.escape.text": "A raid is coming. Tap ESCAPE ROUTE, memorize the squares and repeat them. If you make it, the raid is called off. The countdown stops.",
+        "tip.box.title": "Boxing match",
+        "tip.box.text": "The boss offers a fight for money. Swipe away from the punch to dodge, then tap quickly to counter. Wild tapping makes you tired. You choose the stake.",
         "tip.pkg.title": "Package",
         "tip.pkg.text": "A friend sent you a package. Open Cartel → Friends and tap OPEN. Gift, auditor or bomb – you only find out then.",
         "tip.friends.title": "Friends",
@@ -5105,6 +5186,16 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         tiers: [[1, 2, 1, 0], [5, 4, 1, 0], [20, 8, 3, 1]] },
       { id: "cup", de: "Becher-Spiele gewonnen", en: "Cup games won", unit: "", val: () => STATE.stats.cupWins || 0,
         tiers: [[1, 2, 1, 0], [5, 4, 1, 0], [15, 8, 3, 1]] },
+      { id: "box", de: "Boxkämpfe gewonnen", en: "Boxing matches won", unit: "", val: () => STATE.stats.boxWins || 0,
+        tiers: [[1, 2, 1, 0], [5, 4, 1, 0], [15, 8, 3, 1]] },
+      { id: "hen", de: "Hahnenkämpfe gewonnen", en: "Cockfights won", unit: "", val: () => STATE.stats.henWins || 0,
+        tiers: [[1, 2, 1, 0], [5, 4, 1, 0], [15, 8, 3, 1]] },
+      { id: "dog", de: "Hunderennen gewonnen", en: "Dog races won", unit: "", val: () => STATE.stats.dogWins || 0,
+        tiers: [[1, 2, 1, 0], [5, 4, 1, 0], [15, 8, 3, 1]] },
+      { id: "dice", de: "Würfelspiele gewonnen", en: "Dice games won", unit: "", val: () => STATE.stats.diceWins || 0,
+        tiers: [[1, 2, 1, 0], [5, 4, 1, 0], [15, 8, 3, 1]] },
+      { id: "dart", de: "Dart-Duelle gewonnen", en: "Dart duels won", unit: "", val: () => STATE.stats.dartWins || 0,
+        tiers: [[1, 2, 1, 0], [5, 4, 1, 0], [15, 8, 3, 1]] },
       { id: "esc", de: "Razzien entkommen", en: "Raids escaped", unit: "", val: () => STATE.stats.escapes || 0,
         tiers: [[1, 2, 1, 0], [5, 4, 1, 0], [15, 8, 3, 1]] },
       { id: "run", de: "Schmuggel-Fahrten", en: "Smuggling runs", unit: "", val: () => STATE.stats.runs || 0,
@@ -5232,6 +5323,16 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           warWins: 0,
           warLosses: 0,
           cupWins: 0,
+          boxWins: 0,
+          boxFights: 0,
+          henWins: 0,
+          henFights: 0,
+          dogWins: 0,
+          dogFights: 0,
+          diceWins: 0,
+          diceFights: 0,
+          dartWins: 0,
+          dartFights: 0,
           runs: 0,
           vaultCracks: 0,
           defuses: 0,
@@ -5283,7 +5384,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
       ],
       sprintStart() {
         const en = STATE.settings && STATE.settings.lang === "EN";
-        { const r = Math.random(); if (r < 0.34 && !this.vault) { this.vaultOffer(); return; } if (r < 0.67) { this.runOffer(); return; } }
+        { const r = Math.random(); if (r < 0.2 && !this.vault) { this.vaultOffer(); return; } if (r < 0.4) { this.runOffer(); return; } if (r < 0.6) { this.boxOffer(); return; } }
         const k = this.sprintKinds[Math.floor(Math.random() * this.sprintKinds.length)];
         this.sprint = { name: en ? k.en : k.de, goal: 85, clicks: 0, left: 15, offered: true, offerLeft: 20 };
         this.sprintAlert = true;
@@ -5349,6 +5450,206 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
       cupsPayout(stake, win) {
         if (win) { this.addCleanCash(stake * 2); STATE.stats.cupWins = (STATE.stats.cupWins || 0) + 1; }
         return win ? stake : -stake;
+      },
+      HEN: { maxPct: 50, house: 0.92, cheerMax: 0.10, beat: 0.7, beats: 9, hitWin: 0.2, goal: 8,
+             names: ["Kralle", "Fetzer", "Rostsporn", "Blitzschnabel", "Goldkamm", "Der Kaiser", "Schrotti", "Hackfleisch-Harry", "Nachtkrähe", "Sporny"] },
+      henRoll() {
+        const r = (a, b) => Math.round((a + Math.random() * (b - a)) * 20) / 20;
+        const pool = this.HEN.names.slice().sort(() => Math.random() - 0.5);
+        const rows = [
+          { odds: r(1.6, 1.9), form: 4 + Math.floor(Math.random() * 2) },
+          { odds: r(2.2, 2.6), form: 2 + Math.floor(Math.random() * 2) },
+          { odds: r(2.8, 3.4), form: Math.floor(Math.random() * 3) }
+        ];
+        rows.forEach((x, i) => { x.name = pool[i]; });
+        return rows.sort(() => Math.random() - 0.5);
+      },
+      henWinP(odds, fill) {
+        const H = this.HEN;
+        return Math.min(0.95, (H.house / odds) * (1 + H.cheerMax * Math.max(0, Math.min(1, fill))));
+      },
+      henStart(pct, odds) {
+        pct = Math.max(1, Math.min(this.HEN.maxPct, Math.floor(pct)));
+        if (STATE.activeEvent !== "ev_wettbuero") return null;
+        const stake = Math.floor(STATE.currencies.cash * pct / 100);
+        if (!(stake >= 1) || !(odds > 1)) return null;
+        STATE.currencies.cash -= stake;
+        STATE.activeEvent = null;
+        STATE.eventCooldown = 240;
+        STATE.stats.henFights = (STATE.stats.henFights || 0) + 1;
+        return { stake, odds };
+      },
+      henPayout(stake, odds, win) {
+        if (win) { const pay = Math.floor(stake * odds); this.addCleanCash(pay); STATE.stats.henWins = (STATE.stats.henWins || 0) + 1; return pay - stake; }
+        return -stake;
+      },
+      DOG: { maxPct: 50, house: 0.92, cheerMax: 0.10, beat: 0.7, beats: 9, hitWin: 0.2, goal: 8, raceSec: 4.5,
+             names: ["Brutus", "Blitz", "Rocky", "Fang", "Lumpi", "Killer", "Schnüffel", "Zacke", "Bello", "Rambo"] },
+      dogRoll() {
+        const r = (a, b) => a + Math.random() * (b - a);
+        const w = [r(0.40, 0.48), r(0.27, 0.32), r(0.17, 0.22), r(0.11, 0.15)];
+        const sum = w.reduce((a, b) => a + b, 0);
+        const pool = this.DOG.names.slice().sort(() => Math.random() - 0.5);
+        const rows = w.map((x, i) => {
+          const p = x / sum;
+          const odds = Math.max(1.2, Math.floor(this.DOG.house / p * 20) / 20);
+          return { name: pool[i], p, odds, form: Math.max(0, Math.min(5, Math.round(p * 10 + Math.random() - 0.5))) };
+        });
+        return rows.sort(() => Math.random() - 0.5);
+      },
+      dogRace(rows, pick, fill) {
+        const bonus = 1 + this.DOG.cheerMax * Math.max(0, Math.min(1, fill));
+        const wt = rows.map((r, i) => r.p * (i === pick ? bonus : 1));
+        let x = Math.random() * wt.reduce((a, b) => a + b, 0), win = 0;
+        for (let i = 0; i < wt.length; i++) { x -= wt[i]; if (x <= 0) { win = i; break; } }
+        const T = this.DOG.raceSec;
+        const times = rows.map((_, i) => i === win ? T : T * (1.06 + Math.random() * 0.2));
+        return { win, times };
+      },
+      dogStart(pct, odds) {
+        pct = Math.max(1, Math.min(this.DOG.maxPct, Math.floor(pct)));
+        if (STATE.activeEvent !== "ev_wettbuero") return null;
+        const stake = Math.floor(STATE.currencies.cash * pct / 100);
+        if (!(stake >= 1) || !(odds > 1)) return null;
+        STATE.currencies.cash -= stake;
+        STATE.activeEvent = null;
+        STATE.eventCooldown = 240;
+        STATE.stats.dogFights = (STATE.stats.dogFights || 0) + 1;
+        return { stake, odds };
+      },
+      dogPayout(stake, odds, win) {
+        if (win) { const pay = Math.floor(stake * odds); this.addCleanCash(pay); STATE.stats.dogWins = (STATE.stats.dogWins || 0) + 1; return pay - stake; }
+        return -stake;
+      },
+      DICE: { maxPct: 50, rounds: 3, names: ["Zocker-Ede", "Würfel-Wanda", "Schlitzohr Sven", "Pate Pit", "Glückspilz Gerd", "Madame Six"] },
+      diceRoll() { return 1 + Math.floor(Math.random() * 6); },
+      diceOpp(psum) {
+        const d = [this.diceRoll(), this.diceRoll()];
+        const sum = () => d[0] + d[1];
+        let re = -1;
+        const first = d.slice();
+        const lo = d[0] <= d[1] ? 0 : 1;
+        if (sum() < psum || (sum() === psum && d[lo] <= 3)) { d[lo] = this.diceRoll(); re = lo; }
+        return { d, re, first };
+      },
+      diceStart(pct) {
+        pct = Math.max(1, Math.min(this.DICE.maxPct, Math.floor(pct)));
+        if (STATE.activeEvent !== "ev_wettbuero") return null;
+        const stake = Math.floor(STATE.currencies.cash * pct / 100);
+        if (!(stake >= 1)) return null;
+        STATE.currencies.cash -= stake;
+        STATE.activeEvent = null;
+        STATE.eventCooldown = 240;
+        STATE.stats.diceFights = (STATE.stats.diceFights || 0) + 1;
+        return { stake };
+      },
+      dicePayout(stake, res) {
+        if (res > 0) { this.addCleanCash(stake * 2); STATE.stats.diceWins = (STATE.stats.diceWins || 0) + 1; return stake; }
+        if (res === 0) { this.addCleanCash(stake); return 0; }
+        return -stake;
+      },
+      DART: { maxPct: 50, darts: 3, w0: 1.5, wStep: 0.15, sigma: 0.22, rings: [[0.08, 50], [0.2, 25], [0.45, 15], [0.7, 10], [1.0, 5]],
+              names: ["Kneipen-Kalle", "Dart-Dieter", "Pfeil-Paula", "Bulle Bernd", "Tresen-Tina", "Lange Lutz"] },
+      dartScore(x, y) { const r = Math.hypot(x, y); for (const [m, sc] of this.DART.rings) if (r <= m) return sc; return 0; },
+      dartPos(w, t) { return [Math.sin(w * t) * 0.9, Math.sin(2 * w * t) * 0.8]; },
+      dartOpp() {
+        const g = () => { let u = 0; while (!u) u = Math.random(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * Math.random()); };
+        const x = g() * this.DART.sigma, y = g() * this.DART.sigma;
+        return { x, y, score: this.dartScore(x, y) };
+      },
+      dartStart(pct) {
+        pct = Math.max(1, Math.min(this.DART.maxPct, Math.floor(pct)));
+        if (STATE.activeEvent !== "ev_wettbuero") return null;
+        const stake = Math.floor(STATE.currencies.cash * pct / 100);
+        if (!(stake >= 1)) return null;
+        STATE.currencies.cash -= stake;
+        STATE.activeEvent = null;
+        STATE.eventCooldown = 240;
+        STATE.stats.dartFights = (STATE.stats.dartFights || 0) + 1;
+        return { stake };
+      },
+      dartPayout(stake, win) {
+        if (win) { this.addCleanCash(stake * 2); STATE.stats.dartWins = (STATE.stats.dartWins || 0) + 1; return stake; }
+        return -stake;
+      },
+      BOX: { rounds: 3, roundSec: 20, php: 100, ohp: 100, tele: [0.56, 0.5, 0.45], idle: [[0.6, 1.1], [0.5, 1.0], [0.4, 0.9]], open: 0.9,
+             atk: [16, 18, 20], hit: 3, maxOpen: 4, st: 100, tapCost: 13, whiffCost: 20, regen: 24, exhaust: 1.0, maxPct: 50, between: 1.3 },
+      boxOffer() {
+        const en = STATE.settings && STATE.settings.lang === "EN";
+        this.sprint = { kind: "box", name: en ? "BACKYARD FIGHT" : "HINTERHOF-BOXRING", goal: 1, clicks: 0, left: 15, offered: true, offerLeft: 20 };
+        this.sprintAlert = true;
+        STATE.boss.customQuote = en ? "„Someone wants to fight you for money. Show him!“" : "„Einer will sich mit dir um Geld prügeln. Zeig's ihm!“";
+      },
+      boxAccept() {
+        const sp = this.sprint;
+        if (!sp || !sp.offered || sp.kind !== "box") return false;
+        this.sprint = null;
+        this.sprintCd = 360 + Math.random() * 240;
+        return true;
+      },
+      boxStart(pct) {
+        pct = Math.max(1, Math.min(this.BOX.maxPct, Math.floor(pct)));
+        const stake = Math.floor(STATE.currencies.cash * pct / 100);
+        if (!(stake >= 1)) return null;
+        STATE.currencies.cash -= stake;
+        return { stake, pct };
+      },
+      boxPayout(stake, win) {
+        STATE.stats.boxFights = (STATE.stats.boxFights || 0) + 1;
+        if (win) { this.addCleanCash(stake * 2); STATE.stats.boxWins = (STATE.stats.boxWins || 0) + 1; }
+        return win ? stake : -stake;
+      },
+      // --- reine Kampflogik (ohne Oberflaeche), damit sie testbar ist ---
+      boxNew() {
+        const B = this.BOX;
+        const b = { round: 1, rt: 0, php: B.php, ohp: B.ohp, st: B.st, phase: "idle", pt: 0, dir: 1, dodged: 0, taps: 0, exh: 0, between: 0.8, over: false, win: null, ev: [], dodges: 0, hitsIn: 0, hitsOut: 0 };
+        b.pt = this._boxIdle(b);
+        return b;
+      },
+      _boxIdle(b) { const r = this.BOX.idle[b.round - 1]; return r[0] + Math.random() * (r[1] - r[0]); },
+      _boxKO(b) {
+        if (b.over) return;
+        if (b.ohp <= 0) { b.over = true; b.win = true; b.ev.push("ko_win"); }
+        else if (b.php <= 0) { b.over = true; b.win = false; b.ev.push("ko_lose"); }
+      },
+      boxStep(b, dt) {
+        const B = this.BOX;
+        if (b.over) return;
+        if (b.between > 0) { b.between -= dt; return; }
+        b.rt += dt;
+        if (b.exh > 0) { b.exh -= dt; if (b.exh <= 0) { b.exh = 0; b.st = 35; b.ev.push("recover"); } }
+        else b.st = Math.min(B.st, b.st + B.regen * dt);
+        b.pt -= dt;
+        if (b.phase === "idle" && b.pt <= 0) {
+          if (b.rt >= B.roundSec) {
+            if (b.round < B.rounds) { b.round++; b.rt = 0; b.st = B.st; b.exh = 0; b.between = B.between; b.pt = this._boxIdle(b); b.ev.push("round"); return; }
+            b.over = true; b.win = (b.php / B.php) >= (b.ohp / B.ohp); b.ev.push(b.win ? "pts_win" : "pts_lose"); return;
+          }
+          b.phase = "tele"; b.dir = Math.random() < 0.5 ? -1 : 1; b.pt = B.tele[b.round - 1]; b.dodged = 0; b.ev.push("tele");
+        } else if (b.phase === "tele" && b.pt <= 0) {
+          if (b.dodged === 1) { b.phase = "open"; b.pt = B.open; b.taps = 0; b.dodges++; b.ev.push("dodge"); }
+          else { b.php -= B.atk[b.round - 1]; b.hitsIn++; b.ev.push("hitP"); b.phase = "idle"; b.pt = this._boxIdle(b) + 0.35; this._boxKO(b); }
+        } else if (b.phase === "open" && b.pt <= 0) {
+          b.phase = "idle"; b.pt = this._boxIdle(b); b.ev.push("close");
+        }
+      },
+      // dir = Richtung, in die der Spieler ausweicht (-1 links, +1 rechts); richtig ist die Gegenseite des Schlags
+      boxSwipe(b, dir) {
+        if (b.over || b.between > 0 || b.exh > 0) return false;
+        if (b.phase === "tele" && b.dodged === 0) { b.dodged = (dir === -b.dir) ? 1 : -1; b.ev.push(b.dodged === 1 ? "dodgeIn" : "dodgeBad"); return true; }
+        return false;
+      },
+      boxTap(b) {
+        const B = this.BOX;
+        if (b.over || b.between > 0 || b.exh > 0) return false;
+        if (b.phase === "open" && b.taps < B.maxOpen) {
+          b.taps++; b.ohp -= B.hit; b.hitsOut++; b.st -= B.tapCost; b.ev.push("hitO");
+          this._boxKO(b);
+        } else {
+          b.st -= B.whiffCost; b.ev.push("whiff");
+        }
+        if (!b.over && b.st <= 0) { b.st = 0; b.exh = B.exhaust; b.ev.push("exh"); }
+        return true;
       },
       VAULT: { tries: 3, zone: [30, 22, 15], period: [1.7, 1.35, 1.05], amp: 70, mul: [0, 0.5, 1.0, 1.6] },
       vaultOffer() {
@@ -6451,10 +6752,15 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           return "Händler";
         }
         if (kind === "cups") { STATE.activeEvent = "ev_wettbuero"; STATE.currencies.cash = Math.max(STATE.currencies.cash, 10000); return "Wettbüro-Event"; }
+        if (kind === "dart") { STATE.activeEvent = "ev_wettbuero"; STATE.currencies.cash = Math.max(STATE.currencies.cash, 10000); return "Wettbüro-Event (Dart)"; }
+        if (kind === "dice") { STATE.activeEvent = "ev_wettbuero"; STATE.currencies.cash = Math.max(STATE.currencies.cash, 10000); return "Wettbüro-Event (Würfeln)"; }
+        if (kind === "dog") { STATE.activeEvent = "ev_wettbuero"; STATE.currencies.cash = Math.max(STATE.currencies.cash, 10000); return "Wettbüro-Event (Hunderennen)"; }
+        if (kind === "hen") { STATE.activeEvent = "ev_wettbuero"; STATE.currencies.cash = Math.max(STATE.currencies.cash, 10000); return "Wettbüro-Event (Hahnenkampf)"; }
         if (kind === "escape") { STATE.heat = 95; STATE.razziaCooldown = 0; Engine.escapeUsed = false; this.razziaWarn = 30; return "Razzia-Warnung (30 s)"; }
         if (kind === "defuse") { const so = SOC.ensure(); so.inbox.unshift({ k: "dev:" + Date.now(), from: "dev", name: "Dev", kind: 2, ts: Date.now(), opened: false, res: "" }); so.dmg = { day: "", n: 0 }; return "Bomben-Päckchen im Kartell"; }
         if (kind === "run") { this.sprint = null; this.runOffer(); return "Fahrt-Angebot"; }
         if (kind === "vault") { this.sprint = null; this.vaultOffer(); return "Tresor-Angebot"; }
+        if (kind === "box") { this.sprint = null; this.boxOffer(); STATE.currencies.cash = Math.max(STATE.currencies.cash, 10000); return "Boxkampf-Angebot"; }
         if (kind === "weekdone") { const w = this.weekEnsure(); w.goals.forEach(g => { const p = this.WEEK_POOL[g.i]; STATE.stats[p.k] = (STATE.stats[p.k] || 0) + p.n; }); return "Wochenziele erfüllt"; }
         if (kind === "war") { STATE.war = null; const ok = this.warSpawn(); return ok ? "Revierkampf" : "kein Revier gekauft"; }
         if (kind === "raid") { STATE.heat = 90; STATE.razziaCooldown = 0; return "Razzia-Warnung"; }
@@ -7468,7 +7774,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         const boss = STATE.boss.name || "Kowalski";
         const out = [];
         const sp = this.sprint;
-        if (sp && sp.offered) out.push({ kind: "live", key: "sprint-offer", tag: L("ANGEBOT", "OFFER"), text: L(`${sp.name}: Der Boss bietet ${sp.kind === "vault" ? "einen Tresor" : sp.kind === "run" ? "eine Lieferung" : "einen Sprint"} an. Noch ${Math.max(0, sp.offerLeft).toFixed(0)} s zum Annehmen.`, `${sp.name}: the boss offers ${sp.kind === "vault" ? "a safe" : sp.kind === "run" ? "a delivery" : "a sprint"}. ${Math.max(0, sp.offerLeft).toFixed(0)} s left to accept.`) });
+        if (sp && sp.offered) out.push({ kind: "live", key: "sprint-offer", tag: L("ANGEBOT", "OFFER"), text: L(`${sp.name}: Der Boss bietet ${sp.kind === "vault" ? "einen Tresor" : sp.kind === "run" ? "eine Lieferung" : sp.kind === "box" ? "einen Boxkampf" : "einen Sprint"} an. Noch ${Math.max(0, sp.offerLeft).toFixed(0)} s zum Annehmen.`, `${sp.name}: the boss offers ${sp.kind === "vault" ? "a safe" : sp.kind === "run" ? "a delivery" : sp.kind === "box" ? "a boxing match" : "a sprint"}. ${Math.max(0, sp.offerLeft).toFixed(0)} s left to accept.`) });
         else if (sp) out.push({ kind: "live", key: "sprint", tag: L("LIVE", "LIVE"), text: L(`${sp.name}! Tippen ${sp.clicks}/${sp.goal}, noch ${Math.max(0, sp.left).toFixed(0)} s.`, `${sp.name}! Tap ${sp.clicks}/${sp.goal}, ${Math.max(0, sp.left).toFixed(0)} s left.`) });
         const ev = STATE.activeEvent ? REGISTRY.EVENTS[STATE.activeEvent] : null;
         if (ev) out.push({ kind: "live", key: "ev:" + STATE.activeEvent, tag: L("EILMELDUNG", "BREAKING"), text: t(ev.titleKey) + " — " + t(ev.descKey) });
@@ -8191,6 +8497,9 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
       { id: "run",
         when: () => !!(Engine.sprint && Engine.sprint.offered && Engine.sprint.kind === "run"), done: () => !!document.querySelector("[data-r-cv]"),
         target: ".sprint-banner.on" },
+      { id: "box",
+        when: () => !!(Engine.sprint && Engine.sprint.offered && Engine.sprint.kind === "box"), done: () => !!document.querySelector("[data-b-arena]"),
+        target: ".sprint-banner.on" },
       { id: "cups",
         when: () => STATE.activeEvent === "ev_wettbuero" && STATE.currencies.cash >= 1, done: () => !!document.querySelector("[data-c-start]"),
         target: '[data-action="cups-open"]' },
@@ -8230,7 +8539,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         } catch (e) {}
         let vp = "";
         try { vp = innerWidth + "x" + innerHeight; } catch (e) {}
-        this.add("START", "v3.13.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
+        this.add("START", "v3.18.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
         this.flush();
       },
       flush() {
@@ -9275,6 +9584,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
             return;
           }
           if (action === "vault-accept") {
+            if (Engine.sprint && Engine.sprint.kind === "box") { if (Engine.boxAccept()) { Platform.playTone("sprint"); Platform.haptic(20); this.showBoxModal(); } this.updateSprintUI(); return; }
             if (Engine.sprint && Engine.sprint.kind === "run") { if (Engine.runAccept()) { Platform.playTone("sprint"); Platform.haptic(20); this.showRunModal(); } this.updateSprintUI(); return; }
             if (Engine.vaultAccept()) { Platform.playTone("sprint"); Platform.haptic(20); this.showVaultModal(); }
             this.updateSprintUI();
@@ -9624,6 +9934,14 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
             }
           } else if (action === "escape-open") {
             if (Engine.escapeStart()) { Platform.playTone("sprint"); Platform.haptic(20); this.showEscapeModal(); }
+          } else if (action === "dart-open") {
+            if (STATE.activeEvent === "ev_wettbuero" && STATE.currencies.cash >= 1) this.showDartModal();
+          } else if (action === "dice-open") {
+            if (STATE.activeEvent === "ev_wettbuero" && STATE.currencies.cash >= 1) this.showDiceModal();
+          } else if (action === "dog-open") {
+            if (STATE.activeEvent === "ev_wettbuero" && STATE.currencies.cash >= 1) this.showDogModal();
+          } else if (action === "hen-open") {
+            if (STATE.activeEvent === "ev_wettbuero" && STATE.currencies.cash >= 1) this.showHenModal();
           } else if (action === "cups-open") {
             if (STATE.activeEvent === "ev_wettbuero" && STATE.currencies.cash >= 1) this.showCupsModal();
           } else if (action === "dismiss-event") {
@@ -9939,6 +10257,22 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
               ${STATE.activeEvent === "ev_wettbuero" ? `<button type="button" class="comic-btn ev-choice-btn" style="width:100%;margin-top:5px;" data-action="cups-open" ${STATE.currencies.cash >= 1 ? "" : "disabled"}>
                 <span class="ev-choice-title">${STATE.settings && STATE.settings.lang === "EN" ? "Cup game" : "Becher-Spiel"}</span>
                 <span class="ev-effs">${STATE.settings && STATE.settings.lang === "EN" ? "Stake 1–100% of your cash · hit doubles it" : "1–100 % Bargeld setzen · Treffer verdoppelt"}</span>
+              </button>` : ""}
+              ${STATE.activeEvent === "ev_wettbuero" ? `<button type="button" class="comic-btn ev-choice-btn" style="width:100%;margin-top:5px;" data-action="hen-open" ${STATE.currencies.cash >= 1 ? "" : "disabled"}>
+                <span class="ev-choice-title">${STATE.settings && STATE.settings.lang === "EN" ? "Cockfight" : "Hahnenkampf"}</span>
+                <span class="ev-effs">${STATE.settings && STATE.settings.lang === "EN" ? "Pick a rooster · stake up to 50% · payout = stake × odds" : "Hahn wählen · bis 50 % Bargeld · Gewinn = Einsatz × Quote"}</span>
+              </button>` : ""}
+              ${STATE.activeEvent === "ev_wettbuero" ? `<button type="button" class="comic-btn ev-choice-btn" style="width:100%;margin-top:5px;" data-action="dog-open" ${STATE.currencies.cash >= 1 ? "" : "disabled"}>
+                <span class="ev-choice-title">${STATE.settings && STATE.settings.lang === "EN" ? "Dog race" : "Hunderennen"}</span>
+                <span class="ev-effs">${STATE.settings && STATE.settings.lang === "EN" ? "4 dogs · stake up to 50% · payout = stake × odds" : "4 Hunde · bis 50 % Bargeld · Gewinn = Einsatz × Quote"}</span>
+              </button>` : ""}
+              ${STATE.activeEvent === "ev_wettbuero" ? `<button type="button" class="comic-btn ev-choice-btn" style="width:100%;margin-top:5px;" data-action="dice-open" ${STATE.currencies.cash >= 1 ? "" : "disabled"}>
+                <span class="ev-choice-title">${STATE.settings && STATE.settings.lang === "EN" ? "Street dice" : "Straßenwürfeln"}</span>
+                <span class="ev-effs">${STATE.settings && STATE.settings.lang === "EN" ? "Best of 3 · stake up to 50% · win doubles it" : "2 von 3 Runden · bis 50 % Bargeld · Sieg verdoppelt"}</span>
+              </button>` : ""}
+              ${STATE.activeEvent === "ev_wettbuero" ? `<button type="button" class="comic-btn ev-choice-btn" style="width:100%;margin-top:5px;" data-action="dart-open" ${STATE.currencies.cash >= 1 ? "" : "disabled"}>
+                <span class="ev-choice-title">${STATE.settings && STATE.settings.lang === "EN" ? "Pub darts" : "Dart in der Kneipe"}</span>
+                <span class="ev-effs">${STATE.settings && STATE.settings.lang === "EN" ? "3 darts vs. a regular · stake up to 50% · win doubles it" : "3 Pfeile gegen einen Stammgast · bis 50 % Bargeld · Sieg verdoppelt"}</span>
               </button>` : ""}
             </div>
           </section>
@@ -10764,7 +11098,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
                       <div class="biz-icon">${renderIcon(p.iconKey, 17)}</div>
                       <div class="biz-title-wrap">
                         <div class="biz-name">${t(p.nameKey)}</div>
-                        <div class="biz-meta">${locked ? "🔒 " + reqTxt : t(p.descKey, { val: valFormatted })}</div>
+                        <div class="biz-meta">${locked ? reqTxt : t(p.descKey, { val: valFormatted })}</div>
                       </div>
                     </div>
                     <div class="biz-level-pill no-sfx">${st.level}/${p.maxLevel}</div>
@@ -10804,7 +11138,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
                   const en = STATE.settings.lang === "EN";
                   const grp = (title, items) => `<div style="font-size:10px; font-weight:900; text-transform:uppercase; margin:8px 0 3px; opacity:.7;">${title}</div><div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">${items.map(([k, de, e]) => `<button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-do" data-dev="${k}">${en ? e : de}</button>`).join("")}</div>`;
                   return grp(en ? "Time & cooldowns" : "Zeit & Cooldowns", [["time1h", "+1 Std vorspulen", "Skip +1 h"], ["time8h", "+8 Std vorspulen", "Skip +8 h"], ["cd", "Cooldowns auf 0", "Reset cooldowns"], ["boost", "Boost +10 Min", "Boost +10 min"], ["mission", "Coup sofort fertig", "Finish heist"], ["prestige", "Umsatz für Prestige", "Revenue for prestige"]])
-                    + grp(en ? "Spawn" : "Auslösen", [["insp", "Steuerprüfer", "Tax auditor"], ["insp_off", "Prüfer entfernen", "Remove auditor"], ["dealer", "Händler-Event", "Dealer event"], ["raid", "Razzia-Warnung", "Raid warning"], ["bomb", "Büro-Bombe", "Office bomb"], ["war", "Revierkampf", "Turf war"], ["weekdone", "Wochenziele erfüllen", "Complete weekly goals"], ["vault", "Tresor-Spiel", "Safe game"], ["run", "Schmuggel-Fahrt", "Smuggling run"], ["defuse", "Bomben-Päckchen", "Bomb package"], ["cups", "Becher-Spiel", "Cup game"], ["escape", "Fluchtweg-Spiel", "Escape game"]])
+                    + grp(en ? "Spawn" : "Auslösen", [["insp", "Steuerprüfer", "Tax auditor"], ["insp_off", "Prüfer entfernen", "Remove auditor"], ["dealer", "Händler-Event", "Dealer event"], ["raid", "Razzia-Warnung", "Raid warning"], ["bomb", "Büro-Bombe", "Office bomb"], ["war", "Revierkampf", "Turf war"], ["weekdone", "Wochenziele erfüllen", "Complete weekly goals"], ["vault", "Tresor-Spiel", "Safe game"], ["run", "Schmuggel-Fahrt", "Smuggling run"], ["defuse", "Bomben-Päckchen", "Bomb package"], ["cups", "Becher-Spiel", "Cup game"], ["escape", "Fluchtweg-Spiel", "Escape game"], ["box", "Boxkampf", "Boxing match"], ["hen", "Hahnenkampf", "Cockfight"], ["dog", "Hunderennen", "Dog race"], ["dice", "Straßenwürfeln", "Street dice"], ["dart", "Dart", "Darts"]])
                     + grp(en ? "Progress" : "Fortschritt", [["lv10", "Betriebe +10 Lvl", "Businesses +10 lvl"], ["lv100", "Betriebe +100 Lvl", "Businesses +100 lvl"], ["items", "Alle Items", "All items"], ["office", "Büro auf Max", "Office max"]])
                     + grp(en ? "Friends" : "Freunde", [["rivals", "3 Test-Rivalen", "3 test rivals"], ["pkg0", "Päckchen: Geschenk", "Package: gift"], ["pkg1", "Päckchen: Prüfer", "Package: auditor"], ["pkg2", "Päckchen: Bombe", "Package: bomb"], ["team", "Tagesjob: 2 Partner", "Daily job: 2 partners"], ["jobreset", "Tagesjob zurücksetzen", "Reset daily job"]])
                     + `<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:6px;"><button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-soc-reset">${en ? "Reset friend limits" : "Freunde-Limits zurück"}</button><button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-soc-favors">${en ? "+20 favors" : "+20 Gefallen"}</button></div>`;
@@ -10888,7 +11222,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
               ${devHtml}
 
               <div class="version-footer" data-action="tap-version">
-                Hustlers: Urban Edition • v3.13.0
+                Hustlers: Urban Edition • v3.18.0
               </div>
               <div style="text-align:center;font-size:11px;padding:0 0 22px;"><a href="impressum.html" target="_blank" rel="noopener" style="color:var(--accent-concrete);">Impressum &amp; Datenschutz</a></div>
             `;
@@ -11183,7 +11517,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         };
         body.querySelectorAll("[data-d-wire]").forEach(b => b.addEventListener("click", () => {
           if (over) return;
-          if (b.getAttribute("data-d-wire") === order[step].id) { b.disabled = true; b.style.opacity = ".35"; b.textContent = "✂ " + b.textContent; Platform.playTone("coin", step); Platform.haptic(10); step++; if (step >= 4) done(true); }
+          if (b.getAttribute("data-d-wire") === order[step].id) { b.disabled = true; b.style.opacity = ".35"; b.textContent = b.textContent; Platform.playTone("coin", step); Platform.haptic(10); step++; if (step >= 4) done(true); }
           else done(false);
         }));
         const tick = () => {
@@ -11203,7 +11537,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         const W = 270, H = 380, dpr = Math.min(2, window.devicePixelRatio || 1);
         body.innerHTML = `
           <h2 class="panel-title">${en ? "Smuggling run" : "Schmuggel-Fahrt"}</h2>
-          <div style="display:flex;justify-content:space-between;font-weight:900;"><span data-r-lives>❤❤❤</span><span class="num">📦 <b data-r-n>0</b></span><span class="num" data-r-t>15</span></div>
+          <div style="display:flex;justify-content:space-between;font-weight:900;"><span data-r-lives>●●●</span><span class="num">${en ? "Packages" : "Pakete"}: <b data-r-n>0</b></span><span class="num" data-r-t>15</span></div>
           <canvas data-r-cv width="${W * dpr}" height="${H * dpr}" style="width:${W}px;max-width:100%;height:auto;aspect-ratio:${W}/${H};display:block;margin:6px auto;border:3px solid #1A1A1A;touch-action:none;background:#3a3a3a"></canvas>
           <p style="font-size:11px;opacity:.75;text-align:center;">${en ? "Swipe or tap the left/right half." : "Wischen oder links/rechts antippen."}</p>`;
         modal.classList.add("open");
@@ -11227,10 +11561,10 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         const finish = (res) => {
           if (over) return; over = true;
           const out = Engine.runFinish(n);
-          if (!modal.classList.contains("open") || token !== this._runTok || !document.body.contains(cv)) { this.toast(en ? "RUN" : "FAHRT", n + " 📦" + (out.cash > 0 ? " · +" + formatNumber(out.cash, 0) + " €" : "")); return; }
+          if (!modal.classList.contains("open") || token !== this._runTok || !document.body.contains(cv)) { this.toast(en ? "RUN" : "FAHRT", n + (en ? " packages" : " Pakete") + (out.cash > 0 ? " · +" + formatNumber(out.cash, 0) + " €" : "")); return; }
           Platform.playTone(out.win ? "win" : "coin", 4); Platform.haptic(out.win ? "success" : 12);
           body.innerHTML = `<h2 class="panel-title">${lives > 0 ? (en ? "MADE IT!" : "ANGEKOMMEN!") : (en ? "WRECKED" : "LIEFERWAGEN KAPUTT")}</h2>
-            <p style="font-size:15px;font-weight:800;">📦 ${n} ${en ? "packages" : "Pakete"}</p>
+            <p style="font-size:15px;font-weight:800;">${n} ${en ? "packages" : "Pakete"}</p>
             <p>${out.cash > 0 ? "+" + formatNumber(out.cash, 0) + " € (" + (en ? "dirty" : "Schwarzgeld") + ")" : (en ? "No loot this time. No penalty either." : "Diesmal keine Beute. Dafür auch keine Strafe.")}</p>
             <button type="button" class="comic-btn primary" style="width:100%;" data-action="close-modal">${en ? "DONE" : "FERTIG"}</button>`;
           this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
@@ -11273,7 +11607,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
               }
             }
             objs = objs.filter(o => o.y < H + 30 && !(o.hit && o.type === "pkg"));
-            body.querySelector("[data-r-lives]").textContent = "❤".repeat(Math.max(0, lives)) + "🖤".repeat(R.lives - Math.max(0, lives));
+            body.querySelector("[data-r-lives]").textContent = "●".repeat(Math.max(0, lives)) + "○".repeat(R.lives - Math.max(0, lives));
             body.querySelector("[data-r-n]").textContent = n;
             body.querySelector("[data-r-t]").textContent = Math.max(0, Math.ceil(R.sec - t));
             if (lives <= 0 || t >= R.sec) { draw(); return finish(); }
@@ -11421,6 +11755,572 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           }));
         })();
       },
+      henSvg(c) {
+        return `<svg viewBox="0 0 64 64" width="1em" height="1em" aria-hidden="true"><path d="M44 30 C56 18 60 10 58 4 C52 10 50 14 46 22 C48 12 46 8 40 4 C42 14 40 22 38 28Z" fill="${c}" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/><ellipse cx="34" cy="36" rx="17" ry="13" fill="${c}" stroke="#1A1A1A" stroke-width="3"/><path d="M30 34 C38 30 44 36 38 42 C32 44 28 40 30 34Z" fill="#fff" opacity=".35"/><circle cx="17" cy="22" r="9" fill="${c}" stroke="#1A1A1A" stroke-width="3"/><path d="M12 14 L15 8 L18 13 L21 7 L23 14Z" fill="#D9342B" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/><path d="M9 22 L1 25 L9 27Z" fill="#F2A900" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/><circle cx="15" cy="21" r="1.8" fill="#1A1A1A"/><path d="M14 30 C14 34 16 34 17 31Z" fill="#D9342B" stroke="#1A1A1A" stroke-width="2"/><path d="M30 48 L28 60 M38 48 L40 60 M24 61 H32 M36 61 H44" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round" fill="none"/></svg>`;
+      },
+      henBurst() {
+        return `<svg viewBox="0 0 48 48" width="1em" height="1em" aria-hidden="true"><path d="M24 2 L29 16 L44 10 L34 22 L46 30 L30 30 L28 46 L22 32 L6 40 L14 26 L2 18 L18 18Z" fill="#FFD400" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/></svg>`;
+      },
+      dogSvg(c) {
+        return `<svg viewBox="0 0 64 40" width="1.6em" height="1em" aria-hidden="true"><path d="M8 14 C2 10 2 4 6 3 C6 8 10 10 12 12Z" fill="${c}" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/><ellipse cx="26" cy="19" rx="19" ry="9" fill="${c}" stroke="#1A1A1A" stroke-width="3"/><circle cx="48" cy="13" r="8" fill="${c}" stroke="#1A1A1A" stroke-width="3"/><path d="M52 14 L63 17 L53 21Z" fill="${c}" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/><path d="M44 7 L42 0 L49 5Z" fill="#1A1A1A"/><circle cx="50" cy="11" r="1.8" fill="#1A1A1A"/><circle cx="63" cy="17" r="1.8" fill="#1A1A1A"/><path d="M14 25 L10 38 M20 26 L22 38 M32 26 L30 38 M38 25 L44 37" stroke="#1A1A1A" stroke-width="3.2" stroke-linecap="round" fill="none"/></svg>`;
+      },
+      showDogModal() {
+        const en = STATE.settings && STATE.settings.lang === "EN";
+        const cash = STATE.currencies.cash, MAXP = Engine.DOG.maxPct;
+        const cols = ["#E2A326", "#B5651D", "#6B7F8E", "#D9D2C0"];
+        const roos = Engine.dogRoll();
+        let pick = 0;
+        const body = document.getElementById("app-modal-body");
+        body.innerHTML = `
+          <h2 class="panel-title">${en ? "Dog race" : "Hunderennen"}</h2>
+          <p style="font-weight:700;">${en ? "Pick a dog. Cheer him on by tapping to the beat before the start. Win = stake × odds, lose = stake gone. Closing the window forfeits." : "Wähle einen Hund. Feuere ihn vor dem Start an, indem du im Takt tippst. Sieg = Einsatz × Quote, Niederlage = Einsatz weg. Fenster schließen gilt als verloren."}</p>
+          <div class="dog-cards">${roos.map((r, i) => `<button type="button" class="hen-card${i === pick ? " sel" : ""}" data-h-pick="${i}"><span class="hen-ico">${this.dogSvg(cols[i])}</span><b>${r.name}</b><span class="hen-form">Form ${"●".repeat(r.form)}${"○".repeat(5 - r.form)}</span><span class="hen-odds">× ${r.odds.toFixed(2)}</span></button>`).join("")}</div>
+          <div style="display:flex;justify-content:space-between;font-weight:900;"><span>${en ? "Stake" : "Einsatz"}: <span class="num" data-c-pct>25</span>%</span><span class="num" data-c-stake></span></div>
+          <input class="cups-range" type="range" min="1" max="${MAXP}" value="25" data-c-range>
+          <div class="cups-quick"><button type="button" class="comic-btn" data-c-q="10">10%</button><button type="button" class="comic-btn" data-c-q="25">25%</button><button type="button" class="comic-btn" data-c-q="${MAXP}">${MAXP}%</button></div>
+          <p style="text-align:center;font-weight:800;" data-c-win></p>
+          <button type="button" class="comic-btn primary" style="width:100%;min-height:50px;font-size:17px;" data-c-start>${en ? "PLACE BET" : "WETTE PLATZIEREN"}</button>
+          <button type="button" class="comic-btn" style="width:100%;margin-top:6px;" data-action="close-modal">${en ? "Cancel" : "Abbrechen"}</button>`;
+        document.getElementById("app-modal").classList.add("open");
+        const rg = body.querySelector("[data-c-range]");
+        const upd = () => { const p = +rg.value; const st = Math.floor(cash * p / 100); body.querySelector("[data-c-pct]").textContent = p; body.querySelector("[data-c-stake]").textContent = formatNumber(st, 0) + " €"; body.querySelector("[data-c-win]").textContent = (en ? "Payout if he wins: " : "Auszahlung bei Sieg: ") + formatNumber(Math.floor(st * roos[pick].odds), 0) + " €"; };
+        rg.addEventListener("input", upd); upd();
+        body.querySelectorAll("[data-c-q]").forEach(b => b.addEventListener("click", () => { rg.value = b.getAttribute("data-c-q"); upd(); }));
+        body.querySelectorAll("[data-h-pick]").forEach(b => b.addEventListener("click", () => { pick = +b.getAttribute("data-h-pick"); body.querySelectorAll("[data-h-pick]").forEach(x => x.classList.toggle("sel", x === b)); Platform.haptic(6); upd(); }));
+        body.querySelector("[data-c-start]").addEventListener("click", () => {
+          const g = Engine.dogStart(+rg.value, roos[pick].odds);
+          if (!g) { Platform.haptic(8); return; }
+          g.rows = roos; g.pick = pick; g.cols = cols;
+          Platform.playTone("coin", 2); Platform.haptic(12);
+          this.dogPlay(g);
+        });
+      },
+      dogPlay(g) {
+        const en = STATE.settings && STATE.settings.lang === "EN";
+        const H = Engine.DOG;
+        const body = document.getElementById("app-modal-body"), modal = document.getElementById("app-modal");
+        const token = (this._dogTok = (this._dogTok || 0) + 1);
+        body.innerHTML = `
+          <h2 class="panel-title">${en ? "Dog race" : "Hunderennen"}</h2>
+          <p style="font-weight:800;text-align:center;" data-h-msg>${en ? "Cheer him on! Tap when the ring hits the circle." : "Feuere ihn an! Tippe, wenn der Ring den Kreis trifft."}</p>
+          <div class="dog-track">${g.rows.map((r, i) => `<div class="dog-lane${i === g.pick ? " mine" : ""}"><span class="dog-nm">${r.name}</span><span class="dog-run" data-d="${i}">${this.dogSvg(g.cols[i])}</span><span class="dog-fin"></span></div>`).join("")}</div>
+          <button type="button" class="hen-beat" data-h-beat><span class="hen-pulse" data-h-pulse></span><span class="hen-core">${en ? "GO!" : "LOS!"}</span></button>
+          <div class="hen-bar"><i data-h-bar></i></div>
+          <p style="text-align:center;font-weight:900;">${en ? "Stake" : "Einsatz"}: <span class="num">${formatNumber(g.stake, 0)} €</span> · × ${g.odds.toFixed(2)}</p>`;
+        const q = s => body.querySelector(s);
+        const pulse = q("[data-h-pulse]"), bar = q("[data-h-bar]"), msg = q("[data-h-msg]"), beatBtn = q("[data-h-beat]");
+        const dogs = [...body.querySelectorAll("[data-d]")];
+        const alive = () => token === this._dogTok && modal.classList.contains("open") && document.body.contains(beatBtn);
+        let hits = 0, over = false, racing = false;
+        const t0 = performance.now() + 900, total = H.beats * H.beat * 1000;
+        const phaseOf = (now) => { const x = ((now - t0) / 1000) / H.beat; return x - Math.round(x); };
+        const lose = () => { Engine.dogPayout(g.stake, g.odds, false); };
+        beatBtn.addEventListener("pointerdown", (e) => {
+          e.preventDefault();
+          if (over || racing || !alive()) return;
+          const now = performance.now();
+          if (now < t0 - 300 || now > t0 + total + 200) return;
+          const d = Math.abs(phaseOf(now)) * H.beat;
+          if (d <= H.hitWin) { hits++; beatBtn.classList.add("ok"); Platform.playTone("coin", Math.min(hits, 6)); Platform.haptic(8); }
+          else { beatBtn.classList.add("bad"); Platform.haptic(4); hits = Math.max(0, hits - 0.5); }
+          setTimeout(() => beatBtn.classList.remove("ok", "bad"), 140);
+          bar.style.width = Math.min(100, hits / H.goal * 100) + "%";
+        });
+        const race = () => {
+          racing = true;
+          const fill = Math.min(1, hits / H.goal);
+          const r = Engine.dogRace(g.rows, g.pick, fill);
+          const win = r.win === g.pick;
+          msg.textContent = en ? "And they're off!" : "Und sie rennen!";
+          Platform.playTone("alarm"); Platform.haptic(15);
+          const s0 = performance.now();
+          const lane = body.querySelector(".dog-lane").clientWidth;
+          const run = lane - 40 - 74;
+          const step = () => {
+            if (!alive()) { over = true; return lose(); }
+            const el = (performance.now() - s0) / 1000;
+            let done = true;
+            dogs.forEach((d, i) => {
+              const f = Math.min(1, el / r.times[i]);
+              const wob = Math.sin(el * 9 + i * 2) * 0.012 * (1 - f);
+              const pos = Math.max(0, Math.min(1, f + wob));
+              d.style.transform = "translateX(" + (pos * run).toFixed(1) + "px) translateY(" + (Math.sin(el * 22 + i) * 1.5).toFixed(1) + "px)";
+              if (f < 1) done = false;
+            });
+            if (!done) return requestAnimationFrame(step);
+            over = true;
+            const net = Engine.dogPayout(g.stake, g.odds, win);
+            dogs[r.win].parentNode.classList.add("first");
+            Platform.playTone(win ? "win" : "lose"); Platform.haptic(win ? "success" : 18);
+            if (win) { try { FX.confetti(); } catch (e) {} }
+            msg.innerHTML = win ? `${en ? "WON!" : "GEWONNEN!"} +${formatNumber(net, 0)} €` : `${en ? "LOST." : "VERLOREN."} −${formatNumber(g.stake, 0)} € · ${en ? "Winner" : "Sieger"}: ${g.rows[r.win].name}`;
+            this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
+            setTimeout(() => {
+              if (token !== this._dogTok || !modal.classList.contains("open")) return;
+              body.insertAdjacentHTML("beforeend", `<button type="button" class="comic-btn primary" style="width:100%;margin-top:8px;" data-action="close-modal">${en ? "DONE" : "FERTIG"}</button>`);
+            }, 500);
+          };
+          requestAnimationFrame(step);
+        };
+        const tick = () => {
+          if (over || racing) return;
+          if (!alive()) { over = true; return lose(); }
+          const now = performance.now();
+          const x = ((now - t0) / 1000) / H.beat;
+          if (x > H.beats + 0.3) return race();
+          const ph = x < -0.5 ? 1 : 1 - (x - Math.floor(x));
+          pulse.style.transform = "scale(" + (0.55 + ph * 1.0).toFixed(3) + ")";
+          pulse.style.opacity = x < -0.5 ? 0 : 0.9;
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      },
+      diceFace(n) {
+        const pos = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] }[n] || [];
+        return Array.from({ length: 9 }, (_, i) => `<i${pos.includes(i) ? ' class="on"' : ""}></i>`).join("");
+      },
+      showDiceModal() {
+        const en = STATE.settings && STATE.settings.lang === "EN";
+        const cash = STATE.currencies.cash, MAXP = Engine.DICE.maxPct;
+        const body = document.getElementById("app-modal-body");
+        body.innerHTML = `
+          <h2 class="panel-title">${en ? "Street dice" : "Straßenwürfeln"}</h2>
+          <p style="font-weight:700;">${en ? "Best of 3 rounds, two dice each, higher total wins. You may re-roll ONE die per round by tapping it. He re-rolls after seeing your total. A tied round counts for nobody. Win = stake doubled, lose = stake gone. Closing the window forfeits." : "2 von 3 Runden, je zwei Würfel, die höhere Summe gewinnt. Pro Runde darfst du EINEN Würfel neu werfen, indem du ihn antippst. Er würfelt nach, nachdem er deine Summe kennt. Eine gleiche Runde zählt für keinen. Sieg = Einsatz verdoppelt, Niederlage = Einsatz weg. Fenster schließen gilt als verloren."}</p>
+          <div style="display:flex;justify-content:space-between;font-weight:900;"><span>${en ? "Stake" : "Einsatz"}: <span class="num" data-c-pct>25</span>%</span><span class="num" data-c-stake></span></div>
+          <input class="cups-range" type="range" min="1" max="${MAXP}" value="25" data-c-range>
+          <div class="cups-quick"><button type="button" class="comic-btn" data-c-q="10">10%</button><button type="button" class="comic-btn" data-c-q="25">25%</button><button type="button" class="comic-btn" data-c-q="${MAXP}">${MAXP}%</button></div>
+          <button type="button" class="comic-btn primary" style="width:100%;min-height:50px;font-size:17px;" data-c-start>${en ? "ROLL" : "WÜRFELN"}</button>
+          <button type="button" class="comic-btn" style="width:100%;margin-top:6px;" data-action="close-modal">${en ? "Cancel" : "Abbrechen"}</button>`;
+        document.getElementById("app-modal").classList.add("open");
+        const rg = body.querySelector("[data-c-range]");
+        const upd = () => { const p = +rg.value; body.querySelector("[data-c-pct]").textContent = p; body.querySelector("[data-c-stake]").textContent = formatNumber(Math.floor(cash * p / 100), 0) + " €"; };
+        rg.addEventListener("input", upd); upd();
+        body.querySelectorAll("[data-c-q]").forEach(b => b.addEventListener("click", () => { rg.value = b.getAttribute("data-c-q"); upd(); }));
+        body.querySelector("[data-c-start]").addEventListener("click", () => {
+          const g = Engine.diceStart(+rg.value);
+          if (!g) { Platform.haptic(8); return; }
+          g.foe = Engine.DICE.names[Math.floor(Math.random() * Engine.DICE.names.length)];
+          Platform.playTone("coin", 2); Platform.haptic(12);
+          this.dicePlay(g);
+        });
+      },
+      dicePlay(g) {
+        const en = STATE.settings && STATE.settings.lang === "EN";
+        const body = document.getElementById("app-modal-body"), modal = document.getElementById("app-modal");
+        const token = (this._diceTok = (this._diceTok || 0) + 1);
+        body.innerHTML = `
+          <h2 class="panel-title">${en ? "Street dice" : "Straßenwürfeln"} · ${g.foe}</h2>
+          <div class="dice-score"><span>${en ? "You" : "Du"} <b data-d-ps>0</b></span><span data-d-round></span><span><b data-d-os>0</b> ${en ? "Him" : "Er"}</span></div>
+          <p style="font-weight:800;text-align:center;min-height:2.6em;" data-d-msg></p>
+          <div class="dice-row" data-d-me></div>
+          <p class="dice-sum" data-d-mesum></p>
+          <div class="dice-row foe" data-d-foe></div>
+          <p class="dice-sum" data-d-foesum></p>
+          <button type="button" class="comic-btn primary" style="width:100%;min-height:46px;margin-top:6px;" data-d-keep disabled>${en ? "KEEP" : "BEHALTEN"}</button>
+          <p style="text-align:center;font-weight:900;">${en ? "Stake" : "Einsatz"}: <span class="num">${formatNumber(g.stake, 0)} €</span></p>`;
+        const q = s => body.querySelector(s);
+        const rowMe = q("[data-d-me]"), rowFoe = q("[data-d-foe]"), msg = q("[data-d-msg]"), keep = q("[data-d-keep]");
+        const alive = () => token === this._diceTok && modal.classList.contains("open") && document.body.contains(rowMe);
+        const wait = (ms) => new Promise(r => setTimeout(r, ms));
+        const draw = (row, d, cls) => { row.innerHTML = d.map((v, i) => `<button type="button" class="die ${cls || ""}" data-i="${i}" ${cls === "foe" ? "disabled" : ""}>${this.diceFace(v)}</button>`).join(""); };
+        const rollAnim = async (row, d, cls, only) => {
+          for (let k = 0; k < 6; k++) {
+            if (!alive()) return;
+            const tmp = d.map((v, i) => (only === undefined || only === i) ? Engine.diceRoll() : v);
+            draw(row, tmp, cls); Platform.haptic(3); await wait(80);
+          }
+          draw(row, d, cls);
+        };
+        let ps = 0, os = 0;
+        const sc = () => { q("[data-d-ps]").textContent = ps; q("[data-d-os]").textContent = os; };
+        const lose = () => { Engine.dicePayout(g.stake, -1); };
+        const finish = (res) => {
+          const net = Engine.dicePayout(g.stake, res);
+          Platform.playTone(res > 0 ? "win" : "lose"); Platform.haptic(res > 0 ? "success" : 18);
+          if (res > 0) { try { FX.confetti(); } catch (e) {} }
+          msg.innerHTML = res > 0 ? `${en ? "WON!" : "GEWONNEN!"} +${formatNumber(net, 0)} €` : res === 0 ? (en ? "DRAW. Stake back." : "UNENTSCHIEDEN. Einsatz zurück.") : `${en ? "LOST." : "VERLOREN."} −${formatNumber(g.stake, 0)} €`;
+          keep.remove();
+          this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
+          setTimeout(() => {
+            if (token !== this._diceTok || !modal.classList.contains("open")) return;
+            body.insertAdjacentHTML("beforeend", `<button type="button" class="comic-btn primary" style="width:100%;margin-top:8px;" data-action="close-modal">${en ? "DONE" : "FERTIG"}</button>`);
+          }, 500);
+        };
+        (async () => {
+          let round = 0, sudden = false;
+          while (true) {
+            round++;
+            q("[data-d-round]").textContent = sudden ? (en ? "Sudden death" : "Stichwurf") : (en ? "Round " : "Runde ") + round + "/" + Engine.DICE.rounds;
+            q("[data-d-foesum]").textContent = ""; q("[data-d-mesum]").textContent = ""; rowFoe.innerHTML = "";
+            const d = [Engine.diceRoll(), Engine.diceRoll()];
+            msg.textContent = en ? "You roll…" : "Du würfelst…";
+            await rollAnim(rowMe, d, ""); if (!alive()) return lose();
+            let used = sudden;
+            q("[data-d-mesum]").textContent = (en ? "Total " : "Summe ") + (d[0] + d[1]);
+            if (!sudden) {
+              msg.textContent = en ? "Tap a die to re-roll it, or keep." : "Tippe einen Würfel zum Neuwerfen oder behalte.";
+              keep.disabled = false;
+              await new Promise(res => {
+                const onTap = async (e) => {
+                  const b = e.target.closest(".die"); if (!b || used) return;
+                  used = true; const i = +b.dataset.i; keep.disabled = true;
+                  rowMe.removeEventListener("click", onTap);
+                  d[i] = Engine.diceRoll(); await rollAnim(rowMe, d, "", i);
+                  q("[data-d-mesum]").textContent = (en ? "Total " : "Summe ") + (d[0] + d[1]); res();
+                };
+                rowMe.addEventListener("click", onTap);
+                keep.onclick = () => { if (used) return; used = true; keep.disabled = true; rowMe.removeEventListener("click", onTap); res(); };
+                const poll = setInterval(() => { if (!alive()) { clearInterval(poll); res(); } }, 300);
+                const stop = () => clearInterval(poll); keep.addEventListener("click", stop, { once: true }); rowMe.addEventListener("click", stop, { once: true });
+              });
+              if (!alive()) return lose();
+              await wait(350);
+            }
+            const psum = d[0] + d[1];
+            msg.textContent = (en ? "He rolls…" : "Er würfelt…");
+            const o = Engine.diceOpp(sudden ? 0 : psum);
+            const first = o.first;
+            await rollAnim(rowFoe, first, "foe"); if (!alive()) return lose();
+            if (o.re >= 0) {
+              q("[data-d-foesum]").textContent = (en ? "Total " : "Summe ") + (first[0] + first[1]);
+              msg.textContent = en ? "He re-rolls one die…" : "Er würfelt einen Würfel nach…";
+              await wait(700); if (!alive()) return lose();
+              await rollAnim(rowFoe, o.d, "foe", o.re);
+            }
+            const osum = o.d[0] + o.d[1];
+            q("[data-d-foesum]").textContent = (en ? "Total " : "Summe ") + osum;
+            if (!alive()) return lose();
+            if (psum > osum) { ps++; msg.textContent = en ? "You take the round!" : "Runde für dich!"; Platform.playTone("coin", 3); }
+            else if (osum > psum) { os++; msg.textContent = en ? "He takes the round." : "Runde für ihn."; Platform.playTone("lose"); }
+            else msg.textContent = en ? "Tie. Nobody scores." : "Gleichstand. Keiner punktet.";
+            sc(); await wait(1200); if (!alive()) return lose();
+            if (!sudden && (ps >= 2 || os >= 2)) return finish(ps > os ? 1 : -1);
+            if (!sudden && round >= Engine.DICE.rounds) { if (ps !== os) return finish(ps > os ? 1 : -1); sudden = true; }
+            else if (sudden) { if (ps !== os) return finish(ps > os ? 1 : -1); }
+          }
+        })();
+      },
+      dartBoardSvg() {
+        const R = 100, c = [["#2B2824", 1.0], ["#C9A66B", 0.7], ["#3F8F3A", 0.45], ["#D9342B", 0.2], ["#FFD400", 0.08]];
+        return `<svg viewBox="-110 -110 220 220" class="dart-svg" data-dt-svg><circle r="108" fill="#1A1A1A"/>${c.map(([f, r], i) => `<circle r="${r * R}" fill="${f}" stroke="#1A1A1A" stroke-width="1.5"/>`).join("")}<g data-dt-marks></g><g data-dt-cross stroke="#1A1A1A" stroke-width="3" fill="none"><circle r="9" stroke="#fff" stroke-width="5"/><circle r="9"/><path d="M-16 0 H-6 M6 0 H16 M0 -16 V-6 M0 6 V16"/></g></svg>`;
+      },
+      showDartModal() {
+        const en = STATE.settings && STATE.settings.lang === "EN";
+        const cash = STATE.currencies.cash, MAXP = Engine.DART.maxPct;
+        const body = document.getElementById("app-modal-body");
+        body.innerHTML = `
+          <h2 class="panel-title">${en ? "Pub darts" : "Dart in der Kneipe"}</h2>
+          <p style="font-weight:700;">${en ? "3 darts each, higher total wins. A crosshair sweeps over the board: tap THROW to stop it. Closer to the middle scores more (bullseye 50). Tie = one extra dart each. Win = stake doubled, lose = stake gone. Closing the window forfeits." : "Jeder wirft 3 Pfeile, die höhere Summe gewinnt. Ein Fadenkreuz pendelt über die Scheibe: tippe WERFEN, um es zu stoppen. Je näher an der Mitte, desto mehr Punkte (Bullseye 50). Gleichstand = je ein Stichpfeil. Sieg = Einsatz verdoppelt, Niederlage = Einsatz weg. Fenster schließen gilt als verloren."}</p>
+          <div style="display:flex;justify-content:space-between;font-weight:900;"><span>${en ? "Stake" : "Einsatz"}: <span class="num" data-c-pct>25</span>%</span><span class="num" data-c-stake></span></div>
+          <input class="cups-range" type="range" min="1" max="${MAXP}" value="25" data-c-range>
+          <div class="cups-quick"><button type="button" class="comic-btn" data-c-q="10">10%</button><button type="button" class="comic-btn" data-c-q="25">25%</button><button type="button" class="comic-btn" data-c-q="${MAXP}">${MAXP}%</button></div>
+          <button type="button" class="comic-btn primary" style="width:100%;min-height:50px;font-size:17px;" data-c-start>${en ? "TO THE BOARD" : "AN DIE SCHEIBE"}</button>
+          <button type="button" class="comic-btn" style="width:100%;margin-top:6px;" data-action="close-modal">${en ? "Cancel" : "Abbrechen"}</button>`;
+        document.getElementById("app-modal").classList.add("open");
+        const rg = body.querySelector("[data-c-range]");
+        const upd = () => { const p = +rg.value; body.querySelector("[data-c-pct]").textContent = p; body.querySelector("[data-c-stake]").textContent = formatNumber(Math.floor(cash * p / 100), 0) + " €"; };
+        rg.addEventListener("input", upd); upd();
+        body.querySelectorAll("[data-c-q]").forEach(b => b.addEventListener("click", () => { rg.value = b.getAttribute("data-c-q"); upd(); }));
+        body.querySelector("[data-c-start]").addEventListener("click", () => {
+          const g = Engine.dartStart(+rg.value);
+          if (!g) { Platform.haptic(8); return; }
+          g.foe = Engine.DART.names[Math.floor(Math.random() * Engine.DART.names.length)];
+          Platform.playTone("coin", 2); Platform.haptic(12);
+          this.dartPlay(g);
+        });
+      },
+      dartPlay(g) {
+        const en = STATE.settings && STATE.settings.lang === "EN";
+        const H = Engine.DART;
+        const body = document.getElementById("app-modal-body"), modal = document.getElementById("app-modal");
+        const token = (this._dartTok = (this._dartTok || 0) + 1);
+        body.innerHTML = `
+          <h2 class="panel-title">${en ? "Pub darts" : "Dart"} · ${g.foe}</h2>
+          <div class="dice-score"><span>${en ? "You" : "Du"} <b data-d-ps>0</b></span><span data-d-round></span><span><b data-d-os>0</b> ${en ? "Him" : "Er"}</span></div>
+          <p style="font-weight:800;text-align:center;min-height:2.6em;" data-d-msg></p>
+          ${this.dartBoardSvg()}
+          <button type="button" class="comic-btn primary" style="width:100%;min-height:54px;font-size:19px;margin-top:6px;" data-d-throw>${en ? "THROW" : "WERFEN"}</button>
+          <p style="text-align:center;font-weight:900;">${en ? "Stake" : "Einsatz"}: <span class="num">${formatNumber(g.stake, 0)} €</span></p>`;
+        const q = s => body.querySelector(s);
+        const cross = q("[data-dt-cross]"), marks = q("[data-dt-marks]"), msg = q("[data-d-msg]"), btn = q("[data-d-throw]");
+        const alive = () => token === this._dartTok && modal.classList.contains("open") && document.body.contains(btn);
+        const wait = (ms) => new Promise(r => setTimeout(r, ms));
+        const NS = "http://www.w3.org/2000/svg";
+        const mark = (x, y, col, label) => {
+          const gEl = document.createElementNS(NS, "g"); gEl.setAttribute("transform", `translate(${(x * 100).toFixed(1)} ${(y * 100).toFixed(1)})`);
+          gEl.innerHTML = `<circle r="5" fill="${col}" stroke="#1A1A1A" stroke-width="2"/><text y="-8" text-anchor="middle" font-size="11" font-weight="900" fill="#fff" stroke="#1A1A1A" stroke-width="3" paint-order="stroke">${label}</text>`;
+          marks.appendChild(gEl);
+        };
+        const lose = () => { Engine.dartPayout(g.stake, false); };
+        let throwTime = null;
+        btn.addEventListener("pointerdown", (e) => { e.preventDefault(); if (throwTime === null) throwTime = performance.now(); });
+        const aim = (w) => new Promise(res => {
+          throwTime = null;
+          const ph = Math.random() * (2 * Math.PI / w), t0 = performance.now();
+          btn.disabled = false;
+          const step = () => {
+            if (!alive()) return res(null);
+            const now = throwTime !== null ? throwTime : performance.now();
+            const [x, y] = Engine.dartPos(w, (now - t0) / 1000 + ph);
+            cross.setAttribute("transform", `translate(${(x * 100).toFixed(1)} ${(y * 100).toFixed(1)})`);
+            if (throwTime !== null) { btn.disabled = true; return res({ x, y }); }
+            requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        });
+        const finish = (win) => {
+          const net = Engine.dartPayout(g.stake, win);
+          Platform.playTone(win ? "win" : "lose"); Platform.haptic(win ? "success" : 18);
+          if (win) { try { FX.confetti(); } catch (e) {} }
+          msg.innerHTML = win ? `${en ? "WON!" : "GEWONNEN!"} +${formatNumber(net, 0)} €` : `${en ? "LOST." : "VERLOREN."} −${formatNumber(g.stake, 0)} €`;
+          btn.remove(); cross.style.display = "none";
+          this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
+          setTimeout(() => {
+            if (token !== this._dartTok || !modal.classList.contains("open")) return;
+            body.insertAdjacentHTML("beforeend", `<button type="button" class="comic-btn primary" style="width:100%;margin-top:8px;" data-action="close-modal">${en ? "DONE" : "FERTIG"}</button>`);
+          }, 500);
+        };
+        (async () => {
+          let ps = 0, os = 0, n = 0, extra = false;
+          while (true) {
+            const i = extra ? 0 : n;
+            if (!extra && n === 0) q("[data-d-round]").textContent = en ? "Your darts" : "Deine Pfeile";
+            if (extra) q("[data-d-round]").textContent = en ? "Extra dart" : "Stichpfeil";
+            msg.textContent = (en ? "Dart " : "Pfeil ") + (extra ? "+" : (n + 1) + "/" + H.darts) + (en ? ": tap THROW!" : ": tippe WERFEN!");
+            cross.style.display = "";
+            const r = await aim(H.w0 + H.wStep * i); if (!r || !alive()) return lose();
+            const sc = Engine.dartScore(r.x, r.y); ps += sc;
+            mark(r.x, r.y, "#1E6FD9", sc); Platform.playTone(sc >= 25 ? "win" : "coin", 2); Platform.haptic(sc >= 25 ? 15 : 8);
+            q("[data-d-ps]").textContent = ps; cross.style.display = "none";
+            msg.textContent = sc === 50 ? (en ? "BULLSEYE!" : "BULLSEYE!") : sc === 0 ? (en ? "Missed the board!" : "Daneben!") : "+" + sc;
+            await wait(800); if (!alive()) return lose();
+            n++;
+            if (!extra && n < H.darts) continue;
+            // opponent
+            if (!extra) { q("[data-d-round]").textContent = en ? "His darts" : "Seine Pfeile"; }
+            const cnt = extra ? 1 : H.darts;
+            for (let k = 0; k < cnt; k++) {
+              msg.textContent = en ? "He throws…" : "Er wirft…"; await wait(700); if (!alive()) return lose();
+              const o = Engine.dartOpp(); os += o.score;
+              mark(o.x, o.y, "#D9342B", o.score); Platform.playTone("coin", 1); q("[data-d-os]").textContent = os;
+              msg.textContent = o.score === 50 ? "BULLSEYE!" : o.score === 0 ? (en ? "He missed!" : "Daneben!") : "+" + o.score; await wait(700); if (!alive()) return lose();
+            }
+            if (ps !== os) return finish(ps > os);
+            extra = true; msg.textContent = en ? "Tie! Extra dart each." : "Gleichstand! Je ein Stichpfeil."; await wait(900);
+            [...marks.children].forEach(m => m.remove());
+          }
+        })();
+      },
+      showHenModal() {
+        const en = STATE.settings && STATE.settings.lang === "EN";
+        const cash = STATE.currencies.cash, MAXP = Engine.HEN.maxPct;
+        const roos = Engine.henRoll();
+        let pick = 1;
+        const body = document.getElementById("app-modal-body");
+        body.innerHTML = `
+          <h2 class="panel-title">${en ? "Cockfight" : "Hahnenkampf"}</h2>
+          <p style="font-weight:700;">${en ? "Pick a rooster. Cheer him on by tapping to the beat — good timing raises his chance. Win = stake × odds, lose = stake gone. Closing the window forfeits." : "Wähle einen Hahn. Feuere ihn an, indem du im Takt tippst – gutes Timing erhöht seine Chance. Sieg = Einsatz × Quote, Niederlage = Einsatz weg. Fenster schließen gilt als verloren."}</p>
+          <div class="hen-cards">${roos.map((r, i) => `<button type="button" class="hen-card${i === pick ? " sel" : ""}" data-h-pick="${i}"><span class="hen-ico">${this.henSvg(["#E2A326","#B5651D","#6B7F8E"][i])}</span><b>${r.name}</b><span class="hen-form">${en ? "Form" : "Form"} ${"●".repeat(r.form)}${"○".repeat(5 - r.form)}</span><span class="hen-odds">× ${r.odds.toFixed(2)}</span></button>`).join("")}</div>
+          <div style="display:flex;justify-content:space-between;font-weight:900;"><span>${en ? "Stake" : "Einsatz"}: <span class="num" data-c-pct>25</span>%</span><span class="num" data-c-stake></span></div>
+          <input class="cups-range" type="range" min="1" max="${MAXP}" value="25" data-c-range>
+          <div class="cups-quick"><button type="button" class="comic-btn" data-c-q="10">10%</button><button type="button" class="comic-btn" data-c-q="25">25%</button><button type="button" class="comic-btn" data-c-q="${MAXP}">${MAXP}%</button></div>
+          <p style="text-align:center;font-weight:800;" data-c-win></p>
+          <button type="button" class="comic-btn primary" style="width:100%;min-height:50px;font-size:17px;" data-c-start>${en ? "PLACE BET" : "WETTE PLATZIEREN"}</button>
+          <button type="button" class="comic-btn" style="width:100%;margin-top:6px;" data-action="close-modal">${en ? "Cancel" : "Abbrechen"}</button>`;
+        document.getElementById("app-modal").classList.add("open");
+        const rg = body.querySelector("[data-c-range]");
+        const upd = () => { const p = +rg.value; const st = Math.floor(cash * p / 100); body.querySelector("[data-c-pct]").textContent = p; body.querySelector("[data-c-stake]").textContent = formatNumber(st, 0) + " €"; body.querySelector("[data-c-win]").textContent = (en ? "Payout if he wins: " : "Auszahlung bei Sieg: ") + formatNumber(Math.floor(st * roos[pick].odds), 0) + " €"; };
+        rg.addEventListener("input", upd); upd();
+        body.querySelectorAll("[data-c-q]").forEach(b => b.addEventListener("click", () => { rg.value = b.getAttribute("data-c-q"); upd(); }));
+        body.querySelectorAll("[data-h-pick]").forEach(b => b.addEventListener("click", () => { pick = +b.getAttribute("data-h-pick"); body.querySelectorAll("[data-h-pick]").forEach(x => x.classList.toggle("sel", x === b)); Platform.haptic(6); upd(); }));
+        body.querySelector("[data-c-start]").addEventListener("click", () => {
+          const g = Engine.henStart(+rg.value, roos[pick].odds);
+          if (!g) { Platform.haptic(8); return; }
+          g.name = roos[pick].name; g.foe = roos.filter((_, i) => i !== pick)[Math.floor(Math.random() * 2)].name;
+          Platform.playTone("coin", 2); Platform.haptic(12);
+          this.henPlay(g);
+        });
+      },
+      henPlay(g) {
+        const en = STATE.settings && STATE.settings.lang === "EN";
+        const H = Engine.HEN;
+        const body = document.getElementById("app-modal-body"), modal = document.getElementById("app-modal");
+        const token = (this._henTok = (this._henTok || 0) + 1);
+        body.innerHTML = `
+          <h2 class="panel-title">${en ? "Cockfight" : "Hahnenkampf"}</h2>
+          <p style="font-weight:800;text-align:center;" data-h-msg>${en ? "Cheer him on! Tap when the ring hits the circle." : "Feuere ihn an! Tippe, wenn der Ring den Kreis trifft."}</p>
+          <div class="hen-ring" data-h-arena>
+            <div class="hen-pit"><span class="hen-a" data-h-a>${this.henSvg("#E2A326")}</span><span class="hen-fx" data-h-fx></span><span class="hen-b" data-h-b>${this.henSvg("#6B7F8E")}</span></div>
+            <div class="hen-names"><b>${g.name}</b><b>${g.foe}</b></div>
+            <button type="button" class="hen-beat" data-h-beat><span class="hen-pulse" data-h-pulse></span><span class="hen-core">${en ? "GO!" : "LOS!"}</span></button>
+          </div>
+          <div class="hen-bar"><i data-h-bar></i></div>
+          <p style="text-align:center;font-weight:900;">${en ? "Stake" : "Einsatz"}: <span class="num">${formatNumber(g.stake, 0)} €</span> · × ${g.odds.toFixed(2)}</p>`;
+        const q = s => body.querySelector(s);
+        const pulse = q("[data-h-pulse]"), bar = q("[data-h-bar]"), msg = q("[data-h-msg]"), fx = q("[data-h-fx]"), beatBtn = q("[data-h-beat]");
+        const alive = () => token === this._henTok && modal.classList.contains("open") && document.body.contains(beatBtn);
+        let hits = 0, over = false, taps = 0;
+        const t0 = performance.now() + 900, total = H.beats * H.beat * 1000;
+        const phaseOf = (now) => { const x = ((now - t0) / 1000) / H.beat; return x - Math.round(x); }; // -0.5..0.5 beats, 0 = on beat
+        let lastBeat = -1;
+        const lose = () => { Engine.henPayout(g.stake, g.odds, false); };
+        beatBtn.addEventListener("pointerdown", (e) => {
+          e.preventDefault();
+          if (over || !alive()) return;
+          const now = performance.now();
+          if (now < t0 - 300 || now > t0 + total + 200) return;
+          const d = Math.abs(phaseOf(now)) * H.beat;
+          taps++;
+          if (d <= H.hitWin) {
+            hits++; beatBtn.classList.add("ok"); Platform.playTone("coin", Math.min(hits, 6)); Platform.haptic(8);
+            fx.innerHTML = this.henBurst(); fx.classList.remove("pop"); void fx.offsetWidth; fx.classList.add("pop");
+          } else { beatBtn.classList.add("bad"); Platform.haptic(4); hits = Math.max(0, hits - 0.5); }
+          setTimeout(() => beatBtn.classList.remove("ok", "bad"), 140);
+          bar.style.width = Math.min(100, hits / H.goal * 100) + "%";
+        });
+        const finish = () => {
+          over = true;
+          const fill = Math.min(1, hits / H.goal);
+          const p = Engine.henWinP(g.odds, fill);
+          const win = Math.random() < p;
+          const a = q("[data-h-a]"), b = q("[data-h-b]");
+          msg.textContent = en ? "Feathers fly…" : "Die Federn fliegen…";
+          a.classList.add("brawl"); b.classList.add("brawl"); fx.innerHTML = this.henBurst(); fx.classList.add("pop");
+          Platform.playTone("alarm"); Platform.haptic(15);
+          setTimeout(() => {
+            if (token !== this._henTok) return;
+            const net = Engine.henPayout(g.stake, g.odds, win);
+            a.classList.remove("brawl"); b.classList.remove("brawl");
+            (win ? b : a).classList.add("down"); (win ? a : b).classList.add("champ");
+            Platform.playTone(win ? "win" : "lose"); Platform.haptic(win ? "success" : 18);
+            if (win) { try { FX.confetti(); } catch (e) {} }
+            msg.innerHTML = win ? `${en ? "WON!" : "GEWONNEN!"} +${formatNumber(net, 0)} €` : `${en ? "LOST." : "VERLOREN."} −${formatNumber(g.stake, 0)} €`;
+            this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
+            setTimeout(() => {
+              if (token !== this._henTok || !modal.classList.contains("open")) return;
+              body.insertAdjacentHTML("beforeend", `<button type="button" class="comic-btn primary" style="width:100%;margin-top:8px;" data-action="close-modal">${en ? "DONE" : "FERTIG"}</button>`);
+            }, 500);
+          }, 1500);
+        };
+        const tick = () => {
+          if (over) return;
+          if (!alive()) { over = true; return lose(); }
+          const now = performance.now();
+          const x = ((now - t0) / 1000) / H.beat;
+          if (x > H.beats + 0.3) return finish();
+          // ring shrinks toward the button core each beat, full at the beat
+          const ph = x < -0.5 ? 1 : 1 - (x - Math.floor(x));
+          pulse.style.transform = "scale(" + (0.55 + ph * 1.0).toFixed(3) + ")";
+          pulse.style.opacity = x < -0.5 ? 0 : 0.9;
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      },
+      showBoxModal() {
+        const en = STATE.settings && STATE.settings.lang === "EN";
+        const cash = STATE.currencies.cash, MAXP = Engine.BOX.maxPct;
+        const body = document.getElementById("app-modal-body");
+        body.innerHTML = `
+          <h2 class="panel-title">${en ? "Backyard fight" : "Hinterhof-Boxring"}</h2>
+          <p style="font-weight:700;">${en ? "3 rounds. Swipe away from the punch to dodge, then tap to counter while he is open. Tapping at the wrong time makes you tired. Win = stake doubled, lose = stake gone. Closing the window forfeits." : "3 Runden. Wische vom Schlag weg zum Ausweichen, dann tippe zum Kontern, solange er offen ist. Zur falschen Zeit tippen macht müde. Sieg = Einsatz verdoppelt, Niederlage = Einsatz weg. Fenster schließen gilt als Aufgabe."}</p>
+          <div style="display:flex;justify-content:space-between;font-weight:900;"><span>${en ? "Stake" : "Einsatz"}: <span class="num" data-c-pct>25</span>%</span><span class="num" data-c-stake></span></div>
+          <input class="cups-range" type="range" min="1" max="${MAXP}" value="25" data-c-range>
+          <div class="cups-quick"><button type="button" class="comic-btn" data-c-q="10">10%</button><button type="button" class="comic-btn" data-c-q="25">25%</button><button type="button" class="comic-btn" data-c-q="${MAXP}">${MAXP}%</button></div>
+          <button type="button" class="comic-btn primary" style="width:100%;min-height:50px;font-size:17px;" data-c-start>${en ? "TO THE RING" : "IN DEN RING"}</button>
+          <button type="button" class="comic-btn" style="width:100%;margin-top:6px;" data-action="close-modal">${en ? "Cancel" : "Abbrechen"}</button>`;
+        document.getElementById("app-modal").classList.add("open");
+        const rg = body.querySelector("[data-c-range]");
+        const upd = () => { const p = +rg.value; body.querySelector("[data-c-pct]").textContent = p; body.querySelector("[data-c-stake]").textContent = formatNumber(Math.floor(cash * p / 100), 0) + " €"; };
+        rg.addEventListener("input", upd); upd();
+        body.querySelectorAll("[data-c-q]").forEach(b => b.addEventListener("click", () => { rg.value = b.getAttribute("data-c-q"); upd(); }));
+        body.querySelector("[data-c-start]").addEventListener("click", () => {
+          const g = Engine.boxStart(+rg.value);
+          if (!g) { Platform.haptic(8); return; }
+          Platform.playTone("coin", 2); Platform.haptic(12);
+          this.boxPlay(g);
+        });
+      },
+      boxPlay(g) {
+        const en = STATE.settings && STATE.settings.lang === "EN";
+        const body = document.getElementById("app-modal-body"), modal = document.getElementById("app-modal");
+        const token = (this._boxTok = (this._boxTok || 0) + 1);
+        const names = ["Kiez-Kalle", "Eisen-Ede", "Der Hammer", "Boxer-Bruno", "Knochen-Kurt", "Rechte-Rita"];
+        const nm = names[Math.floor(Math.random() * names.length)];
+        const b = Engine.boxNew();
+        const glove = (cls) => `<div class="b-gl ${cls}"></div>`;
+        body.innerHTML = `
+          <h2 class="panel-title" data-b-title>${en ? "Round" : "Runde"} 1/3</h2>
+          <div class="b-bars">
+            <div><span>${en ? "YOU" : "DU"}</span><div class="b-bar"><i class="b-hp" data-b-php></i></div></div>
+            <div><span>${nm}</span><div class="b-bar"><i class="b-hp opp" data-b-ohp></i></div></div>
+          </div>
+          <div class="b-bar st"><i data-b-st></i></div>
+          <div class="b-arena" data-b-arena data-phase="idle">
+            <div class="b-opp" data-b-opp>
+              <svg viewBox="0 0 120 130"><circle cx="60" cy="34" r="22" fill="#E8B48A" stroke="#1A1A1A" stroke-width="4"/><path d="M38 30 Q60 6 82 30" fill="#B5342B" stroke="#1A1A1A" stroke-width="4"/><path d="M49 36 h7 M64 36 h7" stroke="#1A1A1A" stroke-width="4" stroke-linecap="round"/><path d="M52 47 q8 5 16 0" fill="none" stroke="#1A1A1A" stroke-width="3.5" stroke-linecap="round"/><path d="M34 62 Q60 54 86 62 L92 128 H28 Z" fill="#6B7A8F" stroke="#1A1A1A" stroke-width="4" stroke-linejoin="round"/><rect x="30" y="104" width="60" height="12" fill="#B5342B" stroke="#1A1A1A" stroke-width="3"/></svg>
+            </div>
+            ${glove("l")}${glove("r")}
+            <div class="b-cue" data-b-cue></div>
+            <div class="b-open" data-b-open>${en ? "OPEN!" : "OFFEN!"}</div>
+            <div class="b-me" data-b-me><i></i><i></i></div>
+            <div class="b-flash" data-b-flash></div>
+            <div class="b-banner" data-b-banner></div>
+          </div>
+          <p class="b-hint" data-b-hint>${en ? "Swipe away from the punch!" : "Wische vom Schlag weg!"}</p>
+          <div data-b-end></div>`;
+        modal.classList.add("open");
+        const q = (s) => body.querySelector(s);
+        const arena = q("[data-b-arena]"), glL = q(".b-gl.l"), glR = q(".b-gl.r");
+        const elPhp = q("[data-b-php]"), elOhp = q("[data-b-ohp]"), elSt = q("[data-b-st]"), cue = q("[data-b-cue]"), hint = q("[data-b-hint]"), flash = q("[data-b-flash]"), banner = q("[data-b-banner]"), me = q("[data-b-me]"), opp = q("[data-b-opp]"), title = q("[data-b-title]");
+        const pop = (el, cls, ms) => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(() => el.classList.remove(cls), ms); };
+        let down = false, swiped = false, px = 0, lastRound = 1, done = false;
+        arena.addEventListener("pointerdown", (e) => { down = true; swiped = false; px = e.clientX; try { arena.setPointerCapture(e.pointerId); } catch (x) {} });
+        arena.addEventListener("pointermove", (e) => {
+          if (!down || swiped) return;
+          const dx = e.clientX - px;
+          if (Math.abs(dx) > 22) { swiped = true; Engine.boxSwipe(b, dx > 0 ? 1 : -1); me.style.transform = `translateX(${dx > 0 ? 70 : -70}px)`; setTimeout(() => { me.style.transform = ""; }, 260); }
+        });
+        arena.addEventListener("pointerup", () => { if (down && !swiped) { Engine.boxTap(b); pop(me, "punch", 140); } down = false; });
+        arena.addEventListener("pointercancel", () => { down = false; swiped = true; });
+        const finish = (win, quiet) => {
+          if (done) return; done = true;
+          const delta = Engine.boxPayout(g.stake, win);
+          if (quiet) return;
+          Platform.playTone(win ? "milestone" : "alarm"); Platform.haptic(win ? 30 : 50);
+          q("[data-b-end]").innerHTML = `
+            <p style="text-align:center;font-size:20px;font-weight:900;margin:8px 0;color:${win ? "var(--tint-green-ink,#2E6B14)" : "var(--tint-red-ink,#8F1D0E)"}">${win ? (en ? "VICTORY" : "SIEG") : (en ? "DEFEAT" : "NIEDERLAGE")} ${delta >= 0 ? "+" : "−"}${formatNumber(Math.abs(delta), 0)} €</p>
+            <button type="button" class="comic-btn primary" style="width:100%;min-height:46px;" data-action="close-modal">${en ? "Done" : "Fertig"}</button>`;
+          hint.textContent = win ? (en ? "Stake doubled." : "Einsatz verdoppelt.") : (en ? "Stake lost." : "Einsatz verloren.");
+          View.updateAll && View.updateAll();
+        };
+        let last = performance.now();
+        const render = () => {
+          elPhp.style.width = Math.max(0, b.php) + "%"; elOhp.style.width = Math.max(0, b.ohp) + "%"; elSt.style.width = Math.max(0, b.st) + "%";
+          q(".b-bar.st").classList.toggle("tired", b.exh > 0);
+          arena.setAttribute("data-phase", b.between > 0 ? "between" : b.phase);
+          glL.classList.toggle("wind", b.phase === "tele" && b.dir === -1); glR.classList.toggle("wind", b.phase === "tele" && b.dir === 1);
+          cue.textContent = b.phase === "tele" ? (b.dir === -1 ? "➡" : "⬅") : "";
+          if (b.round !== lastRound) { lastRound = b.round; title.textContent = (en ? "Round " : "Runde ") + b.round + "/3"; }
+          hint.textContent = b.exh > 0 ? (en ? "Out of breath…" : "Aus der Puste…") : b.phase === "tele" ? (en ? "DODGE!" : "AUSWEICHEN!") : b.phase === "open" ? (en ? "TAP NOW!" : "JETZT TIPPEN!") : (en ? "Watch him…" : "Beobachte ihn…");
+        };
+        const events = () => {
+          for (const e of b.ev.splice(0)) {
+            if (e === "hitP") { pop(flash, "on", 260); pop(arena, "shake", 300); Platform.haptic(30); Platform.playTone("alarm"); }
+            else if (e === "hitO") { pop(opp, "hit", 200); Platform.haptic(10); Platform.playTone("coin", 3); }
+            else if (e === "dodge") { Platform.playTone("sprint"); }
+            else if (e === "round") { banner.textContent = (en ? "ROUND " : "RUNDE ") + b.round; pop(banner, "show", 1200); }
+          }
+        };
+        const loop = (now) => {
+          if (token !== this._boxTok || !modal.classList.contains("open")) { if (!b.over) finish(false, true); return; }
+          const dt = Math.min(0.1, (now - last) / 1000); last = now;
+          Engine.boxStep(b, dt); events(); render();
+          if (b.over) { finish(!!b.win); return; }
+          requestAnimationFrame(loop);
+        };
+        banner.textContent = (en ? "ROUND " : "RUNDE ") + 1; pop(banner, "show", 1200);
+        requestAnimationFrame((t) => { last = t; loop(t); });
+      },
       showVaultModal() {
         const en = STATE.settings && STATE.settings.lang === "EN";
         const body = document.getElementById("app-modal-body");
@@ -11504,19 +12404,21 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         document.querySelectorAll("[data-sprint]").forEach(el => {
           el.classList.toggle("on", !!sp);
           el.classList.toggle("offer", !!(sp && sp.offered));
-          el.classList.toggle("vault", !!(sp && (sp.kind === "vault" || sp.kind === "run")));
+          el.classList.toggle("vault", !!(sp && (sp.kind === "vault" || sp.kind === "run" || sp.kind === "box")));
           if (!sp || sp.offered) el.classList.remove("urgent");
           if (!sp) return;
           el.querySelector("i").style.width = Math.min(100, sp.clicks / sp.goal * 100) + "%";
-          el.querySelector("[data-sp-name]").textContent = "⚡ " + sp.name;
+          el.querySelector("[data-sp-name]").textContent = sp.name;
           if (sp.offered) {
             const st = Engine.getStats();
             el.querySelector("[data-sp-count]").textContent = en ? "OFFER" : "ANGEBOT";
             el.querySelector("[data-sp-time]").textContent = Math.max(0, sp.offerLeft).toFixed(0) + "s";
             const inf = el.querySelector("[data-sp-offer]");
             const nm = { easy: en ? "EASY" : "LEICHT", mid: en ? "MEDIUM" : "MITTEL", hard: en ? "HARD" : "SCHWER" };
-            const isV = sp.kind === "vault", isR = sp.kind === "run";
-            const txt = isR ? (en
+            const isV = sp.kind === "vault", isR = sp.kind === "run", isB = sp.kind === "box";
+            const txt = isB ? (en
+              ? "Dodge by swiping away from the punch, then tap to counter while he is open. Don't spam taps: you get tired. Stake up to 50 % of your cash, win = double."
+              : "Wische vom Schlag weg zum Ausweichen, dann tippe zum Kontern, solange er offen ist. Nicht wild tippen: Du wirst müde. Einsatz bis 50 % deines Bargelds, Sieg = doppelt.") : isR ? (en
               ? "Swipe or tap left/right: collect packages, dodge roadblocks. 3 lives. Every package adds loot, a crash costs only a life."
               : "Wische oder tippe links/rechts: Pakete einsammeln, Sperren ausweichen. 3 Leben. Jedes Paket bringt Beute, ein Crash kostet nur ein Leben.") : isV ? (en
               ? "Stop the needle in the green zone. 3 tries, every hit adds loot. A miss costs nothing."
@@ -11524,6 +12426,11 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
               : (en
               ? "Harder = more loot. Missing costs heat and dirty cash. Declining is free."
               : "Schwerer = mehr Beute. Verpasst kostet Fahndung und Schwarzgeld. Ablehnen ist gratis.");
+            if (isB) {
+              const vb = el.querySelector("[data-sp-vault]");
+              const vh = (en ? "FIGHT" : "KÄMPFEN") + "<small>" + (en ? "stake up to 50 % of cash" : "Einsatz bis 50 % Bargeld") + "</small>";
+              if (vb && vb.getAttribute("data-h") !== vh) { vb.innerHTML = vh; vb.setAttribute("data-h", vh); }
+            }
             if (isR) {
               const vb = el.querySelector("[data-sp-vault]");
               const vh = (en ? "DRIVE" : "LOSFAHREN") + "<small>" + (en ? "up to +" : "bis zu +") + formatNumber(Engine.runBase() * Engine.RUN.mul, 0) + " €</small>";
@@ -12161,9 +13068,9 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         body.innerHTML = `
           <h2 class="panel-title">${L("Päckchen an ", "Package for ")}${String(r.name).replace(/[&<>"']/g, "")}</h2>
           <p>${L("Der Empfänger sieht erst beim Öffnen, was drin ist. Kostet jeweils " + SOC.SEND_COST + " Gefallen.", "The receiver only sees what's inside when opening. Costs " + SOC.SEND_COST + " favors each.")}</p>
-          <button type="button" class="comic-btn primary" style="width:100%; margin:4px 0;" data-action="soc-send-go" data-rid="${rid}" data-kind="0">🎁 ${L("Geschenk", "Gift")}</button>
-          <button type="button" class="comic-btn" style="width:100%; margin:4px 0;" data-action="soc-send-go" data-rid="${rid}" data-kind="1">🕵️ ${L("Prüfer", "Auditor")}</button>
-          <button type="button" class="comic-btn danger" style="width:100%; margin:4px 0;" data-action="soc-send-go" data-rid="${rid}" data-kind="2">💣 ${L("Bombe", "Bomb")}</button>
+          <button type="button" class="comic-btn primary" style="width:100%; margin:4px 0;" data-action="soc-send-go" data-rid="${rid}" data-kind="0">${L("Geschenk", "Gift")}</button>
+          <button type="button" class="comic-btn" style="width:100%; margin:4px 0;" data-action="soc-send-go" data-rid="${rid}" data-kind="1">${L("Prüfer", "Auditor")}</button>
+          <button type="button" class="comic-btn danger" style="width:100%; margin:4px 0;" data-action="soc-send-go" data-rid="${rid}" data-kind="2">${L("Bombe", "Bomb")}</button>
           <button type="button" class="comic-btn" style="width:100%; margin:4px 0;" data-action="close-modal">${L("Abbrechen", "Cancel")}</button>`;
         document.getElementById("app-modal").classList.add("open");
       },
@@ -12222,7 +13129,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           <div class="bd-row" style="align-items:center; gap:6px;">
             <span><b>${i + 1}. ${esc(r.name)}</b><br><small>${esc(r.city || "—")} · ${L("Akten", "Prestiges")} ${r.pre || 0} · ${L("Stand", "As of")} ${new Date(r.ts).toLocaleDateString(en ? "en-GB" : "de-DE")}</small></span>
             <span class="num">${formatNumber(r.rev || 0)} €</span>
-            <button type="button" class="comic-btn" style="min-height:28px; padding:0 8px;" data-action="soc-send" data-rid="${r.id}">📦</button>
+            <button type="button" class="comic-btn" style="min-height:28px; padding:0 8px;" data-action="soc-send" data-rid="${r.id}">${L("Paket", "Pkg")}</button>
             <button type="button" class="comic-btn" style="min-height:28px; padding:0 8px;" data-action="soc-del" data-rid="${r.id}">✕</button>
           </div>`).join("");
         vp.innerHTML = subNavHtml + `
@@ -12247,7 +13154,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           ${(so.inbox.length || Engine.bombList().length) ? `<section class="biz-card" style="padding:10px;">
             <h3 class="panel-title" style="margin:0 0 6px;">${L("Päckchen", "Packages")}</h3>
             ${Engine.bombList().map(b => `<div class="bomb-row"><span>${esc(t(REGISTRY.OFFICE[b.id].nameKey))} · ${Math.ceil(b.left / 60)} min</span><button type="button" class="comic-btn" style="min-height:28px;" data-action="repair-bomb" data-offid="${b.id}">${L("REPARIEREN 3 Gefallen", "REPAIR 3 favors")}</button></div>`).join("")}
-            ${so.inbox.map(e => e.opened ? `<div class="bd-row" style="align-items:center; gap:6px;"><span><b>${esc(e.name)}</b><br><small>${esc(e.res)}</small></span><button type="button" class="comic-btn" style="min-height:28px; padding:0 8px;" data-action="soc-send" data-rid="${e.from}">${L("REVANCHIEREN", "RETURN")}</button></div>` : `<div class="bd-row" style="align-items:center;"><span><b>📦 ${L("Päckchen von", "Package from")} ${esc(e.name)}</b></span><button type="button" class="comic-btn primary" style="min-height:30px;" data-action="soc-open" data-pk="${e.k}">${L("ÖFFNEN", "OPEN")}</button></div>`).join("")}
+            ${so.inbox.map(e => e.opened ? `<div class="bd-row" style="align-items:center; gap:6px;"><span><b>${esc(e.name)}</b><br><small>${esc(e.res)}</small></span><button type="button" class="comic-btn" style="min-height:28px; padding:0 8px;" data-action="soc-send" data-rid="${e.from}">${L("REVANCHIEREN", "RETURN")}</button></div>` : `<div class="bd-row" style="align-items:center;"><span><b>${L("Päckchen von", "Package from")} ${esc(e.name)}</b></span><button type="button" class="comic-btn primary" style="min-height:30px;" data-action="soc-open" data-pk="${e.k}">${L("ÖFFNEN", "OPEN")}</button></div>`).join("")}
           </section>` : ""}
           <section class="biz-card" style="padding:10px;">
             <h3 class="panel-title" style="margin:0 0 6px;">${L("Rivalen", "Rivals")} (${list.length})</h3>
