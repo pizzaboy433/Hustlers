@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="cd25ef1321">
+  <meta name="build-id" content="9f4646b7e3">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2389,7 +2389,7 @@ html:not([data-fx="0"]) .cps-pill{text-shadow:0 0 calc(var(--fx-i,0) * 9px) curr
 .mission-io-col:last-child{background:rgba(91,150,40,.13)}
 .mission-io-col .mi{display:block;font-weight:800}
 .mission-io-head{font-size:9px;letter-spacing:.04em;margin-bottom:1px}
-#ach-toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 8px);transform:translate(-50%,-140%);z-index:950;max-width:calc(100% - 24px);background:#1A1A1A;color:#FFD400;border:2px solid #FFD400;padding:8px 12px;box-shadow:3px 3px 0 rgba(0,0,0,.35);font-weight:900;font-size:12px;text-align:center;pointer-events:none;opacity:0;transition:transform .35s cubic-bezier(.2,1.3,.4,1),opacity .25s}
+#ach-toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 8px);transform:translate(-50%,-140%);z-index:950;max-width:calc(100% - 24px);background:#1A1A1A;color:#FFD400;border:2px solid #FBF8F0;padding:8px 12px;box-shadow:3px 3px 0 rgba(0,0,0,.35);font-weight:900;font-size:12px;text-align:center;pointer-events:none;opacity:0;transition:transform .35s cubic-bezier(.2,1.3,.4,1),opacity .25s}
 #ach-toast.show{transform:translate(-50%,0);opacity:1}
 #ach-toast small{display:block;color:#F4EFE0;font-weight:700;font-size:11px;margin-top:2px}
 .ach-row{padding:7px 9px!important;gap:4px!important;border-left-color:#E2A326}
@@ -2500,13 +2500,13 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 
 /* v41: Boxen */
 .b-bars{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 0}
-.b-bars span{font-size:11px;font-weight:900;text-transform:uppercase;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.b-bar{height:12px;background:#E9E2D2;border:2.5px solid #1A1A1A;border-radius:0;overflow:hidden}
+.b-bars span{font-size:10.5px;font-weight:900;text-transform:uppercase;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.b-bar{height:12px;background:var(--bg-card);border:var(--border-comic);border-radius:0;overflow:hidden}
 .b-bar i{display:block;height:100%;width:100%;background:#5B9628;transition:width .12s linear}
 .b-bar i.opp{background:#C9442B}
 .b-bar.st{height:9px;margin:2px 0 6px}.b-bar.st i{background:#3F7FBF}
 .b-bar.st.tired i{background:#B5342B}
-.b-arena{position:relative;height:240px;border:3px solid #1A1A1A;border-radius:0;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;
+.b-arena{position:relative;height:240px;border:var(--border-comic);border-radius:0;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;
   background:linear-gradient(#CFE3F0,#CFE3F0 62%,#BFA77A 62%);}
 .b-arena::before{content:"";position:absolute;left:0;right:0;top:46%;height:6px;background:#B5342B;border-block:2px solid #1A1A1A}
 .b-arena[data-phase="open"]{box-shadow:inset 0 0 0 4px #FFCE3B}
@@ -2532,11 +2532,11 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 .b-hint{text-align:center;font-weight:900;text-transform:uppercase;margin:8px 0 2px;min-height:20px}
 
 .hen-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0}
-.hen-card{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border:3px solid #1A1A1A;border-radius:0;background:#F3E6C4;font:inherit;min-height:44px;cursor:pointer}
-.hen-card.sel{background:#FFD400;box-shadow:0 0 0 3px #1A1A1A}
-.hen-card b{font-size:11px;line-height:1.1;text-align:center;word-break:break-word}
-.hen-ico{font-size:34px;line-height:1;display:block}.hen-form{font-size:9px;letter-spacing:1px}.hen-odds{font-weight:900;font-size:15px}
-.hen-ring{position:relative;border:3px solid #1A1A1A;border-radius:0;background:#C9A66B;padding:8px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.hen-card{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border:var(--border-comic);border-radius:0;background:var(--bg-card);box-shadow:var(--shadow-comic-sm);color:var(--text);font:inherit;min-height:44px;cursor:pointer}
+.hen-card.sel{background:rgba(91,150,40,.35);box-shadow:var(--shadow-comic);transform:translate(-1px,-1px)}
+.hen-card b{font-size:11px;font-weight:900;text-transform:uppercase;line-height:1.1;text-align:center;word-break:break-word}
+.hen-ico{font-size:34px;line-height:1;display:block}.hen-form{font-family:var(--font-mono);font-size:9.5px;font-weight:700;color:var(--accent-concrete);letter-spacing:.5px}.hen-odds{font-family:var(--font-mono);font-weight:900;font-size:14px}
+.hen-ring{position:relative;border:var(--border-comic);border-radius:0;background:#C9A66B;padding:8px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
 .hen-pit{position:relative;display:flex;justify-content:space-between;align-items:center;height:70px;font-size:44px;padding:0 24px}
 .hen-a{transform:scaleX(-1);display:inline-block}.hen-b{display:inline-block}
 .hen-fx{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(0);font-size:34px}
@@ -2548,32 +2548,39 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 @keyframes henB{to{transform:translate(14px,-8px) rotate(-14deg)}}
 .hen-a.down{transform:scaleX(-1) rotate(90deg) translateY(10px);opacity:.55}.hen-b.down{transform:rotate(-90deg) translateY(10px);opacity:.55}
 .hen-a.champ,.hen-b.champ{filter:drop-shadow(0 0 8px #FFD400)}
-.hen-names{display:flex;justify-content:space-between;font-size:11px;padding:0 6px}
+.hen-names{display:flex;justify-content:space-between;font-size:11px;text-transform:uppercase;padding:0 6px}
 .hen-beat{position:relative;display:block;margin:6px auto 0;width:110px;height:110px;border-radius:50%;border:0;background:transparent;touch-action:manipulation}
 .hen-core{font-weight:900;font-size:13px;position:absolute;inset:25px;border-radius:50%;background:#FFD400;border:4px solid #1A1A1A;display:flex;align-items:center;justify-content:center;font-size:26px}
 .hen-pulse{position:absolute;inset:0;border-radius:50%;border:5px solid #1A1A1A;transform:scale(.55);opacity:0;pointer-events:none}
 .hen-beat.ok .hen-core{background:#7BC043}.hen-beat.bad .hen-core{background:#D9534F}
-.hen-bar{height:14px;border:3px solid #1A1A1A;border-radius:0;overflow:hidden;background:#fff;margin:8px 0}
+.hen-bar{height:14px;border:var(--border-comic);border-radius:0;overflow:hidden;background:var(--bg-paper);margin:8px 0}
 .hen-bar i{display:block;height:100%;width:0;background:#E2A326;transition:width .15s}
 
 .dog-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin:8px 0}
-.dog-track{border:3px solid #1A1A1A;border-radius:0;background:#C9A66B;padding:4px 6px;margin-bottom:4px}
+.dog-track{border:var(--border-comic);border-radius:0;background:#C9A66B;padding:4px 6px;margin-bottom:4px}
 .dog-lane{position:relative;display:flex;align-items:center;height:42px;border-bottom:2px dashed rgba(26,26,26,.35);font-size:28px}
 .dog-lane:last-child{border-bottom:0}
-.dog-lane.mine{background:rgba(255,212,0,.35);border-radius:0}
+.dog-lane.mine{background:rgba(91,150,40,.28);border-radius:0}
 .dog-lane.first{background:rgba(123,192,67,.45);border-radius:0}
 .dog-nm{position:absolute;left:4px;top:1px;font-size:9px;font-weight:900;letter-spacing:.3px;z-index:1}
 .dog-run{display:inline-block;margin-left:4px;margin-top:8px;will-change:transform}
 .dog-fin{position:absolute;right:0;top:0;bottom:0;width:10px;background:repeating-linear-gradient(#1A1A1A 0 6px,#fff 6px 12px)}
 
-.dice-score{display:flex;justify-content:space-between;font-weight:900;font-size:16px}
+.dice-score{display:flex;justify-content:space-between;font-weight:900;font-size:13px;text-transform:uppercase}.dice-score b{font-family:var(--font-mono);font-size:15px}
 .dice-row{display:flex;justify-content:center;gap:14px;min-height:64px;margin:4px 0}
-.die{width:60px;height:60px;border:3px solid #1A1A1A;border-radius:0;background:#fff;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:7px;gap:2px;cursor:pointer;box-shadow:0 3px 0 #1A1A1A}
+.die{width:60px;height:60px;border:var(--border-comic);border-radius:0;background:#fff;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:7px;gap:2px;cursor:pointer;box-shadow:var(--shadow-comic-sm)}
 .die.foe{background:#EFE3C4;cursor:default}
 .die i{border-radius:50%}.die i.on{background:#1A1A1A}
-.dice-sum{text-align:center;font-weight:800;margin:0;min-height:1.3em;font-size:13px}
+.dice-sum{text-align:center;font:700 11.5px/1.5 var(--font-mono);color:var(--accent-concrete);margin:0;min-height:1.5em}
 
 .dart-svg{display:block;width:min(100%,250px);margin:4px auto;touch-action:manipulation}
+
+.cur-lbl .cur-bonus{font-size:8.5px;letter-spacing:0}
+.cur-cell[data-action="wash-reserve"]{position:relative}
+.wash-trend{position:absolute;top:1px;right:4px;font-style:normal;font-size:9px;line-height:1;font-weight:900;color:var(--accent-concrete)}
+.wash-trend.up{color:#D9342B}
+.wash-trend.up.hot{animation:badgeUrgentBounce .9s infinite ease-in-out}
+.wash-trend.down{color:#3F7A1C}
 </style>
   <script data-goatcounter="https://hustlers.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -2620,8 +2627,8 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         <div class="cur-grid cur-4">
         <div class="cur-cell"><span class="cur-lbl" data-i18n="ui.curr.cred">Einfluss</span><span class="cur-val"><b class="num" data-bind="curr-cred">0</b><i>★</i></span></div>
         <div class="cur-cell"><span class="cur-lbl" data-i18n="ui.curr.favors">Gefallen</span><span class="cur-val"><b class="num" data-bind="curr-favors">0</b><i>♦</i></span></div>
-        <div class="cur-cell"><span class="cur-lbl" data-i18n="ui.curr.files">Akten</span><span class="cur-val"><b class="num" data-bind="curr-files">0</b><span class="cur-bonus num">(+<span data-bind="curr-files-bonus">0</span>%)</span><i>≡</i></span></div>
-        <div class="cur-cell" data-action="wash-reserve" style="cursor:pointer"><span class="cur-lbl" data-bind="curr-wash-lbl">Wäsche</span><span class="cur-val c-stealth"><b class="num" data-bind="curr-wash">0</b><i>/s</i></span></div>
+        <div class="cur-cell"><span class="cur-lbl"><span data-i18n="ui.curr.files">Akten</span> <span class="cur-bonus num">+<span data-bind="curr-files-bonus">0</span>%</span></span><span class="cur-val"><b class="num" data-bind="curr-files">0</b><i>≡</i></span></div>
+        <div class="cur-cell" data-action="wash-reserve" style="cursor:pointer"><span class="cur-lbl" data-bind="curr-wash-lbl">Wäsche</span><span class="cur-val c-stealth"><b class="num" data-bind="curr-wash">0</b><i>/s</i><em class="wash-trend" data-bind="curr-wash-trend"></em></span></div>
         </div>
         <div class="cur-grid cur-4">
         <div class="cur-cell"><span class="cur-lbl" data-i18n="ui.curr.drugs_short">Drogen</span><span class="cur-val"><b class="num" data-bind="curr-drugs">0</b><i>▲</i></span></div>
@@ -3470,7 +3477,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "guide.sec.heat": "2. Fahndungslevel & Trend (0% – 100%)",
         "heat.tut.z1": "0%–39% UNAUFFÄLLIG: Ab 20% können Steuerprüfer auftauchen (öfter, je höher die Fahndung). Sonst keine Nachteile.",
         "heat.tut.z2": "Ab 40%: Coups gelingen seltener (bis zu −15%), dafür gibt es bis zu +20% Hustle-Ertrag. Ab 60% kosten Waschen und Börse mehr, ab 75% ist Schwarzgeld ausgeben gesperrt (frei unter 65%).",
-        "heat.tut.z3": "Über 85% RAZZIA-WARNUNG: Du hast 12 Sekunden Zeit (im Fluchtweg-Spiel kannst du entkommen). Sonst werden bis zu 75% Schwarzgeld & bis zu 10% Bargeld beschlagnahmt, die Fahndung fällt auf 40% und du hast 300s Schutz.",
+        "heat.tut.z3": "Über 85% RAZZIA-WARNUNG: Du hast 12 Sekunden Zeit (im Fluchtweg-Spiel kannst du entkommen). Sonst werden bis zu 75% Schwarzgeld & bis zu 10% Bargeld beschlagnahmt, die Fahndung fällt auf 40% und du hast 300s Schutz. Die allererste Razzia verzeiht dir alles.",
         "heat.tut.model": "HUSTLE-Tippen, Betriebe auf HUSTLE und riskante Crew/Ware treiben die Fahndung hoch — TARNUNG, Kommissar Nowak und das Justizviertel kühlen sie wieder ab.",
         "heat.tut.trend": "Der Trend-Pfeil (▲ / ↘) rechts über dem Balken zeigt geglättet, ob die Fahndung steigt oder sinkt.",
 
@@ -4200,7 +4207,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "guide.sec.heat": "2. Heat Level & Trend (0% – 100%)",
         "heat.tut.z1": "0%–39% LOW PROFILE: From 20% tax auditors may show up (more often the higher your heat). Otherwise no drawbacks.",
         "heat.tut.z2": "From 40%: coups succeed less often (up to −15%), but hustle earns up to +20%. From 60% laundering and the market cost more, from 75% spending dirty cash is locked (free again below 65%).",
-        "heat.tut.z3": "Over 85% RAID WARNING: You get 12 seconds (the escape game lets you get away). Otherwise up to 75% Dirty Cash & up to 10% Clean Cash are seized, Heat drops to 40% and you get a 300s Shield.",
+        "heat.tut.z3": "Over 85% RAID WARNING: You get 12 seconds (the escape game lets you get away). Otherwise up to 75% Dirty Cash & up to 10% Clean Cash are seized, Heat drops to 40% and you get a 300s Shield. Your very first raid is forgiven.",
         "heat.tut.model": "HUSTLE tapping, fronts on HUSTLE and risky crew/gear drive Heat up — COVER, Ex-Inspector Nowak and the Courthouse Quarter cool it down.",
         "heat.tut.trend": "The smoothed trend pill (▲ / ↘) above the bar shows live Heat change per second.",
 
@@ -5163,6 +5170,9 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
     let MARKET_LAUNDER_SEC = 12;   // pro Kurswechsel lassen sich Waren fuer so viele Sekunden Gesamtleistung mit Schwarzgeld einkaufen
     let MARKET_BUY_CAP = 24;       // Basis-Kapazitaet des Handelslagers pro Ware (waechst mit Cartel-Haendlern und Neustarts)
     let RAID_WARN_SEC = 12;
+    // Sanfter Einstieg: Freischaltung nach Lebenszeit-Umsatz (Altspielstände sind längst darüber)
+    const GATE = { event: 5000, insp: 10000, sprint: 25000, war: 60000 };
+    const lifeRev = () => (STATE.stats && STATE.stats.lifetimeRevenue) || 0;
     let CLICK_POWER_SHARE = 0.003;   // tap value: share of total output per second
     const ACH_FAMILIES = [
       { id: "rev", de: "Lebenszeit-Umsatz", en: "Lifetime revenue", unit: " €", val: () => STATE.stats.lifetimeRevenue || 0,
@@ -5448,7 +5458,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         if (win) { this.addCleanCash(stake * 2); STATE.stats.cupWins = (STATE.stats.cupWins || 0) + 1; }
         return win ? stake : -stake;
       },
-      HEN: { maxPct: 50, house: 0.92, cheerMax: 0.10, beat: 0.7, beats: 9, hitWin: 0.2, goal: 8,
+      HEN: { maxPct: 100, house: 0.92, cheerMax: 0.10, beat: 0.7, beats: 9, hitWin: 0.2, goal: 8,
              names: ["Kralle", "Fetzer", "Rostsporn", "Blitzschnabel", "Goldkamm", "Der Kaiser", "Schrotti", "Hackfleisch-Harry", "Nachtkrähe", "Sporny"] },
       henRoll() {
         const r = (a, b) => Math.round((a + Math.random() * (b - a)) * 20) / 20;
@@ -5480,7 +5490,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         if (win) { const pay = Math.floor(stake * odds); this.addCleanCash(pay); STATE.stats.henWins = (STATE.stats.henWins || 0) + 1; return pay - stake; }
         return -stake;
       },
-      DOG: { maxPct: 50, house: 0.92, cheerMax: 0.10, beat: 0.7, beats: 9, hitWin: 0.2, goal: 8, raceSec: 4.5,
+      DOG: { maxPct: 100, house: 0.92, cheerMax: 0.10, beat: 0.7, beats: 9, hitWin: 0.2, goal: 8, raceSec: 4.5,
              names: ["Brutus", "Blitz", "Rocky", "Fang", "Lumpi", "Killer", "Schnüffel", "Zacke", "Bello", "Rambo"] },
       dogRoll() {
         const r = (a, b) => a + Math.random() * (b - a);
@@ -5518,7 +5528,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         if (win) { const pay = Math.floor(stake * odds); this.addCleanCash(pay); STATE.stats.dogWins = (STATE.stats.dogWins || 0) + 1; return pay - stake; }
         return -stake;
       },
-      DICE: { maxPct: 50, rounds: 3, names: ["Zocker-Ede", "Würfel-Wanda", "Schlitzohr Sven", "Pate Pit", "Glückspilz Gerd", "Madame Six"] },
+      DICE: { maxPct: 100, rounds: 3, names: ["Zocker-Ede", "Würfel-Wanda", "Schlitzohr Sven", "Pate Pit", "Glückspilz Gerd", "Madame Six"] },
       diceRoll() { return 1 + Math.floor(Math.random() * 6); },
       diceOpp(psum) {
         const d = [this.diceRoll(), this.diceRoll()];
@@ -5545,7 +5555,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         if (res === 0) { this.addCleanCash(stake); return 0; }
         return -stake;
       },
-      DART: { maxPct: 50, darts: 3, w0: 1.5, wStep: 0.15, sigma: 0.22, rings: [[0.08, 50], [0.2, 25], [0.45, 15], [0.7, 10], [1.0, 5]],
+      DART: { maxPct: 100, darts: 3, w0: 1.5, wStep: 0.15, sigma: 0.22, rings: [[0.08, 50], [0.2, 25], [0.45, 15], [0.7, 10], [1.0, 5]],
               names: ["Kneipen-Kalle", "Dart-Dieter", "Pfeil-Paula", "Bulle Bernd", "Tresen-Tina", "Lange Lutz"] },
       dartScore(x, y) { const r = Math.hypot(x, y); for (const [m, sc] of this.DART.rings) if (r <= m) return sc; return 0; },
       dartPos(w, t) { return [Math.sin(w * t) * 0.9, Math.sin(2 * w * t) * 0.8]; },
@@ -5570,7 +5580,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         return -stake;
       },
       BOX: { rounds: 3, roundSec: 20, php: 100, ohp: 100, tele: [0.56, 0.5, 0.45], idle: [[0.6, 1.1], [0.5, 1.0], [0.4, 0.9]], open: 0.9,
-             atk: [16, 18, 20], hit: 3, maxOpen: 4, st: 100, tapCost: 13, whiffCost: 20, regen: 24, exhaust: 1.0, maxPct: 50, between: 1.3 },
+             atk: [16, 18, 20], hit: 3, maxOpen: 4, st: 100, tapCost: 13, whiffCost: 20, regen: 24, exhaust: 1.0, maxPct: 100, between: 1.3 },
       boxOffer() {
         const en = STATE.settings && STATE.settings.lang === "EN";
         this.sprint = { kind: "box", name: en ? "BACKYARD FIGHT" : "HINTERHOF-BOXRING", goal: 1, clicks: 0, left: 15, offered: true, offerLeft: 20 };
@@ -5864,13 +5874,22 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           if (w.left <= 0) this.warResolve();
           return;
         }
-        if (this.getStats().totalPowerCps <= 0) return;
+        if (this.getStats().totalPowerCps <= 0 || lifeRev() < GATE.war) return;
         STATE.warCd = (STATE.warCd || 0) - dt;
         if (STATE.warCd > 0) return;
-        if (this.sprint && !this.sprint.offered) return;
+        if (this.bannerBusy("war")) return;
         if (!this.warSpawn()) STATE.warCd = 120;
       },
 
+      // Banner-Sperre: Es ist immer nur ein Banner/Ereignis gleichzeitig aktiv
+      bannerBusy(except) {
+        if (except !== "sprint" && this.sprint) return true;
+        if (except !== "insp" && STATE.inspector && STATE.inspector.phase !== "still") return true;
+        if (except !== "war" && STATE.war) return true;
+        if (except !== "event" && STATE.activeEvent) return true;
+        if (this.razziaWarn != null || STATE.pendingBribe) return true;
+        return false;
+      },
       inspNote: null,
       INSPECT: { offerSec: 90, tapSec: 12, midGoal: 25, hardGoal: 40, stillSec: 150, finePowerSec: 300, cd: 150 },
 
@@ -5931,7 +5950,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         if (!ins) {
           STATE.inspCd = Math.max(0, (STATE.inspCd || 0) - dt);
           const h = STATE.heat || 0;
-          if (STATE.inspCd > 0 || h < 20 || this.sprint || this.razziaWarn != null) return;
+          if (STATE.inspCd > 0 || h < 20 || lifeRev() < GATE.insp || this.bannerBusy("insp")) return;
           const lam = 1 / 1500 + Math.max(0, Math.min(1, (h - 20) / 65)) * (1 / 150 - 1 / 1500);
           if (Math.random() < lam * this.getPrestigeUpgradeBonuses().auditMul * dt) this.inspectorSpawn();
           return;
@@ -5979,7 +5998,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           }
           return;
         }
-        if (this.getStats().totalPowerCps > 0 && !(STATE.inspector && STATE.inspector.phase !== "still")) {
+        if (this.getStats().totalPowerCps > 0 && lifeRev() >= GATE.sprint && !this.bannerBusy("sprint")) {
           this.sprintCd -= dt;
           if (this.sprintCd <= 0) this.sprintStart();
         }
@@ -7755,10 +7774,13 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           hqUrgent = true;
         }
 
+        const turfOcc = (this.turfOccList ? this.turfOccList() : []).length > 0;
+        const turfBadge = (turfOcc && activeTab !== "turf") ? "urgent" : checkNewDot("turf");
+
         return {
           businesses: bizBadge,
           logistics: checkNewDot("logistics"),
-          turf: checkNewDot("turf"),
+          turf: turfBadge,
           cartel: checkNewDot("cartel"),
           hq: hqUrgent && activeTab !== "hq" ? "urgent" : "none"
         };
@@ -8382,7 +8404,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         }
 
         let eventSpawned = false;
-        if (!STATE.activeEvent && stats.totalPowerCps > 0) {
+        if (!STATE.activeEvent && stats.totalPowerCps > 0 && lifeRev() >= GATE.event && !this.bannerBusy("event")) {
           STATE.eventCooldown = Math.max(0, (STATE.eventCooldown || 0) - dt);
           if (STATE.eventCooldown <= 0) {
             const evList = KIEZ_API.getSortedCollection("EVENTS");
@@ -8422,16 +8444,22 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         }
         if (STATE.heat > 85 && STATE.razziaCooldown <= 0 && this.razziaWarn != null && this.razziaWarn <= 0) {
           this.razziaWarn = null;
-          const keepD0 = stats.dirtyRaidKeep + (1 - stats.dirtyRaidKeep) * 0.4 * (stats.launderShare || 0);
-          STATE.currencies.dirtyCash = Math.max(0, (STATE.currencies.dirtyCash || 0) * keepD0);
-          const lsh = 0.4 * (stats.launderShare || 0);
-          const keepFactor = 1 - (stats.razziaLossFactor * 0.5) * (1 - lsh);
-          STATE.currencies.cash = Math.max(0, STATE.currencies.cash * keepFactor);
+          const firstRaid = (STATE.stats.razziaCount || 0) === 0;
+          if (firstRaid) {
+            this.firstRaidNote = true;
+          } else {
+            const keepD0 = stats.dirtyRaidKeep + (1 - stats.dirtyRaidKeep) * 0.4 * (stats.launderShare || 0);
+            STATE.currencies.dirtyCash = Math.max(0, (STATE.currencies.dirtyCash || 0) * keepD0);
+            const lsh = 0.4 * (stats.launderShare || 0);
+            const keepFactor = 1 - (stats.razziaLossFactor * 0.5) * (1 - lsh);
+            STATE.currencies.cash = Math.max(0, STATE.currencies.cash * keepFactor);
+          }
           STATE.heat = 40;
           STATE.razziaCooldown = 300 + this.getOfficeBonuses().shieldBonusSec;
           STATE.stats.razziaCount += 1;
           STATE.boss.customQuote = "";
           STATE.boss.quoteKey = "ui.boss.quote.razzia";
+          if (firstRaid) { const en0 = STATE.settings && STATE.settings.lang === "EN"; STATE.boss.customQuote = en0 ? "„First raid: this time you lose nothing. Next time they take it.“" : "„Erste Razzia: diesmal verlierst du nichts. Beim nächsten Mal wird beschlagnahmt.“"; }
           razziaTriggered = true;
         }
 
@@ -8536,7 +8564,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         } catch (e) {}
         let vp = "";
         try { vp = innerWidth + "x" + innerHeight; } catch (e) {}
-        this.add("START", "v3.18.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
+        this.add("START", "v3.19.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
         this.flush();
       },
       flush() {
@@ -10258,19 +10286,19 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
               </button>` : ""}
               ${STATE.activeEvent === "ev_wettbuero" ? `<button type="button" class="comic-btn ev-choice-btn" style="width:100%;margin-top:5px;" data-action="hen-open" ${STATE.currencies.cash >= 1 ? "" : "disabled"}>
                 <span class="ev-choice-title">${STATE.settings && STATE.settings.lang === "EN" ? "Cockfight" : "Hahnenkampf"}</span>
-                <span class="ev-effs">${STATE.settings && STATE.settings.lang === "EN" ? "Pick a rooster · stake up to 50% · payout = stake × odds" : "Hahn wählen · bis 50 % Bargeld · Gewinn = Einsatz × Quote"}</span>
+                <span class="ev-effs">${STATE.settings && STATE.settings.lang === "EN" ? "Pick a rooster · stake up to 100% · payout = stake × odds" : "Hahn wählen · bis 100 % Bargeld · Gewinn = Einsatz × Quote"}</span>
               </button>` : ""}
               ${STATE.activeEvent === "ev_wettbuero" ? `<button type="button" class="comic-btn ev-choice-btn" style="width:100%;margin-top:5px;" data-action="dog-open" ${STATE.currencies.cash >= 1 ? "" : "disabled"}>
                 <span class="ev-choice-title">${STATE.settings && STATE.settings.lang === "EN" ? "Dog race" : "Hunderennen"}</span>
-                <span class="ev-effs">${STATE.settings && STATE.settings.lang === "EN" ? "4 dogs · stake up to 50% · payout = stake × odds" : "4 Hunde · bis 50 % Bargeld · Gewinn = Einsatz × Quote"}</span>
+                <span class="ev-effs">${STATE.settings && STATE.settings.lang === "EN" ? "4 dogs · stake up to 100% · payout = stake × odds" : "4 Hunde · bis 100 % Bargeld · Gewinn = Einsatz × Quote"}</span>
               </button>` : ""}
               ${STATE.activeEvent === "ev_wettbuero" ? `<button type="button" class="comic-btn ev-choice-btn" style="width:100%;margin-top:5px;" data-action="dice-open" ${STATE.currencies.cash >= 1 ? "" : "disabled"}>
                 <span class="ev-choice-title">${STATE.settings && STATE.settings.lang === "EN" ? "Street dice" : "Straßenwürfeln"}</span>
-                <span class="ev-effs">${STATE.settings && STATE.settings.lang === "EN" ? "Best of 3 · stake up to 50% · win doubles it" : "2 von 3 Runden · bis 50 % Bargeld · Sieg verdoppelt"}</span>
+                <span class="ev-effs">${STATE.settings && STATE.settings.lang === "EN" ? "Best of 3 · stake up to 100% · win doubles it" : "2 von 3 Runden · bis 100 % Bargeld · Sieg verdoppelt"}</span>
               </button>` : ""}
               ${STATE.activeEvent === "ev_wettbuero" ? `<button type="button" class="comic-btn ev-choice-btn" style="width:100%;margin-top:5px;" data-action="dart-open" ${STATE.currencies.cash >= 1 ? "" : "disabled"}>
                 <span class="ev-choice-title">${STATE.settings && STATE.settings.lang === "EN" ? "Pub darts" : "Dart in der Kneipe"}</span>
-                <span class="ev-effs">${STATE.settings && STATE.settings.lang === "EN" ? "3 darts vs. a regular · stake up to 50% · win doubles it" : "3 Pfeile gegen einen Stammgast · bis 50 % Bargeld · Sieg verdoppelt"}</span>
+                <span class="ev-effs">${STATE.settings && STATE.settings.lang === "EN" ? "3 darts vs. a regular · stake up to 100% · win doubles it" : "3 Pfeile gegen einen Stammgast · bis 100 % Bargeld · Sieg verdoppelt"}</span>
               </button>` : ""}
             </div>
           </section>
@@ -11220,7 +11248,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
               ${devHtml}
 
               <div class="version-footer" data-action="tap-version">
-                Hustlers: Urban Edition • v3.18.0
+                Hustlers: Urban Edition • v3.19.0
               </div>
               <div style="text-align:center;font-size:11px;padding:0 0 22px;"><a href="impressum.html" target="_blank" rel="noopener" style="color:var(--accent-concrete);">Impressum &amp; Datenschutz</a></div>
             `;
@@ -11775,7 +11803,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           <div class="dog-cards">${roos.map((r, i) => `<button type="button" class="hen-card${i === pick ? " sel" : ""}" data-h-pick="${i}"><span class="hen-ico">${this.dogSvg(cols[i])}</span><b>${r.name}</b><span class="hen-form">Form ${"●".repeat(r.form)}${"○".repeat(5 - r.form)}</span><span class="hen-odds">× ${r.odds.toFixed(2)}</span></button>`).join("")}</div>
           <div style="display:flex;justify-content:space-between;font-weight:900;"><span>${en ? "Stake" : "Einsatz"}: <span class="num" data-c-pct>25</span>%</span><span class="num" data-c-stake></span></div>
           <input class="cups-range" type="range" min="1" max="${MAXP}" value="25" data-c-range>
-          <div class="cups-quick"><button type="button" class="comic-btn" data-c-q="10">10%</button><button type="button" class="comic-btn" data-c-q="25">25%</button><button type="button" class="comic-btn" data-c-q="${MAXP}">${MAXP}%</button></div>
+          <div class="cups-quick"><button type="button" class="comic-btn" data-c-q="25">25%</button><button type="button" class="comic-btn" data-c-q="50">50%</button><button type="button" class="comic-btn" data-c-q="75">75%</button><button type="button" class="comic-btn" data-c-q="${MAXP}">${MAXP}%</button></div>
           <p style="text-align:center;font-weight:800;" data-c-win></p>
           <button type="button" class="comic-btn primary" style="width:100%;min-height:50px;font-size:17px;" data-c-start>${en ? "PLACE BET" : "WETTE PLATZIEREN"}</button>
           <button type="button" class="comic-btn" style="width:100%;margin-top:6px;" data-action="close-modal">${en ? "Cancel" : "Abbrechen"}</button>`;
@@ -11886,7 +11914,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           <p style="font-weight:700;">${en ? "Best of 3 rounds, two dice each, higher total wins. You may re-roll ONE die per round by tapping it. He re-rolls after seeing your total. A tied round counts for nobody. Win = stake doubled, lose = stake gone. Closing the window forfeits." : "2 von 3 Runden, je zwei Würfel, die höhere Summe gewinnt. Pro Runde darfst du EINEN Würfel neu werfen, indem du ihn antippst. Er würfelt nach, nachdem er deine Summe kennt. Eine gleiche Runde zählt für keinen. Sieg = Einsatz verdoppelt, Niederlage = Einsatz weg. Fenster schließen gilt als verloren."}</p>
           <div style="display:flex;justify-content:space-between;font-weight:900;"><span>${en ? "Stake" : "Einsatz"}: <span class="num" data-c-pct>25</span>%</span><span class="num" data-c-stake></span></div>
           <input class="cups-range" type="range" min="1" max="${MAXP}" value="25" data-c-range>
-          <div class="cups-quick"><button type="button" class="comic-btn" data-c-q="10">10%</button><button type="button" class="comic-btn" data-c-q="25">25%</button><button type="button" class="comic-btn" data-c-q="${MAXP}">${MAXP}%</button></div>
+          <div class="cups-quick"><button type="button" class="comic-btn" data-c-q="25">25%</button><button type="button" class="comic-btn" data-c-q="50">50%</button><button type="button" class="comic-btn" data-c-q="75">75%</button><button type="button" class="comic-btn" data-c-q="${MAXP}">${MAXP}%</button></div>
           <button type="button" class="comic-btn primary" style="width:100%;min-height:50px;font-size:17px;" data-c-start>${en ? "ROLL" : "WÜRFELN"}</button>
           <button type="button" class="comic-btn" style="width:100%;margin-top:6px;" data-action="close-modal">${en ? "Cancel" : "Abbrechen"}</button>`;
         document.getElementById("app-modal").classList.add("open");
@@ -12011,7 +12039,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           <p style="font-weight:700;">${en ? "3 darts each, higher total wins. A crosshair sweeps over the board: tap THROW to stop it. Closer to the middle scores more (bullseye 50). Tie = one extra dart each. Win = stake doubled, lose = stake gone. Closing the window forfeits." : "Jeder wirft 3 Pfeile, die höhere Summe gewinnt. Ein Fadenkreuz pendelt über die Scheibe: tippe WERFEN, um es zu stoppen. Je näher an der Mitte, desto mehr Punkte (Bullseye 50). Gleichstand = je ein Stichpfeil. Sieg = Einsatz verdoppelt, Niederlage = Einsatz weg. Fenster schließen gilt als verloren."}</p>
           <div style="display:flex;justify-content:space-between;font-weight:900;"><span>${en ? "Stake" : "Einsatz"}: <span class="num" data-c-pct>25</span>%</span><span class="num" data-c-stake></span></div>
           <input class="cups-range" type="range" min="1" max="${MAXP}" value="25" data-c-range>
-          <div class="cups-quick"><button type="button" class="comic-btn" data-c-q="10">10%</button><button type="button" class="comic-btn" data-c-q="25">25%</button><button type="button" class="comic-btn" data-c-q="${MAXP}">${MAXP}%</button></div>
+          <div class="cups-quick"><button type="button" class="comic-btn" data-c-q="25">25%</button><button type="button" class="comic-btn" data-c-q="50">50%</button><button type="button" class="comic-btn" data-c-q="75">75%</button><button type="button" class="comic-btn" data-c-q="${MAXP}">${MAXP}%</button></div>
           <button type="button" class="comic-btn primary" style="width:100%;min-height:50px;font-size:17px;" data-c-start>${en ? "TO THE BOARD" : "AN DIE SCHEIBE"}</button>
           <button type="button" class="comic-btn" style="width:100%;margin-top:6px;" data-action="close-modal">${en ? "Cancel" : "Abbrechen"}</button>`;
         document.getElementById("app-modal").classList.add("open");
@@ -12121,7 +12149,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           <div class="hen-cards">${roos.map((r, i) => `<button type="button" class="hen-card${i === pick ? " sel" : ""}" data-h-pick="${i}"><span class="hen-ico">${this.henSvg(["#E2A326","#B5651D","#6B7F8E"][i])}</span><b>${r.name}</b><span class="hen-form">${en ? "Form" : "Form"} ${"●".repeat(r.form)}${"○".repeat(5 - r.form)}</span><span class="hen-odds">× ${r.odds.toFixed(2)}</span></button>`).join("")}</div>
           <div style="display:flex;justify-content:space-between;font-weight:900;"><span>${en ? "Stake" : "Einsatz"}: <span class="num" data-c-pct>25</span>%</span><span class="num" data-c-stake></span></div>
           <input class="cups-range" type="range" min="1" max="${MAXP}" value="25" data-c-range>
-          <div class="cups-quick"><button type="button" class="comic-btn" data-c-q="10">10%</button><button type="button" class="comic-btn" data-c-q="25">25%</button><button type="button" class="comic-btn" data-c-q="${MAXP}">${MAXP}%</button></div>
+          <div class="cups-quick"><button type="button" class="comic-btn" data-c-q="25">25%</button><button type="button" class="comic-btn" data-c-q="50">50%</button><button type="button" class="comic-btn" data-c-q="75">75%</button><button type="button" class="comic-btn" data-c-q="${MAXP}">${MAXP}%</button></div>
           <p style="text-align:center;font-weight:800;" data-c-win></p>
           <button type="button" class="comic-btn primary" style="width:100%;min-height:50px;font-size:17px;" data-c-start>${en ? "PLACE BET" : "WETTE PLATZIEREN"}</button>
           <button type="button" class="comic-btn" style="width:100%;margin-top:6px;" data-action="close-modal">${en ? "Cancel" : "Abbrechen"}</button>`;
@@ -12223,7 +12251,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           <p style="font-weight:700;">${en ? "3 rounds. Swipe away from the punch to dodge, then tap to counter while he is open. Tapping at the wrong time makes you tired. Win = stake doubled, lose = stake gone. Closing the window forfeits." : "3 Runden. Wische vom Schlag weg zum Ausweichen, dann tippe zum Kontern, solange er offen ist. Zur falschen Zeit tippen macht müde. Sieg = Einsatz verdoppelt, Niederlage = Einsatz weg. Fenster schließen gilt als Aufgabe."}</p>
           <div style="display:flex;justify-content:space-between;font-weight:900;"><span>${en ? "Stake" : "Einsatz"}: <span class="num" data-c-pct>25</span>%</span><span class="num" data-c-stake></span></div>
           <input class="cups-range" type="range" min="1" max="${MAXP}" value="25" data-c-range>
-          <div class="cups-quick"><button type="button" class="comic-btn" data-c-q="10">10%</button><button type="button" class="comic-btn" data-c-q="25">25%</button><button type="button" class="comic-btn" data-c-q="${MAXP}">${MAXP}%</button></div>
+          <div class="cups-quick"><button type="button" class="comic-btn" data-c-q="25">25%</button><button type="button" class="comic-btn" data-c-q="50">50%</button><button type="button" class="comic-btn" data-c-q="75">75%</button><button type="button" class="comic-btn" data-c-q="${MAXP}">${MAXP}%</button></div>
           <button type="button" class="comic-btn primary" style="width:100%;min-height:50px;font-size:17px;" data-c-start>${en ? "TO THE RING" : "IN DEN RING"}</button>
           <button type="button" class="comic-btn" style="width:100%;margin-top:6px;" data-action="close-modal">${en ? "Cancel" : "Abbrechen"}</button>`;
         document.getElementById("app-modal").classList.add("open");
@@ -12310,7 +12338,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           }
         };
         const loop = (now) => {
-          if (token !== this._boxTok || !modal.classList.contains("open")) { if (!b.over) finish(false, true); return; }
+          if (token !== this._boxTok || !modal.classList.contains("open") || !document.body.contains(arena)) { if (!b.over) finish(false, true); return; }
           const dt = Math.min(0.1, (now - last) / 1000); last = now;
           Engine.boxStep(b, dt); events(); render();
           if (b.over) { finish(!!b.win); return; }
@@ -12415,8 +12443,8 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
             const nm = { easy: en ? "EASY" : "LEICHT", mid: en ? "MEDIUM" : "MITTEL", hard: en ? "HARD" : "SCHWER" };
             const isV = sp.kind === "vault", isR = sp.kind === "run", isB = sp.kind === "box";
             const txt = isB ? (en
-              ? "Dodge by swiping away from the punch, then tap to counter while he is open. Don't spam taps: you get tired. Stake up to 50 % of your cash, win = double."
-              : "Wische vom Schlag weg zum Ausweichen, dann tippe zum Kontern, solange er offen ist. Nicht wild tippen: Du wirst müde. Einsatz bis 50 % deines Bargelds, Sieg = doppelt.") : isR ? (en
+              ? "Dodge by swiping away from the punch, then tap to counter while he is open. Don't spam taps: you get tired. Stake up to 100 % of your cash, win = double."
+              : "Wische vom Schlag weg zum Ausweichen, dann tippe zum Kontern, solange er offen ist. Nicht wild tippen: Du wirst müde. Einsatz bis 100 % deines Bargelds, Sieg = doppelt.") : isR ? (en
               ? "Swipe or tap left/right: collect packages, dodge roadblocks. 3 lives. Every package adds loot, a crash costs only a life."
               : "Wische oder tippe links/rechts: Pakete einsammeln, Sperren ausweichen. 3 Leben. Jedes Paket bringt Beute, ein Crash kostet nur ein Leben.") : isV ? (en
               ? "Stop the needle in the green zone. 3 tries, every hit adds loot. A miss costs nothing."
@@ -12426,7 +12454,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
               : "Schwerer = mehr Beute. Verpasst kostet Fahndung und Schwarzgeld. Ablehnen ist gratis.");
             if (isB) {
               const vb = el.querySelector("[data-sp-vault]");
-              const vh = (en ? "FIGHT" : "KÄMPFEN") + "<small>" + (en ? "stake up to 50 % of cash" : "Einsatz bis 50 % Bargeld") + "</small>";
+              const vh = (en ? "FIGHT" : "KÄMPFEN") + "<small>" + (en ? "stake up to 100 % of cash" : "Einsatz bis 100 % Bargeld") + "</small>";
               if (vb && vb.getAttribute("data-h") !== vh) { vb.innerHTML = vh; vb.setAttribute("data-h", vh); }
             }
             if (isR) {
@@ -12606,6 +12634,15 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         if (b["curr-favors"]) setTxt(b["curr-favors"], formatNumber(STATE.currencies.favors, 0));
         if (b["curr-files"]) setTxt(b["curr-files"], formatNumber(STATE.currencies.files, 0));
         if (b["curr-wash"]) setTxt(b["curr-wash"], formatNumber(stats.washCapacityCps, 1));
+        if (b["curr-wash-trend"]) {
+          const dstock = STATE.currencies.dirtyCash || 0;
+          const net = (stats.grossDirtyCps || 0) - (stats.washCapacityCps || 0);
+          const fillPct = stats.depotCapacity > 0 ? dstock / stats.depotCapacity * 100 : 0;
+          let cls = "wash-trend", arrow = "▶";
+          if (net > 0.05 && (stats.grossDirtyCps || 0) > 0) { cls += " up" + (fillPct >= 80 ? " hot" : ""); arrow = "▲"; }
+          else if (net < 0 && dstock > 1) { cls += " down"; arrow = "↘"; }
+          setCls(b["curr-wash-trend"], cls); setTxt(b["curr-wash-trend"], arrow);
+        }
         if (b["escape-btn"]) { const ea = Engine.escapeAvailable(); const dv = ea ? "block" : "none"; if (b["escape-btn"].style.display !== dv) b["escape-btn"].style.display = dv; if (ea) setTxt(b["escape-btn"], (STATE.settings && STATE.settings.lang === "EN" ? "ESCAPE ROUTE" : "FLUCHTWEG") + " · " + Math.max(1, Math.ceil(Engine.razziaWarn)) + "s"); }
         if (b["curr-wash-lbl"]) setTxt(b["curr-wash-lbl"], t("ui.curr.wash") + (STATE.washReserve ? " ⛨" + STATE.washReserve + "%" : ""));
         if (b["curr-files-bonus"]) setTxt(b["curr-files-bonus"], formatNumber((prestigeMulFromFiles(STATE.stats.filesEarnedTotal) - 1) * 100, 0));
@@ -13079,13 +13116,14 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         const body = document.getElementById("app-modal-body");
         body.innerHTML = `
           <h2 class="panel-title">${L("Willkommen im Kiez", "Welcome to the hood")}</h2>
-          <p style="font-weight:800;">${L("Hustlers ist ein Idle-Spiel: Du baust vom Straßendeal zum Imperium auf, und das Geld läuft auch weiter, wenn du nicht spielst.", "Hustlers is an idle game: build from street deals to an empire, and the money keeps coming in while you are away.")}</p>
+          <p style="font-weight:800;">${L("Hustlers ist ein Idle-Spiel: Du arbeitest dich vom kleinen Straßendeal bis zum eigenen Imperium hoch. Das Geld fließt auch weiter, wenn du gerade nicht spielst.", "Hustlers is an idle game: build from street deals to an empire, and the money keeps coming in while you are away.")}</p>
           <ul style="margin:6px 0 8px 18px;padding:0;font-weight:700;line-height:1.45;">
             <li>${L("Kaufe Betriebe und stelle Manager ein. Sie verdienen automatisch.", "Buy businesses and hire managers. They earn on their own.")}</li>
             <li>${L("Tippe den HUSTLE-Knopf für schnelles Extra-Geld.", "Tap the HUSTLE button for quick extra cash.")}</li>
             <li>${L("Schwarzgeld bringt Fahndungsdruck. Steigt er zu hoch, kommt eine Razzia. Wasche das Geld sauber und halte die Fahndung niedrig.", "Dirty money raises the heat. Too much heat brings a raid. Launder the cash and keep the heat low.")}</li>
-            <li>${L("Erledige Aufträge, erobere Reviere und sammle Erfolge. Ziel: ganz nach oben.", "Run missions, take turf and earn achievements. Goal: reach the top.")}</li>
+            <li>${L("Erledige Aufträge, erobere Reviere und sammle Erfolge.", "Run missions, take turf and earn achievements.")}</li>
           </ul>
+          <p style="font-weight:900;font-size:17px;text-align:center;margin:4px 0 10px;">${L("Ziel: ganz nach oben hustlen!", "Goal: hustle your way to the top!")}</p>
           <button type="button" class="comic-btn primary" style="width:100%;min-height:48px;" data-intro-next>${L("Weiter", "Next")}</button>`;
         document.getElementById("app-modal").classList.add("open");
         body.querySelector("[data-intro-next]").addEventListener("click", () => { Platform.haptic(8); this.showNamePrompt(); });
@@ -13187,18 +13225,20 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), sc = sec % 60;
         const durText = h > 0 ? `${h} ${L("Std.", "h")} ${m} ${L("Min.", "min")}` : m > 0 ? `${m} ${L("Min.", "min")} ${sc} ${L("Sek.", "s")}` : `${sc} ${L("Sek.", "s")}`;
         const cap = report.maxOfflineHours || 8;
-        const tile = (label, val, col, bg) => `<div style="flex:1;min-width:0;border:3px solid #1A1A1A;border-radius:0;background:${bg};padding:8px 6px;text-align:center;box-shadow:0 3px 0 #1A1A1A;">
-              <div style="font-size:11px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;color:#1A1A1A;opacity:.75;">${label}</div>
+        const tile = (label, val, col, bg) => `<div style="flex:1;min-width:0;border:var(--border-comic);background:${bg};padding:8px 6px;text-align:center;box-shadow:var(--shadow-comic-sm);">
+              <div style="font-size:10.5px;font-weight:900;text-transform:uppercase;color:#1A1A1A;opacity:.75;">${label}</div>
               <div class="num" style="font-size:20px;font-weight:900;color:${col};line-height:1.25;word-break:break-word;">+${formatNumber(val)} €</div>
             </div>`;
         body.innerHTML = `
           <h2 class="panel-title">${t("offline.title")}</h2>
-          <p style="font-weight:800;margin:4px 0 10px;">${L("Du warst", "You were away for")} <span class="num" style="background:#FFD400;border:2px solid #1A1A1A;padding:1px 7px;">${durText}</span>${L(" weg. Währenddessen lief das Geschäft weiter:", ". Business kept running meanwhile:")}</p>
-          <div style="display:flex;gap:8px;margin-bottom:8px;">
+          <p style="font-weight:800;margin:6px 0 12px;line-height:1.35;">${L("Während du weg warst, lief das Geschäft weiter.", "Business kept running while you were away.")}</p>
+          <div class="bd-row"><span>${L("Abwesend", "Away for")}</span><span class="num" style="font-weight:900;">${durText}</span></div>
+          <div class="bd-row"><span>${L("Effizienz", "Efficiency")}</span><span class="num" style="font-weight:900;">50 %</span></div>
+          <div class="bd-row"><span>${L("Maximal angerechnet", "Counted up to")}</span><span class="num" style="font-weight:900;">${cap} ${L("Std.", "h")}</span></div>
+          <div style="display:flex;gap:10px;margin:14px 0 14px;">
             ${tile(L("Bargeld", "Clean cash"), report.cleanGained || 0, "#3F7A1C", "#E4F0D2")}
             ${tile(L("Schwarzgeld", "Dirty cash"), report.dirtyGained || 0, "#B4560F", "#F8E0C6")}
           </div>
-          <p style="font-size:11px;font-weight:700;opacity:.75;margin:0 0 10px;">${L(`Abwesend zählt mit 50 % Effizienz, maximal ${cap} Stunden.`, `Away time counts at 50% efficiency, up to ${cap} hours.`)}</p>
           <button type="button" class="comic-btn primary" style="width:100%;min-height:48px;" data-action="close-modal">${t("modal.close")}</button>
         `;
         modal.classList.add("open");
@@ -13371,6 +13411,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           Platform.playTone("alarm");
           Platform.haptic(60);
           FX.shake(); FX.flash("rgba(230,40,40,.5)");
+          if (Engine.firstRaidNote) { Engine.firstRaidNote = false; const en1 = STATE.settings && STATE.settings.lang === "EN"; View.toast(en1 ? "FIRST RAID" : "ERSTE RAZZIA", en1 ? "Forgiven this time. Next time they seize cash." : "Diesmal verziehen. Beim nächsten Mal wird beschlagnahmt."); }
         }
         if (tickRes.missionFinished || tickRes.spotBecameReady) {
           if (tickRes.missionFinished) {
