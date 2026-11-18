@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="437dfdc23d">
+  <meta name="build-id" content="63c4ad69f6">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2608,6 +2608,13 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 .on-bar{height:16px;border:var(--border-comic);background:var(--bg-paper);position:relative;overflow:hidden}
 .on-bar i{position:absolute;left:0;top:0;bottom:0;background:#5B9628;display:block}
 .on-note{font-size:11.5px;font-weight:700;line-height:1.35;opacity:.85}
+
+.gear-btn{flex:0 0 auto;width:36px;min-height:36px;padding:0;display:flex;align-items:center;justify-content:center;background:var(--bg-card);border:1.5px solid var(--line);border-radius:0;color:var(--text);cursor:pointer;touch-action:manipulation}
+.gear-btn svg{stroke:currentColor}
+.gear-btn:active{transform:translate(1px,1px)}
+.bottom-nav{grid-template-columns:none!important;grid-auto-flow:column;grid-auto-columns:1fr}
+.bottom-nav.nav-single{display:none}
+.nav-tab.tab-locked{display:none}
 </style>
   <script data-goatcounter="https://hustlers.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -2733,6 +2740,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 
     <div class="control-bar" id="biz-control-bar">
       <button type="button" class="flip-all-btn" data-action="toggle-all-modes" data-i18n="mode.flip_all">⇄ Alle</button>
+      <button type="button" class="gear-btn" data-action="open-settings" aria-label="Einstellungen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
       <button type="button" class="mini-hustle-btn" id="mini-hustle-btn" data-action="click-hustle">
         <span class="hustle-bubble" data-bind="mini-hustle-word" aria-hidden="true">HUSTLE</span>
         <span class="mini-hustle-top">
@@ -2932,7 +2940,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "tip.pkg.title": "Päckchen",
         "tip.pkg.text": "Ein Freund hat dir ein Päckchen geschickt. Öffne Kartell → Freunde und tippe auf ÖFFNEN. Ob Geschenk, Prüfer oder Bombe, siehst du erst dann.",
         "tip.friends.title": "Freunde",
-        "tip.friends.text": "Tausche im Kartell unter Freunde Visitenkarten mit Mitspielern. Dann könnt ihr euch Päckchen schicken und gemeinsam den Tagesjob spielen.",
+        "tip.friends.text": "Füge im Kartell unter Freunde Mitspieler hinzu. Dann könnt ihr euch Päckchen schicken und eure Umsätze vergleichen.",
         "tip.audit.title": "Steuerprüfer",
         "tip.audit.text": "Er legt einen Betrieb lahm und die Fahndung steigt, solange er da ist. ZAHLEN kostet Geld, ABLENKEN legt den Betrieb kurz still, STANDHALTEN (viele Tipps) kostet nichts.",
         "tip.lock.title": "Schwarzgeld gesperrt",
@@ -3666,7 +3674,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "tip.pkg.title": "Package",
         "tip.pkg.text": "A friend sent you a package. Open Cartel → Friends and tap OPEN. Gift, auditor or bomb – you only find out then.",
         "tip.friends.title": "Friends",
-        "tip.friends.text": "Swap business cards with other players under Cartel → Friends. Then you can send each other packages and play the daily job together.",
+        "tip.friends.text": "Add other players under Cartel → Friends. Then you can send each other packages and compare revenue.",
         "tip.audit.title": "Tax auditor",
         "tip.audit.text": "He shuts down a business and heat keeps rising while he is around. PAY costs money, DISTRACT shuts the business down briefly, STAND FIRM (many taps) costs nothing.",
         "tip.lock.title": "Dirty cash locked",
@@ -5080,13 +5088,20 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
       },
 
       unlockAudio() {
-        if (this.audioUnlocked) return;
+        if (this.audioUnlocked && this.audioCtx && this.audioCtx.state === "running") return;
         const AudioCtor = window.AudioContext || window.webkitAudioContext;
         if (!AudioCtor) return;
         try {
-          if (!this.audioCtx) this.audioCtx = new AudioCtor();
-          if (this.audioCtx.state === "suspended") this.audioCtx.resume();
-          this.audioUnlocked = true;
+          // iPhone: Ton auch bei stummgeschaltetem Klingelschalter (iOS 16.4+)
+          try { if (navigator.audioSession && navigator.audioSession.type !== "playback") navigator.audioSession.type = "playback"; } catch (_) {}
+          if (!this.audioCtx) {
+            this.audioCtx = new AudioCtor();
+            this.audioCtx.onstatechange = () => { if (this.audioCtx && this.audioCtx.state !== "running") this.audioUnlocked = false; };
+          }
+          const c = this.audioCtx;
+          if (c.state !== "running") { const r = c.resume(); if (r && r.catch) r.catch(() => {}); }
+          try { const b = c.createBuffer(1, 1, 22050), sr = c.createBufferSource(); sr.buffer = b; sr.connect(c.destination); sr.start(0); } catch (_) {}
+          this.audioUnlocked = c.state === "running";
         } catch (_) {}
       },
 
@@ -5099,6 +5114,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
             for (let i = 0; i < seq.length; i++) this._note.apply(this, seq[i]);
             return;
           }
+          if (type === "slap") { this._slap(pitchStep, this.audioCtx, this.audioCtx.destination, this.audioCtx.currentTime); return; }
           const now = this.audioCtx.currentTime;
           const osc = this.audioCtx.createOscillator();
           const gain = this.audioCtx.createGain();
@@ -5132,6 +5148,36 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
             osc.stop(now + 0.24);
           }
         } catch (_) {}
+      },
+
+      // Ohrfeige / Klatschen: harter, heller Rauschknall mit kurzem Körper. step = Kombo (0-6), 6 = Treffer
+      _slap(step, ctx, dest, now) {
+        const k = Math.max(0, Math.min(6, step | 0));
+        const hard = k >= 6;
+        const rate = ctx.sampleRate;
+        const noise = (sec, pow) => {
+          const len = Math.floor(rate * sec), buf = ctx.createBuffer(1, len, rate), d = buf.getChannelData(0);
+          for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, pow);
+          return buf;
+        };
+        const layer = (sec, pow, type, f, q, vol, dec, hpf) => {
+          const src = ctx.createBufferSource(); src.buffer = noise(sec, pow);
+          const bp = ctx.createBiquadFilter(); bp.type = type; bp.frequency.value = f; bp.Q.value = q;
+          const g = ctx.createGain(); g.gain.setValueAtTime(vol, now); g.gain.exponentialRampToValueAtTime(0.001, now + dec);
+          src.connect(bp);
+          if (hpf) { const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = hpf; bp.connect(hp); hp.connect(g); } else bp.connect(g);
+          g.connect(dest); src.start(now); src.stop(now + sec);
+        };
+        const jit = 0.9 + Math.random() * 0.2;
+        // 1. scharfer Aufprall (hell, sehr kurz)
+        layer(0.05, 2, "bandpass", (2900 + k * 120) * jit, 0.55, hard ? 0.26 : 0.18, 0.04, 1300);
+        // 2. Klatsch-Körper (mittleres Rauschen, etwas länger)
+        layer(0.10, 2.5, "bandpass", 1100 * jit, 0.9, hard ? 0.14 : 0.09, 0.08, 500);
+        // 3. nur ein Hauch von Wucht darunter
+        const o = ctx.createOscillator(); o.type = "sine";
+        o.frequency.setValueAtTime(150 * jit, now); o.frequency.exponentialRampToValueAtTime(70, now + 0.05);
+        const g2 = ctx.createGain(); g2.gain.setValueAtTime(hard ? 0.07 : 0.045, now); g2.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+        o.connect(g2); g2.connect(dest); o.start(now); o.stop(now + 0.07);
       },
 
       // [freq, startSec, durSec, wave, volume, slideToFreq]
@@ -6082,6 +6128,14 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         if (!STATE.ui.seenSignatures || typeof STATE.ui.seenSignatures !== "object") {
           STATE.ui.seenSignatures = { businesses: "", logistics: "", turf: "", cartel: "" };
         }
+        if (!STATE.ui.tabs || typeof STATE.ui.tabs !== "object") {
+          const played = ((STATE.stats && STATE.stats.lifetimeRevenue) || 0) > 0 || Object.values(STATE.businesses || {}).some(b => b && b.level >= 1);
+          const v = played ? 1 : 0;
+          STATE.ui.tabs = { logistics: v, turf: v, hq: v, cartel: v };
+        }
+        if (!STATE.ui.tabNew || typeof STATE.ui.tabNew !== "object") STATE.ui.tabNew = {};
+        if (!Engine._devReset) { Engine._devReset = true; STATE.ui.devUnlocked = false; }
+        if (!tabOpen(STATE.ui.activeTab)) STATE.ui.activeTab = "businesses";
         for (const k of ["cash", "dirtyCash", "cred", "favors", "files", "drugs", "weapons", "stolen", "tickets"]) {
           if (!Number.isFinite(STATE.currencies[k]) || STATE.currencies[k] < 0) STATE.currencies[k] = 0;
         }
@@ -6823,6 +6877,18 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         if (kind === "war") { STATE.war = null; const ok = this.warSpawn(); return ok ? "Revierkampf" : "kein Revier gekauft"; }
         if (kind === "raid") { STATE.heat = 90; STATE.razziaCooldown = 0; return "Razzia-Warnung"; }
         if (kind === "bomb") { const r = this.applyBomb(); return r ? "Bombe: " + r.id : "kein Büro-Upgrade vorhanden"; }
+        if (kind === "tabs_all") {
+          STATE.ui.tabs = { logistics: 1, turf: 1, hq: 1, cartel: 1 };
+          View.syncTabs();
+          return "Alle Tabs frei";
+        }
+        if (kind === "tabs_none") {
+          STATE.ui.tabs = { logistics: 0, turf: 0, hq: 0, cartel: 0 };
+          STATE.ui.tabNew = {};
+          STATE.ui.activeTab = "businesses";
+          View.syncTabs(); View.syncShellControls();
+          return "Tabs gesperrt (Freischaltung startet neu)";
+        }
         if (kind === "lv10" || kind === "lv100") {
           const n = kind === "lv10" ? 10 : 100;
           biz.forEach(b => { const st = STATE.businesses[b.id]; if (st) { st.unlocked = true; st.level += n; } });
@@ -7497,6 +7563,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           const prev = sorted[i - 1], ps = STATE.businesses[prev.id], min = cond.minLevel || 25;
           if (ps && (ps.level || 0) < min) return { kind: "unlock", id: sorted[i].id, prevId: prev.id, lvl: ps.level || 0, min, cost: this.calcBuyCost(prev.id, ps.level || 0, min - (ps.level || 0)) };
         }
+        { const T = STATE.ui && STATE.ui.tabs; const nu = T && TAB_UNLOCK.find(u => !T[u.k]); if (nu) { const have = COACH_Q.totalLevels(); return { kind: "tab", key: nu.k, have: Math.min(have, nu.lv), need: nu.lv }; } }
         const claim = this.getClaimableFiles();
         if (claim >= 1) return { kind: "prestige", n: claim };
         let best = null;
@@ -8572,7 +8639,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         when: () => COACH_Q.needsBranch(), done: () => COACH_Q.anyBranch(),
         target: ".branch-choice-box" },
       { id: "coups",
-        when: () => COACH_Q.totalLevels() >= 20 && Engine.getUnlockedMissionCategories().unlocked.length > 0,
+        when: () => tabOpen("hq") && COACH_Q.totalLevels() >= 20 && Engine.getUnlockedMissionCategories().unlocked.length > 0,
         done: () => !!STATE.activeMission || (STATE.ui.activeTab === "hq" && STATE.ui.hqSubTab === "coups"),
         target: '.nav-tab[data-tab="hq"]' },
       { id: "pkg",
@@ -8582,7 +8649,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         when: () => !!STATE.war, done: () => !STATE.war || !!document.querySelector("#app-modal.open .war-bar"),
         target: "#war-banner .sb-btn" },
       { id: "week",
-        when: () => Engine.weekReady(), done: () => !Engine.weekReady() || (STATE.ui.activeTab === "hq" && STATE.ui.hqSubTab === "milestones"),
+        when: () => tabOpen("hq") && Engine.weekReady(), done: () => !Engine.weekReady() || (STATE.ui.activeTab === "hq" && STATE.ui.hqSubTab === "milestones"),
         target: '.nav-tab[data-tab="hq"]' },
       { id: "vault",
         when: () => !!(Engine.sprint && Engine.sprint.offered && Engine.sprint.kind === "vault"), done: () => !!document.querySelector("[data-v-btn]"),
@@ -8600,11 +8667,11 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         when: () => Engine.escapeAvailable(), done: () => !!document.querySelector("[data-e-cell]"),
         target: '[data-bind="escape-btn"]' },
       { id: "friends",
-        when: () => COACH_Q.totalLevels() >= 40 && !(STATE.social && Object.keys(STATE.social.rivals || {}).length),
+        when: () => tabOpen("cartel") && COACH_Q.totalLevels() >= 40 && !(STATE.social && Object.keys(STATE.social.rivals || {}).length),
         done: () => !!(STATE.social && Object.keys(STATE.social.rivals || {}).length) || (STATE.ui.activeTab === "cartel" && STATE.ui.cartelSubTab === "friends"),
         target: '.nav-tab[data-tab="cartel"]' },
       { id: "prestige",
-        when: () => Engine.getClaimableFiles() >= 1 && (STATE.stats.prestigeCount || 0) === 0,
+        when: () => tabOpen("hq") && Engine.getClaimableFiles() >= 1 && (STATE.stats.prestigeCount || 0) === 0,
         done: () => (STATE.stats.prestigeCount || 0) > 0 || (STATE.ui.activeTab === "hq" && STATE.ui.hqSubTab === "vault"),
         target: '.nav-tab[data-tab="hq"]' }
     ];
@@ -8632,7 +8699,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         } catch (e) {}
         let vp = "";
         try { vp = innerWidth + "x" + innerHeight; } catch (e) {}
-        this.add("START", "v3.24.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
+        this.add("START", "v3.25.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
         this.flush();
       },
       flush() {
@@ -9406,8 +9473,19 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
     };
     window.Online = Online;
 
+    // Tabs werden nach und nach freigeschaltet (Summe aller Betriebs-Stufen). Zahlen hier anpassen.
+    const TAB_UNLOCK = [
+      { k: "logistics", lv: 25 },
+      { k: "turf", lv: 35 },
+      { k: "hq", lv: 45 },
+      { k: "cartel", lv: 55 }
+    ];
+    function tabOpen(k) { const T = STATE && STATE.ui && STATE.ui.tabs; return k === "businesses" || !T || !!T[k]; }
+
     const View = {
       bindCache: {},
+      _tabChk: 0,
+      settingsOpen: false,
       holdDelayTimer: null,
       holdInterval: null,
       pointerStart: null,
@@ -9449,10 +9527,78 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         for (let i = 0; i < btns.length; i++) {
           btns[i].classList.toggle("active", btns[i].getAttribute("data-mode") === STATE.ui.buyMode);
         }
+        this.syncTabs();
         const ctrlBar = document.getElementById("biz-control-bar");
         if (ctrlBar) ctrlBar.classList.toggle("hidden", STATE.ui.activeTab !== "businesses");
         document.documentElement.lang = (STATE.settings.lang || "DE").toLowerCase();
         applyTheme();
+      },
+
+      syncTabs() {
+        const navs = document.querySelectorAll(".nav-tab");
+        let open = 0;
+        for (let i = 0; i < navs.length; i++) {
+          const k = navs[i].getAttribute("data-tab"), ok = tabOpen(k);
+          navs[i].classList.toggle("tab-locked", !ok);
+          if (ok) open++;
+        }
+        const nav = document.querySelector(".bottom-nav");
+        if (nav) nav.classList.toggle("nav-single", open <= 1);
+        if (STATE.ui.tabNew && STATE.ui.tabNew[STATE.ui.activeTab] === 2) delete STATE.ui.tabNew[STATE.ui.activeTab];
+      },
+
+      tabStoryText(k) {
+        const en = STATE.settings && STATE.settings.lang === "EN";
+        const S = {
+          logistics: [
+            ["Neu: Logistik", "New: Routes"],
+            ["Der Laden läuft, doch Scheine und Ware müssen irgendwie von A nach B. Ein Kumpel mit Roller kennt jede Abkürzung im Viertel und fragt nicht viel. Unter Logistik baust du Routen aus: Sie waschen Geld, vergrößern dein Depot und halten die Ware in Bewegung.",
+             "The shop is running, but cash and goods still have to get from A to B. A buddy with a scooter knows every shortcut in the neighbourhood and asks no questions. Under Routes you expand lanes that launder money, grow your stash and keep goods moving."]
+          ],
+          turf: [
+            ["Neu: Revier", "New: Turf"],
+            ["Dein Block gehört dir noch nicht richtig, und andere Banden schauen schon herüber. Im Revier kaufst du Straßenzüge. Sie stärken deine Betriebe und bringen Einfluss. Aber wer Land hat, wird irgendwann angegriffen.",
+             "Your block isn't really yours yet, and other crews are already looking over. In Turf you buy streets. They boost your businesses and bring influence. But whoever holds land gets attacked sooner or later."]
+          ],
+          hq: [
+            ["Neu: HQ", "New: HQ"],
+            ["Ein Boss braucht eine Adresse. Ab jetzt hast du ein Büro mit Aussicht. Von hier planst du Coups, holst Wochenziele ab und tauschst dein Imperium später gegen Akten. Dort liegt auch der Schredder.",
+             "A boss needs an address. From now on you have an office with a view. From here you plan coups, collect weekly goals and later trade your empire for files. The shredder is here too."]
+          ],
+          cartel: [
+            ["Neu: Kartell", "New: Cartel"],
+            ["Du bist zu groß für Einzelkämpfer. Im Kartell heuerst du Crew an, kaufst Ausrüstung, handelst an der Börse und tauschst Visitenkarten mit anderen Bossen. Wer Freunde hat, bekommt Päckchen.",
+             "You've outgrown lone wolves. In the Cartel you hire crew, buy gear, trade on the market and swap business cards with other bosses. Who has friends gets packages."]
+          ]
+        }[k];
+        return S ? { title: S[0][en ? 1 : 0], text: S[1][en ? 1 : 0], go: en ? "TAKE A LOOK" : "ANSEHEN", later: en ? "LATER" : "SPÄTER" } : null;
+      },
+
+      checkTabUnlocks() {
+        const T = STATE.ui && STATE.ui.tabs; if (!T || !(STATE.social && STATE.social.named)) return;
+        if (!STATE.ui.tabNew) STATE.ui.tabNew = {};
+        const lv = COACH_Q.totalLevels();
+        let changed = false;
+        for (const u of TAB_UNLOCK) if (!T[u.k] && lv >= u.lv) { T[u.k] = 1; STATE.ui.tabNew[u.k] = 1; changed = true; }
+        if (changed) { this.syncTabs(); Platform.saveGame(true); }
+        const m = document.getElementById("app-modal");
+        if (m && m.classList.contains("open")) return;
+        const pend = TAB_UNLOCK.find(u => STATE.ui.tabNew[u.k] === 1);
+        if (!pend) return;
+        const tx = this.tabStoryText(pend.k);
+        if (!tx) { STATE.ui.tabNew[pend.k] = 2; return; }
+        STATE.ui.tabNew[pend.k] = 2;
+        this.settingsOpen = false;
+        const body = document.getElementById("app-modal-body");
+        body.innerHTML = `<h2 class="panel-title">${tx.title}</h2>
+          <p style="font-weight:700;line-height:1.5;margin:0;">${tx.text}</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;">
+            <button type="button" class="comic-btn primary" data-action="tab-story-go" data-tab="${pend.k}">${tx.go}</button>
+            <button type="button" class="comic-btn" data-action="close-modal">${tx.later}</button>
+          </div>`;
+        m.classList.add("open");
+        Platform.playTone("coin", 6); Platform.haptic(20);
+        Platform.saveGame(true);
       },
 
       cacheStaticBindings() {
@@ -9794,6 +9940,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         });
 
         // Touch-drag guard: single tap executes immediately on click, hold-buy triggers after 360ms
+        ["touchend", "click", "keydown"].forEach(ev => document.addEventListener(ev, () => Platform.unlockAudio(), { capture: true, passive: true }));
         shell.addEventListener("pointerdown", (e) => {
           Platform.unlockAudio();
           this.pointerStart = { x: e.clientX, y: e.clientY };
@@ -9850,6 +9997,10 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           const actionEl = e.target.closest("[data-action]");
           if (!actionEl) return;
           const action = actionEl.getAttribute("data-action");
+          if (this.settingsOpen && ["toggle-lang", "toggle-sound", "toggle-theme", "cycle-fx", "toggle-tips", "boss-style", "save-boss-id", "hide-dev", "tap-version", "hard-reset"].includes(action)) {
+            setTimeout(() => { if (this.settingsOpen) this.refreshSettings(); }, 0);
+            if (action === "hard-reset") setTimeout(() => { if (this.settingsOpen) this.refreshSettings(); }, 3700);
+          }
           if (action === "click-hustle") DBG.taps++;
           else DBG.add("TAP", action + " " + (actionEl.getAttribute("data-buy-biz") || actionEl.getAttribute("data-taskid") || actionEl.getAttribute("data-tier") || actionEl.getAttribute("data-good") || actionEl.getAttribute("data-pupid") || actionEl.getAttribute("data-slot") || ""));
 
@@ -9873,7 +10024,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           }
           if (action === "click-hustle") {
             const hRes = Engine.clickHustle();
-            Platform.playTone("coin", hRes.isCrit ? 6 : hRes.combo);
+            Platform.playTone("slap", hRes.isCrit ? 6 : hRes.combo);
             Platform.haptic(hRes.isCrit ? 22 : (hRes.isOverdrive ? 16 : 8));
             const label = hRes.isCrit ? `KRIT! +${formatNumber(hRes.gained)} €` : `+${formatNumber(hRes.gained)} €`;
             this.spawnFloatingPopup(actionEl, label, hRes.isOverdrive, hRes.isCrit);
@@ -10045,6 +10196,15 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           } else if (action === "online-delete-go") {
             const { L } = this.onlineLang();
             Online.deleteAll().then(ok => { document.getElementById("app-modal").classList.remove("open"); this.toast(ok ? L("Online-Daten gelöscht", "Online data deleted") : L("Löschen nicht möglich", "Delete failed"), ""); this.renderActiveTab(); });
+          } else if (action === "fr-copy-id") {
+            const en0 = STATE.settings && STATE.settings.lang === "EN";
+            this.copyText(actionEl.getAttribute("data-id") || "", en0 ? "ID copied – send it to your friend" : "ID kopiert – schick sie deinem Freund");
+          } else if (action === "open-settings") {
+            Platform.haptic(8); this.openSettings();
+          } else if (action === "tab-story-go") {
+            const tk = actionEl.getAttribute("data-tab");
+            document.getElementById("app-modal").classList.remove("open");
+            const nb = document.querySelector('[data-action="switch-tab"][data-tab="' + tk + '"]'); if (nb) nb.click();
           } else if (action === "goal-go") {
             const g = Engine.nextGoal();
             const tab = g && g.kind === "prestige" ? "hq" : "businesses";
@@ -10070,7 +10230,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
             this.hintKind = undefined; this.updateHintUI();
           } else if (action === "switch-tab") {
             const tab = actionEl.getAttribute("data-tab");
-            if (tab && STATE.ui.activeTab !== tab) {
+            if (tab && STATE.ui.activeTab !== tab && tabOpen(tab)) {
               this.stopHoldBuy();
               STATE.ui.activeTab = tab;
               Engine.markTabSeen(tab);
@@ -10458,6 +10618,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           } else if (action === "open-bilanz") {
             this.showBilanzModal();
           } else if (action === "close-modal") {
+            this.settingsOpen = false;
             if (this.lastRenderedEventId && !STATE.activeEvent) { setTimeout(() => this.renderActiveTab(), 0); }
             document.getElementById("app-modal").classList.remove("open");
           } else if (action === "do-prestige") {
@@ -10628,6 +10789,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 
       renderActiveTab() {
         const vp = document.getElementById("tab-viewport");
+        if (!tabOpen(STATE.ui.activeTab)) STATE.ui.activeTab = "businesses";
         const tab = STATE.ui.activeTab;
         this.lastRenderedEventId = STATE.activeEvent;
         const eventBanner = this.buildEventBannerHTML();
@@ -11461,44 +11623,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
               }
             }
 
-            const devHtml = STATE.ui.devUnlocked ? `
-              <section class="panel-box" style="background:#EFE7D3;">
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #1A1A1A; padding-bottom:4px;">
-                  <span style="font-size:12px; font-weight:900; text-transform:uppercase; display:inline-flex; align-items:center; gap:5px;">${renderIcon("gear", 14)} ${t("archive.test.title")}</span>
-                  <button type="button" class="mini-square-btn" style="font-size:10px;" data-action="hide-dev">${t("archive.test.hide")}</button>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
-                  <button type="button" class="comic-btn primary" style="min-height:34px; font-size:11px;" data-action="test-cheat" data-cheat="cash">${t("archive.test.cash")}</button>
-                  <button type="button" class="comic-btn dirty-buy" style="min-height:34px; font-size:11px;" data-action="test-cheat" data-cheat="dirty">${t("archive.test.dirty")}</button>
-                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="test-cheat" data-cheat="cred">${t("archive.test.cred")}</button>
-                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="test-cheat" data-cheat="favors">${t("archive.test.favors")}</button>
-                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="test-cheat" data-cheat="files">${t("archive.test.files")}</button>
-                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="test-cheat" data-cheat="contra">${t("archive.test.contra")}</button>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
-                  <button type="button" class="comic-btn danger" style="min-height:34px; font-size:11px;" data-action="test-cheat" data-cheat="heat_up">${t("archive.test.heat_up")}</button>
-                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="test-cheat" data-cheat="heat_zero">${t("archive.test.heat_zero")}</button>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
-                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="test-event">${STATE.settings.lang === "EN" ? "Trigger flash news" : "Eilmeldung auslösen"}</button>
-                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="test-sprint">${STATE.settings.lang === "EN" ? "Start sprint" : "Sprint starten"}</button>
-                </div>
-                ${(() => {
-                  const en = STATE.settings.lang === "EN";
-                  const grp = (title, items) => `<div style="font-size:10px; font-weight:900; text-transform:uppercase; margin:8px 0 3px; opacity:.7;">${title}</div><div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">${items.map(([k, de, e]) => `<button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-do" data-dev="${k}">${en ? e : de}</button>`).join("")}</div>`;
-                  return grp(en ? "Time & cooldowns" : "Zeit & Cooldowns", [["time1h", "+1 Std vorspulen", "Skip +1 h"], ["time8h", "+8 Std vorspulen", "Skip +8 h"], ["cd", "Cooldowns auf 0", "Reset cooldowns"], ["boost", "Boost +10 Min", "Boost +10 min"], ["mission", "Coup sofort fertig", "Finish heist"], ["prestige", "Umsatz für Prestige", "Revenue for prestige"]])
-                    + grp(en ? "Spawn" : "Auslösen", [["insp", "Steuerprüfer", "Tax auditor"], ["insp_off", "Prüfer entfernen", "Remove auditor"], ["dealer", "Händler-Event", "Dealer event"], ["raid", "Razzia-Warnung", "Raid warning"], ["bomb", "Büro-Bombe", "Office bomb"], ["war", "Revierkampf", "Turf war"], ["weekdone", "Wochenziele erfüllen", "Complete weekly goals"], ["vault", "Tresor-Spiel", "Safe game"], ["run", "Schmuggel-Fahrt", "Smuggling run"], ["defuse", "Bomben-Päckchen", "Bomb package"], ["cups", "Becher-Spiel", "Cup game"], ["escape", "Fluchtweg-Spiel", "Escape game"], ["box", "Boxkampf", "Boxing match"], ["hen", "Hahnenkampf", "Cockfight"], ["dog", "Hunderennen", "Dog race"], ["dice", "Straßenwürfeln", "Street dice"], ["dart", "Dart", "Darts"]])
-                    + grp(en ? "Progress" : "Fortschritt", [["lv10", "Betriebe +10 Lvl", "Businesses +10 lvl"], ["lv100", "Betriebe +100 Lvl", "Businesses +100 lvl"], ["items", "Alle Items", "All items"], ["office", "Büro auf Max", "Office max"]])
-                    + grp(en ? "Friends" : "Freunde", [["rivals", "3 Test-Freunde", "3 test friends"], ["pkg0", "Päckchen: Geschenk", "Package: gift"], ["pkg1", "Päckchen: Prüfer", "Package: auditor"], ["pkg2", "Päckchen: Bombe", "Package: bomb"], ["team", "Tagesjob: 2 Partner", "Daily job: 2 partners"], ["jobreset", "Tagesjob zurücksetzen", "Reset daily job"]])
-                    + `<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:6px;"><button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-soc-reset">${en ? "Reset friend limits" : "Freunde-Limits zurück"}</button><button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-soc-favors">${en ? "+20 favors" : "+20 Gefallen"}</button></div>`;
-                })()}
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:4px;">
-                  <button type="button" class="comic-btn primary" style="min-height:34px; font-size:11px;" data-action="run-diagnostics">${t("archive.dev.run")}</button>
-                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="inject-mod-biz">${t("archive.dev.mod")}</button>
-                </div>
-                <div id="diag-output" class="diag-list">Ready for diagnostics...</div>
-              </section>
-            ` : "";
 
             vp.innerHTML = `
               ${eventBanner}
@@ -11521,60 +11645,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 
               ${pupCards.join("")}
 
-              <section class="panel-box">
-                <h2 class="panel-title">${t("archive.boss.title")}</h2>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                  <button type="button" class="comic-btn" style="min-height:36px;" data-action="toggle-lang">
-                    ${STATE.settings.lang === "EN" ? "LANGUAGE: EN" : "SPRACHE: DE"}
-                  </button>
-                  <button type="button" class="comic-btn ${STATE.settings.soundOn ? "primary" : ""}" style="min-height:36px;" data-action="toggle-sound">
-                    ${STATE.settings.soundOn ? t("archive.boss.sound.on") : t("archive.boss.sound.off")}
-                  </button>
-                </div>
-                <button type="button" class="comic-btn ${STATE.settings.theme === "dark" ? "primary" : ""}" style="min-height:36px; width:100%;" data-action="toggle-theme">
-                  ${STATE.settings.lang === "EN" ? (STATE.settings.theme === "dark" ? "DARK MODE: ON" : "DARK MODE: OFF") : (STATE.settings.theme === "dark" ? "DUNKELMODUS: AN" : "DUNKELMODUS: AUS")}
-                </button>
-                <button type="button" class="comic-btn ${FX.level() === 2 ? "primary" : ""}" style="min-height:36px; width:100%;" data-action="cycle-fx">
-                  ${(() => { const L = FX.level(), en = STATE.settings.lang === "EN"; return en ? "EFFECTS: " + ["OFF", "REDUCED", "FULL"][L] : "EFFEKTE: " + ["AUS", "REDUZIERT", "VOLL"][L]; })()}
-                </button>
-                <button type="button" class="comic-btn ${STATE.ui.tips && STATE.ui.tips.off ? "" : "primary"}" style="min-height:36px; width:100%;" data-action="toggle-tips">
-                  ${STATE.ui.tips && STATE.ui.tips.off ? t("tip.settings.off") : t("tip.settings.on")}
-                </button>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                  <div>
-                    <div style="font-size:11px; font-weight:800; margin-bottom:2px;">${t("archive.boss.name")}</div>
-                    <input id="boss-name-input" type="text" class="code-textarea" style="min-height:38px; height:38px;" value="${STATE.boss.name}" maxlength="22">
-                  </div>
-                  <div>
-                    <div style="font-size:11px; font-weight:800; margin-bottom:2px;">${t("archive.boss.city")}</div>
-                    <input id="boss-city-input" type="text" class="code-textarea" style="min-height:38px; height:38px;" value="${STATE.boss.city}" maxlength="24">
-                  </div>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                  <button type="button" class="comic-btn primary" data-action="save-boss-id">${t("archive.boss.save")}</button>
-                  <button type="button" class="comic-btn" data-action="boss-style">${t("archive.boss.style")}</button>
-                </div>
-              </section>
-
-              ${this.onlineCloudCardHTML()}
-              <section class="panel-box">
-                <h2 class="panel-title">${t("archive.save.title")}</h2>
-                <textarea id="save-io-box" class="code-textarea" placeholder="${t("archive.save.placeholder")}"></textarea>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                  <button type="button" class="comic-btn" data-action="export-save">${t("archive.save.export")}</button>
-                  <button type="button" class="comic-btn primary" data-action="import-save">${t("archive.save.import")}</button>
-                </div>
-                <button type="button" class="comic-btn" style="min-height:36px; width:100%;" data-action="copy-log">${STATE.settings.lang === "EN" ? "COPY LOG" : "PROTOKOLL KOPIEREN"}</button>
-                <div id="save-io-msg" style="font-size:12px; font-weight:800;"></div>
-                <button type="button" class="comic-btn danger" data-action="hard-reset" data-bind="hard-reset-btn">${t("archive.save.reset")}</button>
-              </section>
-
-              ${devHtml}
-
-              <div class="version-footer" data-action="tap-version">
-                Hustlers: Urban Edition • v3.24.0
-              </div>
-              <div style="text-align:center;font-size:11px;padding:0 0 22px;"><a href="impressum.html" target="_blank" rel="noopener" style="color:var(--accent-concrete);">Impressum &amp; Datenschutz</a></div>
             `;
           } else {
             const favorName = t("ui.curr.favors");
@@ -11842,6 +11912,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         let txt = "", val = "", pct = 0;
         if (g.kind === "buy") { txt = L("Kaufe ", "Buy ") + nm(g.id); val = formatNumber(g.cost, 0) + " €"; pct = g.cost > 0 ? cash / g.cost : 1; }
         else if (g.kind === "unlock") { txt = nm(g.prevId) + L(" auf Stufe ", " to level ") + g.min + " \u2192 " + nm(g.id); val = g.lvl + "/" + g.min; pct = g.lvl / g.min; }
+        else if (g.kind === "tab") { const nmT = { logistics: L("Logistik", "Routes"), turf: L("Revier", "Turf"), hq: "HQ", cartel: L("Kartell", "Cartel") }[g.key]; txt = L("Schalte frei: ", "Unlock: ") + nmT + L(" (Betriebs-Stufen)", " (business levels)"); val = g.have + "/" + g.need; pct = g.need > 0 ? g.have / g.need : 1; }
         else if (g.kind === "prestige") { txt = L("Neustart möglich: +", "Restart ready: +") + formatNumber(g.n, 0) + L(" Akten", " files"); val = ""; pct = 1; }
         else { txt = L("Ausbauen: ", "Upgrade: ") + nm(g.id); val = formatNumber(g.cost, 0) + " €"; pct = g.cost > 0 ? cash / g.cost : 1; }
         const key = txt + "|" + val + "|" + en;
@@ -13101,7 +13172,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           if (stateVal === "urgent") {
             setCls(badgeNode, "tab-badge urgent");
             setTxt(badgeNode, "!");
-          } else if (stateVal === "new") {
+          } else if (stateVal === "new" || (STATE.ui.tabNew && STATE.ui.tabNew[k] === 2)) {
             setCls(badgeNode, "tab-badge new-dot");
             setTxt(badgeNode, "");
           } else {
@@ -13503,8 +13574,129 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
       // ---------- Online-Oberfläche ----------
       onlineEsc(x) { return String(x == null ? "" : x).replace(/[&<>"']/g, ""); },
       onlineLang() { const en = STATE.settings && STATE.settings.lang === "EN"; return { en, L: (d, e) => (en ? e : d) }; },
+      settingsHTML() {
+        const en = STATE.settings && STATE.settings.lang === "EN";
+            const devHtml = STATE.ui.devUnlocked ? `
+              <section class="panel-box" style="background:#EFE7D3;">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #1A1A1A; padding-bottom:4px;">
+                  <span style="font-size:12px; font-weight:900; text-transform:uppercase; display:inline-flex; align-items:center; gap:5px;">${renderIcon("gear", 14)} ${t("archive.test.title")}</span>
+                  <button type="button" class="mini-square-btn" style="font-size:10px;" data-action="hide-dev">${t("archive.test.hide")}</button>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                  <button type="button" class="comic-btn primary" style="min-height:34px; font-size:11px;" data-action="test-cheat" data-cheat="cash">${t("archive.test.cash")}</button>
+                  <button type="button" class="comic-btn dirty-buy" style="min-height:34px; font-size:11px;" data-action="test-cheat" data-cheat="dirty">${t("archive.test.dirty")}</button>
+                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="test-cheat" data-cheat="cred">${t("archive.test.cred")}</button>
+                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="test-cheat" data-cheat="favors">${t("archive.test.favors")}</button>
+                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="test-cheat" data-cheat="files">${t("archive.test.files")}</button>
+                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="test-cheat" data-cheat="contra">${t("archive.test.contra")}</button>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                  <button type="button" class="comic-btn danger" style="min-height:34px; font-size:11px;" data-action="test-cheat" data-cheat="heat_up">${t("archive.test.heat_up")}</button>
+                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="test-cheat" data-cheat="heat_zero">${t("archive.test.heat_zero")}</button>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="test-event">${STATE.settings.lang === "EN" ? "Trigger flash news" : "Eilmeldung auslösen"}</button>
+                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="test-sprint">${STATE.settings.lang === "EN" ? "Start sprint" : "Sprint starten"}</button>
+                </div>
+                ${(() => {
+                  const en = STATE.settings.lang === "EN";
+                  const grp = (title, items) => `<div style="font-size:10px; font-weight:900; text-transform:uppercase; margin:8px 0 3px; opacity:.7;">${title}</div><div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">${items.map(([k, de, e]) => `<button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-do" data-dev="${k}">${en ? e : de}</button>`).join("")}</div>`;
+                  return grp(en ? "Time & cooldowns" : "Zeit & Cooldowns", [["time1h", "+1 Std vorspulen", "Skip +1 h"], ["time8h", "+8 Std vorspulen", "Skip +8 h"], ["cd", "Cooldowns auf 0", "Reset cooldowns"], ["boost", "Boost +10 Min", "Boost +10 min"], ["mission", "Coup sofort fertig", "Finish heist"], ["prestige", "Umsatz für Prestige", "Revenue for prestige"]])
+                    + grp(en ? "Spawn" : "Auslösen", [["insp", "Steuerprüfer", "Tax auditor"], ["insp_off", "Prüfer entfernen", "Remove auditor"], ["dealer", "Händler-Event", "Dealer event"], ["raid", "Razzia-Warnung", "Raid warning"], ["bomb", "Büro-Bombe", "Office bomb"], ["war", "Revierkampf", "Turf war"], ["weekdone", "Wochenziele erfüllen", "Complete weekly goals"], ["vault", "Tresor-Spiel", "Safe game"], ["run", "Schmuggel-Fahrt", "Smuggling run"], ["defuse", "Bomben-Päckchen", "Bomb package"], ["cups", "Becher-Spiel", "Cup game"], ["escape", "Fluchtweg-Spiel", "Escape game"], ["box", "Boxkampf", "Boxing match"], ["hen", "Hahnenkampf", "Cockfight"], ["dog", "Hunderennen", "Dog race"], ["dice", "Straßenwürfeln", "Street dice"], ["dart", "Dart", "Darts"]])
+                    + grp(en ? "Progress" : "Fortschritt", [["tabs_all", "Alle Tabs freischalten", "Unlock all tabs"], ["tabs_none", "Tabs wieder sperren", "Lock tabs again"], ["lv10", "Betriebe +10 Lvl", "Businesses +10 lvl"], ["lv100", "Betriebe +100 Lvl", "Businesses +100 lvl"], ["items", "Alle Items", "All items"], ["office", "Büro auf Max", "Office max"]])
+                    + grp(en ? "Friends" : "Freunde", [["rivals", "3 Test-Freunde", "3 test friends"], ["pkg0", "Päckchen: Geschenk", "Package: gift"], ["pkg1", "Päckchen: Prüfer", "Package: auditor"], ["pkg2", "Päckchen: Bombe", "Package: bomb"], ["team", "Tagesjob: 2 Partner", "Daily job: 2 partners"], ["jobreset", "Tagesjob zurücksetzen", "Reset daily job"]])
+                    + `<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:6px;"><button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-soc-reset">${en ? "Reset friend limits" : "Freunde-Limits zurück"}</button><button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-soc-favors">${en ? "+20 favors" : "+20 Gefallen"}</button></div>`;
+                })()}
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:4px;">
+                  <button type="button" class="comic-btn primary" style="min-height:34px; font-size:11px;" data-action="run-diagnostics">${t("archive.dev.run")}</button>
+                  <button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="inject-mod-biz">${t("archive.dev.mod")}</button>
+                </div>
+                <div id="diag-output" class="diag-list">Ready for diagnostics...</div>
+              </section>
+            ` : "";
+        return `<div data-settings-root="1" style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+            <h2 class="panel-title" style="margin:0;">${en ? "Settings" : "Einstellungen"}</h2>
+            <button type="button" class="mini-square-btn" data-action="close-modal" aria-label="${en ? "Close" : "Schließen"}">×</button>
+          </div>
+              <section class="panel-box">
+                <h2 class="panel-title">${t("archive.boss.title")}</h2>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                  <button type="button" class="comic-btn" style="min-height:36px;" data-action="toggle-lang">
+                    ${STATE.settings.lang === "EN" ? "LANGUAGE: EN" : "SPRACHE: DE"}
+                  </button>
+                  <button type="button" class="comic-btn ${STATE.settings.soundOn ? "primary" : ""}" style="min-height:36px;" data-action="toggle-sound">
+                    ${STATE.settings.soundOn ? t("archive.boss.sound.on") : t("archive.boss.sound.off")}
+                  </button>
+                </div>
+                <button type="button" class="comic-btn ${STATE.settings.theme === "dark" ? "primary" : ""}" style="min-height:36px; width:100%;" data-action="toggle-theme">
+                  ${STATE.settings.lang === "EN" ? (STATE.settings.theme === "dark" ? "DARK MODE: ON" : "DARK MODE: OFF") : (STATE.settings.theme === "dark" ? "DUNKELMODUS: AN" : "DUNKELMODUS: AUS")}
+                </button>
+                <button type="button" class="comic-btn ${FX.level() === 2 ? "primary" : ""}" style="min-height:36px; width:100%;" data-action="cycle-fx">
+                  ${(() => { const L = FX.level(), en = STATE.settings.lang === "EN"; return en ? "EFFECTS: " + ["OFF", "REDUCED", "FULL"][L] : "EFFEKTE: " + ["AUS", "REDUZIERT", "VOLL"][L]; })()}
+                </button>
+                <button type="button" class="comic-btn ${STATE.ui.tips && STATE.ui.tips.off ? "" : "primary"}" style="min-height:36px; width:100%;" data-action="toggle-tips">
+                  ${STATE.ui.tips && STATE.ui.tips.off ? t("tip.settings.off") : t("tip.settings.on")}
+                </button>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                  <div>
+                    <div style="font-size:11px; font-weight:800; margin-bottom:2px;">${t("archive.boss.name")}</div>
+                    <input id="boss-name-input" type="text" class="code-textarea" style="min-height:38px; height:38px;" value="${STATE.boss.name}" maxlength="22">
+                  </div>
+                  <div>
+                    <div style="font-size:11px; font-weight:800; margin-bottom:2px;">${t("archive.boss.city")}</div>
+                    <input id="boss-city-input" type="text" class="code-textarea" style="min-height:38px; height:38px;" value="${STATE.boss.city}" maxlength="24">
+                  </div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                  <button type="button" class="comic-btn primary" data-action="save-boss-id">${t("archive.boss.save")}</button>
+                  <button type="button" class="comic-btn" data-action="boss-style">${t("archive.boss.style")}</button>
+                </div>
+              </section>
+
+              ${this.onlineCloudCardHTML()}
+              <section class="panel-box">
+                <h2 class="panel-title">${t("archive.save.title")}</h2>
+                <textarea id="save-io-box" class="code-textarea" placeholder="${t("archive.save.placeholder")}"></textarea>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                  <button type="button" class="comic-btn" data-action="export-save">${t("archive.save.export")}</button>
+                  <button type="button" class="comic-btn primary" data-action="import-save">${t("archive.save.import")}</button>
+                </div>
+                <button type="button" class="comic-btn" style="min-height:36px; width:100%;" data-action="copy-log">${STATE.settings.lang === "EN" ? "COPY LOG" : "PROTOKOLL KOPIEREN"}</button>
+                <div id="save-io-msg" style="font-size:12px; font-weight:800;"></div>
+                <button type="button" class="comic-btn danger" data-action="hard-reset" data-bind="hard-reset-btn">${this.confirmState.type === "reset" ? t("archive.save.reset_confirm") : t("archive.save.reset")}</button>
+              </section>
+
+              ${devHtml}
+
+              <div class="version-footer" data-action="tap-version">
+                Hustlers: Urban Edition • v3.25.0
+              </div>
+              <div style="text-align:center;font-size:11px;padding:0 0 22px;"><a href="impressum.html" target="_blank" rel="noopener" style="color:var(--accent-concrete);">Impressum &amp; Datenschutz</a></div>
+        </div>`;
+      },
+      openSettings() {
+        const body = document.getElementById("app-modal-body");
+        body.innerHTML = this.settingsHTML();
+        document.getElementById("app-modal").classList.add("open");
+        this.settingsOpen = true;
+        this.cacheStaticBindings();
+      },
+      refreshSettings() {
+        const body = document.getElementById("app-modal-body");
+        const m = document.getElementById("app-modal");
+        if (!body || !m || !m.classList.contains("open") || !body.querySelector("[data-settings-root]")) { this.settingsOpen = false; return; }
+        const sc = body.scrollTop;
+        const box = document.getElementById("save-io-box"), keep = box ? box.value : "";
+        body.innerHTML = this.settingsHTML();
+        const nb = document.getElementById("save-io-box"); if (nb && keep) nb.value = keep;
+        body.scrollTop = sc;
+        this.cacheStaticBindings();
+      },
+
       onOnlineChange() {
         const tab = STATE.ui.activeTab;
+        if (this.settingsOpen) { const bx = document.getElementById("save-io-box"); if (!bx || !bx.value) this.refreshSettings(); return; }
         if ((tab === "cartel" && STATE.ui.cartelSubTab === "friends") || (tab === "hq" && STATE.ui.hqSubTab === "vault")) {
           const m = document.getElementById("app-modal");
           if (!m || !m.classList.contains("open")) this.renderActiveTab();
@@ -13545,7 +13737,10 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         const out = (Online.st.out || []).length ? `<p class="on-note" style="margin-top:6px;">${L("Wartet auf Antwort: ", "Waiting for reply: ")}${(Online.st.out || []).join(", ")}</p>` : "";
         return `<section class="biz-card" style="padding:10px;">
           <h3 class="panel-title" style="margin:0 0 6px;">${L("Freund per ID hinzufügen", "Add friend by ID")}</h3>
-          <p class="on-note">${L("Deine ID: ", "Your ID: ")}<b class="num" style="font-size:15px;user-select:all;">${id}</b></p>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+            <p class="on-note" style="margin:0;">${L("Deine ID: ", "Your ID: ")}<b class="num" style="font-size:15px;user-select:all;">${id}</b></p>
+            <button type="button" class="comic-btn" style="min-height:30px;padding:0 10px;flex:0 0 auto;" data-action="fr-copy-id" data-id="${id}">${L("KOPIEREN", "COPY")}</button>
+          </div>
           <div style="display:flex;gap:8px;margin-top:6px;">
             <input id="fr-input" class="code-textarea" type="text" maxlength="6" autocomplete="off" autocapitalize="characters" placeholder="${L("ID des Freundes", "Friend's ID")}" style="flex:1;min-width:0;box-sizing:border-box;text-transform:uppercase;margin:0;">
             <button type="button" class="comic-btn primary" style="flex:0 0 auto;padding:0 12px;" data-action="fr-request">${L("ANFRAGE", "REQUEST")}</button>
@@ -13618,6 +13813,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         return `<section class="panel-box"><h2 class="panel-title">${L("Cloud-Spielstand", "Cloud save")}</h2>${inner}</section>`;
       },
       onlineOpen(html) {
+        this.settingsOpen = false;
         const body = document.getElementById("app-modal-body");
         body.innerHTML = html;
         document.getElementById("app-modal").classList.add("open");
@@ -13824,7 +14020,9 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           </div>`).join("");
         if (Online.feat("friends") && Online.joined()) Online.sync(true);
         if (Online.feat("goal")) Online.goalLoad(false);
-        vp.innerHTML = subNavHtml + this.onlineGoalCardHTML() + this.onlineBoardCardHTML() + this.onlineFriendsCardHTML() + `
+        // Altes Code-System (Visitenkarte, Code-Eingabe, Team-Tagesjob) nur, wenn Online-Freunde aus sind
+        const oldOn = !Online.feat("friends");
+        const oldHtml = oldOn ? `
           <section class="biz-card" style="padding:10px;">
             <h3 class="panel-title" style="margin:0 0 6px;">${L("Deine Visitenkarte", "Your business card")}</h3>
             <div class="cash-hero-box" style="font-size:12px; word-break:break-all; user-select:all;"><span class="num" id="soc-code">${code}</span></div>
@@ -13842,7 +14040,8 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
             </div>
             <div id="soc-msg" style="margin-top:6px; font-weight:900; min-height:16px;"></div>
           </section>
-          ${this.jobSection(L, esc)}
+          ${this.jobSection(L, esc)}` : "";
+        vp.innerHTML = subNavHtml + this.onlineGoalCardHTML() + this.onlineBoardCardHTML() + this.onlineFriendsCardHTML() + oldHtml + `
           ${(so.inbox.length || Engine.bombList().length) ? `<section class="biz-card" style="padding:10px;">
             <h3 class="panel-title" style="margin:0 0 6px;">${L("Päckchen", "Packages")}</h3>
             ${Engine.bombList().map(b => `<div class="bomb-row"><span>${esc(t(REGISTRY.OFFICE[b.id].nameKey))} · ${Math.ceil(b.left / 60)} min</span><button type="button" class="comic-btn" style="min-height:28px;" data-action="repair-bomb" data-offid="${b.id}">${L("REPARIEREN 3 Gefallen", "REPAIR 3 favors")}</button></div>`).join("")}
@@ -13850,7 +14049,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           </section>` : ""}
           <section class="biz-card" style="padding:10px;">
             <h3 class="panel-title" style="margin:0 0 6px;">${L("Freunde", "Friends")} (${list.length})</h3>
-            ${rows || `<p style="opacity:.7;">${L("Noch keine Freunde. Tausche Visitenkarten, um eine Rangliste aufzumachen.", "No friends yet. Swap cards to start a leaderboard.")}</p>`}
+            ${rows || `<p style="opacity:.7;">${oldOn ? L("Noch keine Freunde. Tausche Visitenkarten, um eine Rangliste aufzumachen.", "No friends yet. Swap cards to start a leaderboard.") : (Online.joined() ? L("Noch keine Freunde. Gib oben die ID eines Freundes ein und schick eine Anfrage.", "No friends yet. Enter a friend's ID above and send a request.") : L("Noch keine Freunde. Mach oben bei der Online-Rangliste mit, dann kannst du Freunde per ID hinzufügen.", "No friends yet. Join the online leaderboard above, then you can add friends by ID."))}</p>`}
           </section>`;
       },
 
@@ -14038,6 +14237,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 
       setInterval(() => {
         if (!document.hidden) STATE.stats.playSec = (STATE.stats.playSec || 0) + 0.1;
+        if (++View._tabChk >= 10) { View._tabChk = 0; try { View.checkTabUnlocks(); } catch (e) {} }
         const tickRes = Engine.tick();
         { const ach = Engine.checkAchievements(); if (ach.length) View.onAchievements(ach); }
         if (Engine.inspNote) { const n = Engine.inspNote; Engine.inspNote = null; View.onInspNote(n); }
