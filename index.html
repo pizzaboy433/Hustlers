@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="dd9de2de39">
+  <meta name="build-id" content="144228031c">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2626,6 +2626,9 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
   <script>
     window.addEventListener("error", function (e) {
       try {
+        // Fehler fremder Skripte (z. B. Besucherzähler) erscheinen als "Script error." ohne Zeile: nicht anzeigen
+        if ((e.message === "Script error." || e.message === "Script error") && !e.lineno) return;
+        if (e.filename && e.filename.indexOf(location.origin) !== 0 && e.filename.indexOf("file:") !== 0) return;
         var d = document.getElementById("boot-err");
         if (!d) {
           d = document.createElement("div"); d.id = "boot-err";
@@ -9525,7 +9528,7 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
 
       init() {
         DBG.load();
-        window.addEventListener("error", e => { DBG.add("ERROR", (e.message || "") + " @" + (e.lineno || "?") + ":" + (e.colno || "?") + " " + ((e.error && e.error.stack) || "").split("\n").slice(0, 3).join(" | ")); DBG.flush(); });
+        window.addEventListener("error", e => { if ((e.message === "Script error." || e.message === "Script error") && !e.lineno) { DBG.add("EXT", "fremdes Skript: Script error"); return; } DBG.add("ERROR", (e.message || "") + " @" + (e.lineno || "?") + ":" + (e.colno || "?") + " " + ((e.error && e.error.stack) || "").split("\n").slice(0, 3).join(" | ")); DBG.flush(); });
         window.addEventListener("unhandledrejection", e => { DBG.add("REJECT", e.reason && (e.reason.stack || e.reason.message || e.reason)); DBG.flush(); });
         FX.apply();
         FX.buildCity();
