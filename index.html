@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="9f4646b7e3">
+  <meta name="build-id" content="588b5564f6">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2581,6 +2581,20 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 .wash-trend.up{color:#D9342B}
 .wash-trend.up.hot{animation:badgeUrgentBounce .9s infinite ease-in-out}
 .wash-trend.down{color:#3F7A1C}
+
+/* === v47: Zielzeile + Hinweisleiste === */
+.goal-strip{position:relative;flex-shrink:0;display:flex;align-items:center;gap:7px;width:100%;margin:0;padding:4px 10px 6px;background:var(--bg-card);border:none;border-bottom:var(--border-comic);border-radius:0;font-family:inherit;color:inherit;text-align:left;cursor:pointer;touch-action:manipulation;min-height:28px;z-index:14}
+.goal-strip[hidden]{display:none}
+.goal-tag{flex-shrink:0;background:#1A1A1A;color:#FBF8F0;font-size:9px;font-weight:900;letter-spacing:.06em;padding:2px 5px}
+.goal-txt{flex:1 1 auto;min-width:0;font-size:11.5px;font-weight:800;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.goal-val{flex-shrink:0;font-size:11px;font-weight:900}
+.goal-bar{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(26,26,26,.12);display:block}
+.goal-bar b{display:block;height:100%;width:0;background:#5B9628}
+.hint-bar{flex-shrink:0;display:flex;align-items:center;gap:8px;padding:7px 8px 7px 12px;background:var(--bg-card);border-top:var(--border-comic)}
+.hint-bar[hidden]{display:none}
+.hint-txt{flex:1 1 auto;min-width:0;font-size:11.5px;font-weight:800;line-height:1.3}
+.hint-btn{flex-shrink:0;background:#1A1A1A;color:#FBF8F0;border:none;border-radius:0;padding:7px 11px;font-weight:900;font-size:12px;text-transform:uppercase;min-height:34px;touch-action:manipulation;font-family:inherit}
+.hint-x{flex-shrink:0;background:transparent;border:var(--border-comic);border-radius:0;width:34px;height:34px;font-size:18px;font-weight:900;line-height:1;color:inherit;touch-action:manipulation;font-family:inherit}
 </style>
   <script data-goatcounter="https://hustlers.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -2697,6 +2711,13 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
       </div>
     </header>
 
+    <button type="button" id="goal-strip" class="goal-strip" data-action="goal-go" hidden>
+      <span class="goal-tag" data-goal-tag>ZIEL</span>
+      <span class="goal-txt" data-goal-txt></span>
+      <span class="goal-val num" data-goal-val></span>
+      <i class="goal-bar"><b data-goal-bar></b></i>
+    </button>
+
     <div class="control-bar" id="biz-control-bar">
       <button type="button" class="flip-all-btn" data-action="toggle-all-modes" data-i18n="mode.flip_all">⇄ Alle</button>
       <button type="button" class="mini-hustle-btn" id="mini-hustle-btn" data-action="click-hustle">
@@ -2719,6 +2740,11 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
     <div id="viewport-wrap"><main id="tab-viewport"></main><div id="city-bg"></div></div>
 
     <div id="coach-card" class="coach-card" hidden></div>
+    <div id="hint-bar" class="hint-bar" hidden>
+      <span class="hint-txt" data-hint-txt></span>
+      <button type="button" class="hint-btn" data-action="hint-main" data-hint-main></button>
+      <button type="button" class="hint-x" data-action="hint-close" aria-label="Schließen">×</button>
+    </div>
 
     <nav class="bottom-nav">
       <button type="button" class="nav-tab active" data-action="switch-tab" data-tab="businesses">
@@ -5270,7 +5296,9 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         settings: {
           soundOn: true,
           lang: "DE",
-          theme: "light"
+          theme: "light",
+          a2hsDone: false,
+          backupAt: 0
         },
         ui: {
           activeTab: "businesses",
@@ -5319,6 +5347,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         },
         stats: {
           lifetimeRevenue: 0,
+          playSec: 0,
           runRevenue: 0,
           filesEarnedTotal: 0,
           totalClicks: 0,
@@ -7441,6 +7470,32 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         return k;
       },
 
+      nextGoal() {
+        const sorted = KIEZ_API.getSortedCollection("BUSINESSES");
+        for (let i = 0; i < sorted.length; i++) {
+          const st = STATE.businesses[sorted[i].id];
+          if (st && st.unlocked && (st.level || 0) < 1) return { kind: "buy", id: sorted[i].id, cost: this.calcBuyCost(sorted[i].id, 0, 1) };
+        }
+        for (let i = 1; i < sorted.length; i++) {
+          const st = STATE.businesses[sorted[i].id];
+          if (!st || st.unlocked || (st.level || 0) >= 1) continue;
+          const cond = sorted[i].unlockCondition || { mode: "PREV_IN_ORDER", minLevel: 25 };
+          if (cond.mode !== "PREV_IN_ORDER") continue;
+          const prev = sorted[i - 1], ps = STATE.businesses[prev.id], min = cond.minLevel || 25;
+          if (ps && (ps.level || 0) < min) return { kind: "unlock", id: sorted[i].id, prevId: prev.id, lvl: ps.level || 0, min, cost: this.calcBuyCost(prev.id, ps.level || 0, min - (ps.level || 0)) };
+        }
+        const claim = this.getClaimableFiles();
+        if (claim >= 1) return { kind: "prestige", n: claim };
+        let best = null;
+        for (let i = 0; i < sorted.length; i++) {
+          const st = STATE.businesses[sorted[i].id];
+          if (!st || !st.unlocked || (st.level || 0) < 1) continue;
+          const c = this.calcBuyCost(sorted[i].id, st.level, 1);
+          if (Number.isFinite(c) && (!best || c < best.cost)) best = { kind: "up", id: sorted[i].id, lvl: st.level, cost: c };
+        }
+        return best;
+      },
+
       heatFee() { const h = STATE.heat || 0; return h >= 75 ? 0.10 : (h >= 60 ? 0.05 : 0); },
       heatCoupMalus() { return Math.max(0, Math.min(1, ((STATE.heat || 0) - 40) / 45)) * 0.15; },
       heatHustleMul() { return 1 + Math.max(0, Math.min(1, ((STATE.heat || 0) - 40) / 45)) * 0.20; },
@@ -8564,7 +8619,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         } catch (e) {}
         let vp = "";
         try { vp = innerWidth + "x" + innerHeight; } catch (e) {}
-        this.add("START", "v3.19.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
+        this.add("START", "v3.20.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
         this.flush();
       },
       flush() {
@@ -9772,6 +9827,29 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
               this.syncShellControls();
               this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
             }
+          } else if (action === "goal-go") {
+            const g = Engine.nextGoal();
+            const tab = g && g.kind === "prestige" ? "hq" : "businesses";
+            if (g && g.kind === "prestige") STATE.ui.hqSubTab = "vault";
+            this.stopHoldBuy();
+            STATE.ui.activeTab = tab;
+            Engine.markTabSeen(tab);
+            this.syncShellControls();
+            this.renderActiveTab();
+            FX.fade();
+            this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
+          } else if (action === "hint-main" || action === "hint-close") {
+            const kind = this.hintKind, S = STATE.settings;
+            if (kind === "backup") {
+              if (action === "hint-main") {
+                Platform.saveGame(true);
+                const en2 = S.lang === "EN";
+                this.copyText(Platform.exportSaveBase64(), en2 ? "Save copied – keep it in a note" : "Spielstand kopiert – z. B. in Notizen sichern");
+              }
+              S.backupAt = Date.now();
+            } else if (kind) { S.a2hsDone = true; }
+            Platform.saveGame(true);
+            this.hintKind = undefined; this.updateHintUI();
           } else if (action === "switch-tab") {
             const tab = actionEl.getAttribute("data-tab");
             if (tab && STATE.ui.activeTab !== tab) {
@@ -10159,7 +10237,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
             }
           } else if (action === "export-save") {
             const out = document.getElementById("save-io-box");
-            if (out) { Platform.saveGame(true); out.value = Platform.exportSaveBase64(); out.select(); }
+            if (out) { Platform.saveGame(true); out.value = Platform.exportSaveBase64(); out.select(); STATE.settings.backupAt = Date.now(); }
           } else if (action === "import-save") {
             const inp = document.getElementById("save-io-box");
             if (inp) {
@@ -10754,11 +10832,12 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
                 <div style="font-size:11px; line-height:1.35;">${names}</div>
                 <div style="font-size:11px; font-weight:900; color:${full ? "#5B9628" : "inherit"}; opacity:${full ? 1 : .7};">${enW ? set.te : set.td}</div></div>`;
             }).join("");
-            const cards = [eventBanner, subNavHtml, netBarHtml, `
+            const setSection = `
               <section class="biz-card" style="padding:10px;">
                 <h3 class="panel-title" style="margin:0 0 6px;">${enW ? "Sets" : "Sets"} <small style="font-weight:700; opacity:.7;">${enW ? "– own all 3 for a bonus" : "– alle 3 besitzen für den Bonus"}</small></h3>
                 ${setRows}
-              </section>
+              </section>`;
+            const cards = [eventBanner, subNavHtml, netBarHtml, `
               <div class="section-divider">
                 <span>${t("cartel.sec.goods")}</span>
                 <span class="num">${prog.owned}/${prog.total} (${Math.round(pct)}%)</span>
@@ -10804,6 +10883,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
                 </article>
               `);
             }
+            cards.push(setSection);
             vp.innerHTML = cards.join("");
           } else {
             // Next-Target Preview for Crew (shows unlocked + ONLY the next locked specialist)
@@ -11248,7 +11328,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
               ${devHtml}
 
               <div class="version-footer" data-action="tap-version">
-                Hustlers: Urban Edition • v3.19.0
+                Hustlers: Urban Edition • v3.20.0
               </div>
               <div style="text-align:center;font-size:11px;padding:0 0 22px;"><a href="impressum.html" target="_blank" rel="noopener" style="color:var(--accent-concrete);">Impressum &amp; Datenschutz</a></div>
             `;
@@ -11505,6 +11585,70 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
           this.toast(en ? "AUDIT OVER" : "PRÜFUNG VORBEI", nm);
         }
       },
+      updateGoalUI() {
+        const el = this.goalEl || (this.goalEl = document.getElementById("goal-strip"));
+        if (!el) return;
+        const en = STATE.settings && STATE.settings.lang === "EN";
+        const L = (d, e) => (en ? e : d);
+        const g = (STATE.social && STATE.social.named) ? Engine.nextGoal() : null;
+        if (!g) { if (!el.hidden) el.hidden = true; return; }
+        if (el.hidden) el.hidden = false;
+        const nm = id => String(t(REGISTRY.BUSINESSES[id].nameKey)).replace(/\s*[„"“].*$/, "");
+        const cash = STATE.currencies.cash || 0;
+        let txt = "", val = "", pct = 0;
+        if (g.kind === "buy") { txt = L("Kaufe ", "Buy ") + nm(g.id); val = formatNumber(g.cost, 0) + " €"; pct = g.cost > 0 ? cash / g.cost : 1; }
+        else if (g.kind === "unlock") { txt = nm(g.prevId) + L(" auf Stufe ", " to level ") + g.min + " \u2192 " + nm(g.id); val = g.lvl + "/" + g.min; pct = g.lvl / g.min; }
+        else if (g.kind === "prestige") { txt = L("Neustart möglich: +", "Restart ready: +") + formatNumber(g.n, 0) + L(" Akten", " files"); val = ""; pct = 1; }
+        else { txt = L("Ausbauen: ", "Upgrade: ") + nm(g.id); val = formatNumber(g.cost, 0) + " €"; pct = g.cost > 0 ? cash / g.cost : 1; }
+        const key = txt + "|" + val + "|" + en;
+        if (this.goalKey !== key) {
+          this.goalKey = key;
+          el.querySelector("[data-goal-tag]").textContent = L("ZIEL", "GOAL");
+          el.querySelector("[data-goal-txt]").textContent = txt;
+          el.querySelector("[data-goal-val]").textContent = val;
+        }
+        const w = Math.max(0, Math.min(100, pct * 100)).toFixed(0) + "%";
+        const bar = el.querySelector("[data-goal-bar]");
+        if (bar.style.width !== w) bar.style.width = w;
+      },
+
+      hintWanted() {
+        if (!(STATE.social && STATE.social.named)) return null;
+        if (Engine.bannerBusy()) return null;
+        const cc = document.getElementById("coach-card");
+        if (cc && !cc.hidden) return null;
+        if (document.getElementById("app-modal") && document.getElementById("app-modal").classList.contains("open")) return null;
+        const ps = STATE.stats.playSec || 0, S = STATE.settings, now = Date.now();
+        if (ps >= 3600 && (!S.backupAt || now - S.backupAt >= 7 * 86400000)) return "backup";
+        if (!S.a2hsDone && ps >= 600) {
+          const ua = navigator.userAgent || "";
+          const ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+          const android = /Android/.test(ua);
+          const standalone = (navigator.standalone === true) || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+          if (!standalone && (ios || android)) return ios ? "a2hs-ios" : "a2hs-android";
+        }
+        return null;
+      },
+
+      updateHintUI() {
+        const el = this.hintEl || (this.hintEl = document.getElementById("hint-bar"));
+        if (!el) return;
+        const want = this.hintWanted();
+        if (want === this.hintKind) return;
+        this.hintKind = want;
+        if (!want) { el.hidden = true; return; }
+        const en = STATE.settings && STATE.settings.lang === "EN";
+        const L = (d, e) => (en ? e : d);
+        let txt = "", btn = "";
+        if (want === "backup") { txt = L("Sichere deinen Spielstand: Er liegt nur in diesem Browser.", "Back up your save: it only lives in this browser."); btn = L("Kopieren", "Copy"); }
+        else if (want === "a2hs-ios") { txt = L("Tipp: In Safari Teilen, dann Zum Home-Bildschirm. So startet das Spiel wie eine App.", "Tip: in Safari tap Share, then Add to Home Screen to start it like an app."); btn = "OK"; }
+        else { txt = L("Tipp: Browser-Menü, dann Zum Startbildschirm hinzufügen. So startet es wie eine App.", "Tip: browser menu, then Add to Home screen to start it like an app."); btn = "OK"; }
+        el.querySelector("[data-hint-txt]").textContent = txt;
+        el.querySelector("[data-hint-main]").textContent = btn;
+        el.querySelector(".hint-x").setAttribute("aria-label", L("Schließen", "Close"));
+        el.hidden = false;
+      },
+
       toast(head, sub) {
         let el = document.getElementById("ach-toast");
         if (!el) { el = document.createElement("div"); el.id = "ach-toast"; document.body.appendChild(el); }
@@ -12596,6 +12740,8 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
       },
 
       updateTickUI(stats, smoothedHeatNet = stats.heatNetPerSec) {
+        this.updateGoalUI();
+        this.updateHintUI();
         this.updateSprintUI();
         this.updateInspUI();
         if (this.lastRenderedEventId !== STATE.activeEvent) {
@@ -13145,9 +13291,9 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         setTimeout(() => { const i = document.getElementById("name-prompt-input"); if (i) i.focus(); }, 80);
       },
 
-      copyText(txt) {
+      copyText(txt, okMsg) {
         const en = STATE.settings && STATE.settings.lang === "EN";
-        const done = ok => this.toast(ok ? (en ? "Copied – paste it into a chat" : "Kopiert – im Chat einfügen") : (en ? "Copy failed – long-press the text to copy" : "Kopieren ging nicht – Text lange antippen und kopieren"), "");
+        const done = ok => this.toast(ok ? (okMsg || (en ? "Copied – paste it into a chat" : "Kopiert – im Chat einfügen")) : (en ? "Copy failed – long-press the text to copy" : "Kopieren ging nicht – Text lange antippen und kopieren"), "");
         const legacy = () => {
           let ok = false;
           try {
@@ -13398,6 +13544,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
       View.init();
 
       setInterval(() => {
+        if (!document.hidden) STATE.stats.playSec = (STATE.stats.playSec || 0) + 0.1;
         const tickRes = Engine.tick();
         { const ach = Engine.checkAchievements(); if (ach.length) View.onAchievements(ach); }
         if (Engine.inspNote) { const n = Engine.inspNote; Engine.inspNote = null; View.onInspNote(n); }
