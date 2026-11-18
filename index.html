@@ -18,8 +18,8 @@
   <meta property="og:description" content="Idle-Spiel im Comic-Look: Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta property="og:url" content="https://pizzaboy433.github.io/Hustlers/">
   <meta property="og:image" content="https://pizzaboy433.github.io/Hustlers/vorschau.png">
-  <meta name="twitter:image" content="https://pizzaboy433.github.io/Hustlers/vorschau.png">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://pizzaboy433.github.io/Hustlers/vorschau.png">
 
   <!-- === [SECTION: STYLES] === -->
   <style>
@@ -2450,7 +2450,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 .hustle-bubble::before,.hustle-bubble::after{content:"";position:absolute;left:50%;border-style:solid;border-color:transparent;transform:translateX(-50%)}
 .hustle-bubble::before{top:100%;border-width:9px 7px 0;border-top-color:#1A1A1A;margin-top:0}
 .hustle-bubble::after{top:100%;border-width:6px 5px 0;border-top-color:#FBF8F0;margin-top:-1px}
-.mini-hustle-btn.punch .hustle-bubble{animation:bubblePop .18s ease-out}
 @keyframes bubblePop{0%{transform:translateX(-50%) scale(.86)}60%{transform:translateX(-50%) scale(1.1)}100%{transform:translateX(-50%) scale(1)}}
 .mini-hustle-btn.overdrive .hustle-bubble{background:#FFCE3B;color:var(--tint-red-ink)}
 .mini-hustle-btn.overdrive .hustle-bubble::after{border-top-color:#FFCE3B}
@@ -2460,6 +2459,37 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 .hustle-bubble.pl{left:16%}.hustle-bubble.pr{left:84%}
 .hustle-bubble.pl::before,.hustle-bubble.pl::after{left:72%}
 .hustle-bubble.pr::before,.hustle-bubble.pr::after{left:28%}
+
+/* v40c: Sprechblasen ueberlagern sich und wandern umher */
+.hustle-bubble[data-bind]{display:none}
+.hustle-bubble.hb-clone{opacity:0;transform:translateX(-50%) rotate(var(--rot,0deg));transition:none;animation:hbLife 1.5s ease-out forwards}
+.hustle-bubble.hb-clone::before,.hustle-bubble.hb-clone::after{left:var(--tx,50%)}
+.hustle-bubble.hb-od{background:#FFCE3B;color:var(--tint-red-ink)}
+.hustle-bubble.hb-od::after{border-top-color:#FFCE3B}
+@keyframes hbLife{
+  0%{opacity:0;transform:translateX(-50%) rotate(var(--rot,0deg)) scale(.7)}
+  10%{opacity:1;transform:translateX(-50%) rotate(var(--rot,0deg)) scale(1.12)}
+  20%{transform:translateX(-50%) rotate(var(--rot,0deg)) scale(1)}
+  70%{opacity:1}
+  100%{opacity:0;transform:translateX(-50%) rotate(var(--rot,0deg)) translateY(-8px) scale(.96)}
+}
+
+/* v40d: zackige Sprechblasen */
+.hustle-bubble.hb-zack{display:grid;place-items:center;padding:0;border:none;border-radius:0;box-shadow:none;max-width:none;
+  background:#1A1A1A;clip-path:var(--poly-o);min-width:84px}
+.hustle-bubble.hb-zack::before,.hustle-bubble.hb-zack::after{display:none}
+.hb-zack .hb-in{display:block;padding:15px 34px;background:#FBF8F0;color:#1A1A1A;clip-path:var(--poly-i);
+  font-weight:900;letter-spacing:.04em;font-size:11px;line-height:1.2;text-transform:uppercase;white-space:nowrap}
+.hustle-bubble.hb-zack.hb-od{background:#1A1A1A}
+.hb-zack.hb-od .hb-in{background:#FFCE3B;color:var(--tint-red-ink)}
+
+/* v40e: groessere Tippflaeche Waesche-Reserve, Fahndungstext auf schmalen Geraeten */
+.cur-cell[data-action="wash-reserve"]{position:relative}
+.cur-cell[data-action="wash-reserve"]::after{content:"";position:absolute;left:-4px;right:-4px;top:-8px;bottom:-8px}
+@media (max-width:350px){
+  .heat-overlay-text{font-size:10.5px!important;letter-spacing:-.01em}
+  .heat-trend-pill{font-size:10.5px!important;padding:1px 4px!important}
+}
 </style>
 </head>
 <body>
@@ -2794,15 +2824,10 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "market.refresh": "Kurs-Wechsel in {sec}s",
         "market.stock": "Bestand: {val}",
         "market.unit_val": "Kurs: {val} € / Stk.",
-        "market.sell1_clean": "1× Bargeld",
-        "market.buy1": "1× kaufen",
         "market.pay_with": "Handeln mit",
         "market.pay_cash": "Bargeld",
         "market.pay_dirty": "Schwarzgeld",
         "market.launder_hint": "Waschquote bis zum Kurswechsel: {left} €",
-        "market.launder_note": "Waren mit Schwarzgeld kaufen und sauber verkaufen wäscht Geld: etwa 23 % Verlust plus Fahndung beim Verkauf. Pro Kurswechsel gibt es nur eine begrenzte Quote.",
-        "market.buy5": "5× kaufen",
-        "market.buymax": "MAX kaufen",
         "market.buy_hint": "Lohnt ab Kurs {be} %",
         "market.sell": "VERKAUFEN",
         "market.buy": "KAUFEN",
@@ -2812,8 +2837,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "market.lager": "Lager {held}/{cap}",
         "market.note_cash": "BARGELD: Verkaufen bringt sauberes Geld, aber die Fahndung steigt. Einkaufen zahlst du mit Bargeld.",
         "market.note_dirty": "SCHWARZGELD: Verkaufen bringt 35 % mehr Schwarzgeld ohne Fahndung. Einkaufen mit Schwarzgeld und danach gegen Bargeld verkaufen wäscht Geld (etwa 23 % Verlust, begrenzte Quote).",
-        "market.sell5_clean": "5× Bargeld",
-        "market.sellall_dirty": "ALLE Schwarz",
         "market.favor_swap": "Tausch: 10 Hehlerware / Wettscheine → +2 Gefallen",
         "market.favor_btn_stolen": "10 Hehlerware → +2 Gefallen",
         "market.favor_btn_tickets": "10 Wettscheine → +2 Gefallen",
@@ -3057,7 +3080,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "biz.branch.cd": "Sperre: {sec}s",
         "biz.buy.clean": "Bargeld",
         "biz.buy.dirty": "Schwarz",
-        "biz.lvl.short": "",
         "biz.next_goal": "×2 bei lvl {next}",
         "biz.max_goal": "MAX ×32",
         "biz.mode.hustle": "HUSTLE",
@@ -3163,7 +3185,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "char.inkasso.name": "„Brecher“ Boris",
         "char.inkasso.role": "+{val}% Gesamtleistung & +Coup-Erfolg",
 
-        "items.collector": "Warenbestand: {owned} / {total}",
         "items.buy": "Erwerben",
         "items.owned": "IM BESTAND",
         "item.klappmesser.name": "Kiez-Klappmesser „Solingen“",
@@ -3217,7 +3238,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 
         "board.header.title": "Laufende Meilensteine",
         "board.ops.title": "Gefallen-Aktionen",
-        "board.ops.boost_lbl": "Sonderschicht:",
         "board.ops.boost.active": "×2 Leistung ({sec}s)",
         "board.ops.boost.idle": "Inaktiv",
         "board.op.cool.name": "Staatsanwalt einladen (-35% Fahndung, 60s Schutz)",
@@ -3372,7 +3392,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "archive.prestige.btn": "Akten schreddern (+{files} Akten)",
         "archive.prestige.confirm": "WIRKLICH SCHREDDERN? (+{files} Akten)",
         "archive.prestige.locked": "Noch {missing} € Umsatz bis zum Schredder",
-        "archive.pup.title": "Akten-Privilegien (Dauerhaft)",
         "archive.pup.buy": "Freischalten",
         "archive.pup.max": "MAXIMAL",
         "pup.startcash.name": "Schwarze Handkasse",
@@ -3414,8 +3433,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "archive.test.hide": "Verbergen",
 
         "archive.boss.title": "Boss-Akte, Ton & Sprache",
-        "archive.boss.lang": "Sprache:",
-        "archive.boss.sound": "Soundeffekte:",
         "archive.boss.sound.on": "TON: AN",
         "archive.boss.sound.off": "TON: AUS",
         "archive.boss.name": "Boss-Name:",
@@ -3431,7 +3448,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "archive.save.reset_confirm": "ALLES LÖSCHEN? ERNEUT TIPPEN!",
         "archive.save.imported_ok": "Spielstand geladen.",
         "archive.save.imported_err": "Ungültiger Code!",
-        "archive.dev.title": "System-Diagnose (KIEZ_API)",
         "archive.dev.run": "Diagnose starten",
         "archive.dev.mod": "Test-Betrieb einschieben",
 
@@ -3540,15 +3556,10 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "market.refresh": "Rate shift in {sec}s",
         "market.stock": "In Stash: {val}",
         "market.unit_val": "Rate: €{val} / unit",
-        "market.sell1_clean": "1× Clean",
-        "market.buy1": "Buy 1×",
         "market.pay_with": "Trade with",
         "market.pay_cash": "Clean",
         "market.pay_dirty": "Dirty",
         "market.launder_hint": "Launder quota until rate shift: €{left}",
-        "market.launder_note": "Buy goods with dirty cash and sell them clean to launder money: about 23% loss plus heat when selling. Only a limited quota per rate shift.",
-        "market.buy5": "Buy 5×",
-        "market.buymax": "Buy MAX",
         "market.buy_hint": "Pays off above rate {be}%",
         "market.sell": "SELL",
         "market.buy": "BUY",
@@ -3558,8 +3569,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "market.lager": "Stash {held}/{cap}",
         "market.note_cash": "CLEAN: selling earns clean cash but raises heat. Buying is paid with clean cash.",
         "market.note_dirty": "DIRTY: selling earns 35% more dirty cash with no heat. Buy with dirty cash, then sell for clean cash to launder (about 23% loss, limited quota).",
-        "market.sell5_clean": "5× Clean",
-        "market.sellall_dirty": "ALL Dirty",
         "market.favor_swap": "Trade: 10 Stolen Goods / Bet Slips → +2 Favors",
         "market.favor_btn_stolen": "10 Stolen Goods → +2 Favors",
         "market.favor_btn_tickets": "10 Bet Slips → +2 Favors",
@@ -3802,7 +3811,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "biz.branch.cd": "Lock: {sec}s",
         "biz.buy.clean": "Clean Cash",
         "biz.buy.dirty": "Dirty",
-        "biz.lvl.short": "",
         "biz.next_goal": "×2 at lvl {next}",
         "biz.max_goal": "MAX ×32",
         "biz.mode.hustle": "HUSTLE",
@@ -3905,7 +3913,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "char.inkasso.name": "„Bruiser“ Boris",
         "char.inkasso.role": "+{val}% Global Output & +Coup Success",
 
-        "items.collector": "Stash: {owned} / {total}",
         "items.buy": "Acquire",
         "items.owned": "OWNED",
         "item.klappmesser.name": "Block Switchblade „Solingen“",
@@ -3959,7 +3966,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 
         "board.header.title": "Active Milestones",
         "board.ops.title": "Favor Interventions",
-        "board.ops.boost_lbl": "Overtime:",
         "board.ops.boost.active": "×2 Output ({sec}s)",
         "board.ops.boost.idle": "Inactive",
         "board.op.cool.name": "Prosecutor Dinner (-35% Heat, 60s Shield)",
@@ -4114,7 +4120,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "archive.prestige.btn": "Shred Files (+{files} Files)",
         "archive.prestige.confirm": "CONFIRM SHRED? (+{files} Files)",
         "archive.prestige.locked": "Need {missing} € more revenue to shred",
-        "archive.pup.title": "File Privileges (Permanent)",
         "archive.pup.buy": "Unlock",
         "archive.pup.max": "MAXED",
         "pup.startcash.name": "Black Petty Cash",
@@ -4156,8 +4161,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "archive.test.hide": "Hide",
 
         "archive.boss.title": "Boss Dossier, Audio & Language",
-        "archive.boss.lang": "Language:",
-        "archive.boss.sound": "Sound FX:",
         "archive.boss.sound.on": "AUDIO: ON",
         "archive.boss.sound.off": "AUDIO: OFF",
         "archive.boss.name": "Boss Name:",
@@ -4173,7 +4176,6 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         "archive.save.reset_confirm": "WIPE EVERYTHING? TAP AGAIN!",
         "archive.save.imported_ok": "Savegame loaded.",
         "archive.save.imported_err": "Invalid code!",
-        "archive.dev.title": "System Diagnostics (KIEZ_API)",
         "archive.dev.run": "Run Diagnostics",
         "archive.dev.mod": "Inject Mod Business",
 
@@ -8885,6 +8887,41 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
         setTimeout(() => { if (pop.parentNode) pop.parentNode.removeChild(pop); }, 650);
       },
 
+      spawnHustleBubble(btn) {
+        const combo = STATE.hustleCombo || 0;
+        const word = combo >= 6 ? `${Engine.currentHustleWord} ×4` : Engine.currentHustleWord;
+        // Zufallsweg: neue Blase startet nahe der letzten und wandert weiter
+        let x = (this._hbX == null) ? 50 : this._hbX + (Math.random() < 0.5 ? -1 : 1) * (14 + Math.random() * 26);
+        x = Math.max(14, Math.min(86, x));
+        this._hbX = x;
+        const dy = Math.round(Math.random() * 22 - 8);
+        const rot = (Math.random() * 8 - 4).toFixed(1);
+        const el = document.createElement("span");
+        el.className = "hustle-bubble hb-clone hb-zack" + (combo >= 6 ? " hb-od" : "");
+        // Zackenform: abwechselnd aussen/innen, pro Blase leicht anders
+        const spikes = (k) => {
+          const pts = [], n = 22;
+          for (let i = 0; i < n; i++) {
+            const a = (i / n) * Math.PI * 2, outer = i % 2 === 0;
+            const r = (outer ? 1 : 0.78) * k * (outer ? 0.92 + Math.random() * 0.08 : 1);
+            pts.push(`${(50 + Math.cos(a) * 50 * r).toFixed(1)}% ${(50 + Math.sin(a) * 50 * r).toFixed(1)}%`);
+          }
+          return `polygon(${pts.join(",")})`;
+        };
+        el.style.setProperty("--poly-o", spikes(1));
+        el.style.setProperty("--poly-i", spikes(0.84));
+        el.innerHTML = `<span class="hb-in"></span>`;
+        el.firstChild.textContent = word;
+        el.style.left = x + "%";
+        el.style.bottom = `calc(100% + ${58 + dy}px)`;
+        el.style.setProperty("--rot", rot + "deg");
+        el.style.setProperty("--tx", (30 + Math.random() * 40).toFixed(0) + "%");
+        btn.appendChild(el);
+        const olds = btn.querySelectorAll(".hb-clone");
+        if (olds.length > 5) olds[0].remove();
+        setTimeout(() => { if (el.parentNode) el.remove(); }, 1500);
+      },
+
       triggerHeatFlipFlash() {
         const box = document.getElementById("heat-box");
         if (!box) return;
@@ -9244,16 +9281,7 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
             const label = hRes.isCrit ? `KRIT! +${formatNumber(hRes.gained)} €` : `+${formatNumber(hRes.gained)} €`;
             this.spawnFloatingPopup(actionEl, label, hRes.isOverdrive, hRes.isCrit);
             actionEl.classList.remove("punch"); void actionEl.offsetWidth; actionEl.classList.add("punch");
-            if (actionEl.id === "mini-hustle-btn") {
-              const bu = actionEl.querySelector(".hustle-bubble");
-              if (bu) {
-                let k; do { k = Math.floor(Math.random() * 3); } while (k === this._bubK);
-                this._bubK = k;
-                bu.classList.remove("pl", "pr"); if (k === 1) bu.classList.add("pl"); else if (k === 2) bu.classList.add("pr");
-                bu.classList.add("show");
-                clearTimeout(this._bubT); this._bubT = setTimeout(() => bu.classList.remove("show"), 1300);
-              }
-            }
+            if (actionEl.id === "mini-hustle-btn") this.spawnHustleBubble(actionEl);
             if (hRes.isCrit) { FX.flash("rgba(255,212,0,.45)"); FX.sparks(actionEl, true); } else if (hRes.combo >= 3) FX.sparks(actionEl, false);
             this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
           } else if (action === "toggle-biz-mode") {
