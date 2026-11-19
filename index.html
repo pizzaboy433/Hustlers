@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <script>try { if (navigator.standalone === true) document.documentElement.classList.add("is-standalone"); } catch (e) {}</script>
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="58cf100ea7">
+  <meta name="build-id" content="dd1d172bf8">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2637,6 +2638,9 @@ html[data-fx="0"] .fx-float{display:none}
 /* v58: iPhone-Homescreen: Falls die Seite kürzer als der Bildschirm ist (dvh-Eigenheit), nicht als schwarzer Balken, sondern in Papierfarbe auslaufen lassen */
 @media (display-mode: standalone){html{background-color:var(--bg-paper)}}
 html.is-standalone{background-color:var(--bg-paper)}
+
+/* v58: iPhone-Homescreen: dvh liefert dort 812 statt 874 (schwarzer Balken unten). 100vh stimmt dort (Diagnose 19.11.). */
+html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { height: 100vh; }
 </style>
   <script data-goatcounter="https://hustlers.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
