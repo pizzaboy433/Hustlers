@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="59c0a476bc">
+  <meta name="build-id" content="ba91ec08f5">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2619,6 +2619,14 @@ html[data-theme="dark"] .ach-rew{color:#7BC938}
 .mini-hustle-btn.hb-locked,.hustle-btn.hb-locked{background:#C4C4C4!important;color:#7A7A7A!important;box-shadow:none!important;cursor:not-allowed;animation:none!important}
 .mini-hustle-btn.hb-locked svg,.hustle-btn.hb-locked svg{opacity:.5}
 html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hustle-btn.hb-locked{background:#3B3B3B!important;color:#8A8A8A!important}
+
+.cur-pre{display:none}
+.cur-pre::before{content:"$"}
+html[lang="en"] .cur-pre{display:inline}
+html[lang="en"] .cur-suf{display:none}
+
+/* Bargeld = Ziel: grüner Innenrahmen, schwarze Außenlinie und Schatten bleiben */
+.cash-dual-grid .cash-hero-box:not(.dirty-box){box-shadow:inset 0 0 0 4px var(--c-cash),var(--shadow-comic-sm)!important;padding:7px 11px 7px 11px!important}
 </style>
   <script data-goatcounter="https://hustlers.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -2645,18 +2653,20 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
       <div class="cash-dual-grid">
         <div class="cash-hero-box">
           <span class="cash-hero-tag" data-i18n="ui.curr.cash">Bargeld</span>
-          <div class="cash-hero-val num"><span data-bind="curr-cash">15,00</span> €</div>
+          <div class="cash-hero-val num"><span class="cur-pre"></span><span data-bind="curr-cash">15,00</span><span class="cur-suf"> €</span></div>
           <div class="cash-hero-sub">
             <span class="cps-pill num">+<span data-bind="curr-clean-cps">0,0</span>/s</span>
           </div>
         </div>
 
+
+
         <div class="cash-hero-box dirty-box">
           <span class="cash-hero-tag" data-i18n="ui.curr.dirty">Schwarzgeld</span>
-          <div class="cash-hero-val num"><span data-bind="curr-dirty">0,00</span> €</div>
+          <div class="cash-hero-val num"><span class="cur-pre"></span><span data-bind="curr-dirty">0,00</span><span class="cur-suf"> €</span></div>
           <div class="cash-hero-sub">
             <span class="cps-pill dirty-pill num">+<span data-bind="curr-dirty-cps">0,0</span>/s</span>
-            <span class="depot-cap-sub num">/ <span data-bind="curr-depot-cap">1 Tsd.</span> €</span>
+            <span class="depot-cap-sub num">/ <span class="cur-pre"></span><span data-bind="curr-depot-cap">1 Tsd.</span><span class="cur-suf"> €</span></span>
           </div>
           <div class="depot-mini-bar">
             <div class="depot-mini-fill" data-bind="depot-bar"></div>
@@ -4595,6 +4605,11 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
       return String(template).replace(/\{(\w+)\}/g, (_, k) => (merged[k] !== undefined ? merged[k] : `{${k}}`));
     }
 
+    // Zentrale Zweisprachigkeit: L("deutsch", "english") liefert den Text der aktuellen Sprache.
+    // Längere/wiederverwendete Texte gehören als Schlüssel in LANG_DE/LANG_EN (siehe t()).
+    function isEN() { return !!(typeof STATE !== "undefined" && STATE.settings && STATE.settings.lang === "EN"); }
+    function L(de, en) { return isEN() ? en : de; }
+
     function evEffects(str) {
       return String(str).split(/\s*•\s*/).map(p => {
         const m = p.match(/^([+\-−]?)(\d+(?:[.,]\d+)?)\s*(%|s)?\s*(.+)$/);
@@ -4943,7 +4958,8 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
     const Platform = {
       SAVE_KEY: "hustlers_urban_save_v1",
       BACKUP_KEY: "hustlers_urban_backup_v1",
-      CURRENT_VERSION: 11,
+      CURRENT_VERSION: 11,         // aktuelle Spielstand-Version (bei neuem Format erhöhen + Schritt in migrateSave ergänzen)
+      PREMIGRATE_KEY: "hustlers_urban_premigrate_v1",   // Kopie des alten Spielstands, bevor er umgewandelt wird
       memoryFallback: {},
       audioCtx: null,
       audioUnlocked: false,
@@ -5067,7 +5083,13 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
         const tryParse = (raw) => {
           if (!raw) return null;
           try {
-            const migrated = this.migrateSave(JSON.parse(raw));
+            const parsedRaw = JSON.parse(raw);
+            const oldVer = parsedRaw && parsedRaw.meta ? parsedRaw.meta.saveVersion : null;
+            // Spielstand einer anderen Version: Original vorher sichern (Rückweg bei Migrationsfehlern / neuerer App-Version)
+            if (Number.isFinite(oldVer) && oldVer !== this.CURRENT_VERSION) {
+              try { this.storageSet(this.PREMIGRATE_KEY, JSON.stringify({ from: oldVer, at: Date.now(), raw })); } catch (_) {}
+            }
+            const migrated = this.migrateSave(parsedRaw);
             return this.validateStateObject(migrated) ? migrated : null;
           } catch (_) {
             return null;
@@ -5316,17 +5338,101 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
     };
 
     // === [SECTION: LAYER_3_CORE_ENGINE] ===
-    const MILESTONE_LEVELS = [25, 50, 100, 150, 200];
-    // --- balancing knobs ---
-    let MARKET_POWER_MUL = 3;
-    let MARKET_BUY_SPREAD = 1.3;   // Einkauf kostet Aufschlag auf den Kurs
-    let MARKET_LAUNDER_SEC = 12;   // pro Kurswechsel lassen sich Waren fuer so viele Sekunden Gesamtleistung mit Schwarzgeld einkaufen
-    let MARKET_BUY_CAP = 24;       // Basis-Kapazitaet des Handelslagers pro Ware (waechst mit Cartel-Haendlern und Neustarts)
-    let RAID_WARN_SEC = 12;
+    // ======================================================================================
+    // BALANCE: alle einstellbaren Spielzahlen an einer Stelle. Nur hier ändern, nicht im Code.
+    // (Die alten Konstantennamen weiter unten zeigen auf diese Werte. Werte werden beim Laden gelesen.)
+    // ======================================================================================
+    const BALANCE = {
+      // --- Fahndung (Heat) ---
+      heat: {
+        kUp: 1.2,                  // Anstieg durch Hustle-Betriebe (mal Betriebsgrößen-Faktor)
+        kCool: 0.8,                // Abkühlung durch Tarnung-Betriebe
+        fallMul: 0.7,              // negative Netto-Fahndung wird mit diesem Faktor gedämpft
+        sizeK: 80,                 // Betriebsgröße = Summe Stufen / (Summe + sizeK), nur für Gewichte
+        decayBase: 0.03,           // Grundabbau pro Sekunde
+        decayPerHeat: 0.0025,      // zusätzlicher Abbau je Fahndungspunkt
+        passiveCap: 0.35,          // Obergrenze der passiven Fahndungsstrafe (Gang + Items)
+        overflowWarnRatio: 0.80,   // Depot-Füllung ab der Überlauf-Fahndung beginnt
+        overflowWarnHeat: 0.35,    //   ... Fahndung pro Sekunde
+        overflowFullRatio: 0.99,   // Depot (fast) voll
+        overflowFullHeat: 0.85,    //   ... Fahndung pro Sekunde
+        lockOn: 75,                // Schwarzgeld-Sperre ab dieser Fahndung
+        lockOff: 65,               //   ... aufgehoben unter dieser Fahndung
+        feeAt1: 75, fee1: 0.10,    // Gebühr (z. B. Markt) bei hoher Fahndung
+        feeAt2: 60, fee2: 0.05,
+        washAt1: 75, wash1: 0.85,  // Wäsche-Effizienz bei hoher Fahndung
+        washAt2: 60, wash2: 0.92,
+        radarStart: 40,            // ab hier wirken Coup-Malus und Hustle-Radar
+        radarSpan: 45,             //   ... voller Effekt bei radarStart + radarSpan
+        coupMalusMax: 0.15,        // maximaler Malus bei Coups
+        hustleRadarMax: 0.20       // maximaler Mehrertrag-Malus der Hustle-Betriebe (Radar)
+      },
+      // --- Wirtschaft ---
+      economy: {
+        launderDirtyShare: 0.45,   // Tarnung: Anteil der Leistung, der als Schwarzgeld ankommt
+        launderWashShare: 1.20,    // Tarnung: Wäschekapazität im Verhältnis zur Leistung
+        washFallbackShare: 0.25,   // Wäsche ohne Tarnung-Betriebe: Anteil des Schwarzgelds
+        washFallbackDamp: 0.35,    //   ... Wäsche-Boni wirken dann nur so stark
+        depotBase: 1000,           // Schwarzgeld-Depot: Basis
+        depotPerPowerSec: 30,      //   ... plus so viele Sekunden Gesamtleistung
+        depotMin: 1000,            //   ... mindestens
+        branchAIncomeMul: 1.5,     // Pfad A: Mehrertrag
+        branchBHeatMul: 0.75,      // Pfad B: weniger Fahndung
+        favorBoostMul: 2.0         // Gefallen-Boost: Ertrag
+      },
+      // --- Tippen (Hustle-Button) ---
+      tap: {
+        base: 2.5,                 // fester Anteil am Tipp-Wert
+        powerShare: 0.003,         // plus Anteil der Gesamtleistung pro Sekunde
+        cashMul: 1.5,              // Auszahlung = Tipp-Wert mal dieser Faktor
+        comboMax: 6,
+        comboDecaySec: 1.6,        // Kombo-Zeitfenster
+        critChance: 0.15,
+        critMul: 5,
+        heatCrit: 0.38,            // Fahndung pro Tipp
+        heatOverdrive: 0.26,       //   ... bei maximaler Kombo
+        heatNormal: 0.09,
+        sprintHeatFactor: 0.25     // während eines laufenden Sprints
+      },
+      // --- Freischaltung der Tabs (Summe aller Betriebs-Stufen) ---
+      tabs: { logistics: 40, turf: 60, hq: 80, cartel: 100 },
+      // --- Sanfter Einstieg: Freischaltung nach Lebenszeit-Umsatz ---
+      gate: { event: 5000, insp: 10000, sprint: 25000, war: 60000 },
+      milestones: [25, 50, 100, 150, 200],
+      branchCooldownSec: 90,
+      // --- Markt ---
+      market: {
+        powerMul: 3,
+        buySpread: 1.3,            // Einkauf kostet Aufschlag auf den Kurs
+        launderSec: 12,            // Waren für so viele Sekunden Gesamtleistung mit Schwarzgeld einkaufbar
+        buyCap: 24,                // Basis-Lagerkapazität pro Ware
+        raidWarnSec: 12
+      },
+      // --- Sprint ---
+      sprint: {
+        powerSec: 75,              // Bonus: Sekunden Gesamtleistung
+        tiers: {
+          easy: { goal: 50,  mul: 0.5, win: 6,  failHeat: 8,  failDirty: 0.10 },
+          mid:  { goal: 68,  mul: 0.75, win: 8, failHeat: 11, failDirty: 0.15 },
+          hard: { goal: 85,  mul: 1,   win: 10, failHeat: 14, failDirty: 0.20 }
+        }
+      },
+      // --- Manager (Automatik) ---
+      manager: { baseCost: 4, costGrowth: 1.28, budget: 0.25, interval: 1.0, maxSteps: 5, targets: [25, 50, 100, 150, 200, 0] },
+      // --- Prestige (Akten) ---
+      prestige: { min: 1e8, k: 10, exp: 0.3, growth: 2, fileCoef: 0.1, fileExp: 0.35 }
+    };
+    const MILESTONE_LEVELS = BALANCE.milestones;
+    // --- balancing knobs (Werte stehen in BALANCE) ---
+    const MARKET_POWER_MUL = BALANCE.market.powerMul;
+    const MARKET_BUY_SPREAD = BALANCE.market.buySpread;
+    const MARKET_LAUNDER_SEC = BALANCE.market.launderSec;
+    const MARKET_BUY_CAP = BALANCE.market.buyCap;
+    const RAID_WARN_SEC = BALANCE.market.raidWarnSec;
     // Sanfter Einstieg: Freischaltung nach Lebenszeit-Umsatz (Altspielstände sind längst darüber)
-    const GATE = { event: 5000, insp: 10000, sprint: 25000, war: 60000 };
+    const GATE = BALANCE.gate;
     const lifeRev = () => (STATE.stats && STATE.stats.lifetimeRevenue) || 0;
-    let CLICK_POWER_SHARE = 0.003;   // tap value: share of total output per second
+    const CLICK_POWER_SHARE = BALANCE.tap.powerShare;   // Tipp-Wert: Anteil der Gesamtleistung pro Sekunde
     const ACH_FAMILIES = [
       { id: "rev", de: "Lebenszeit-Umsatz", en: "Lifetime revenue", unit: " €", val: () => STATE.stats.lifetimeRevenue || 0,
         tiers: [[1e6, 2, 0, 0], [1e9, 3, 1, 0], [1e12, 5, 2, 0], [1e15, 8, 3, 1], [1e18, 12, 5, 2]] },
@@ -5365,29 +5471,25 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
       { id: "cmb", de: "Kombo ×4 erreicht", en: "Combo ×4 reached", unit: "", val: () => ((STATE.stats.maxCombo || 0) >= 6 ? 1 : 0),
         tiers: [[1, 1, 1, 0]] }
     ];
-    const SPRINT_TIERS = {
-      easy: { goal: 50,  mul: 0.5, win: 6,  failHeat: 8,  failDirty: 0.10 },
-      mid:  { goal: 68,  mul: 0.75, win: 8, failHeat: 11, failDirty: 0.15 },
-      hard: { goal: 85,  mul: 1,   win: 10, failHeat: 14, failDirty: 0.20 }
-    };
-    let SPRINT_POWER_SEC = 75;       // sprint bonus: seconds of total output
-    const HEAT_K_UP = 1.2;
-    const HEAT_K_COOL = 0.8;
-    const HEAT_FALL_MUL = 0.7;
-    const HEAT_SIZE_K = 80;
-    const MANAGER_BASE_COST = 4;
-    const MANAGER_COST_GROWTH = 1.28;
-    const MANAGER_BUDGET = 0.25;
-    const MANAGER_INTERVAL = 1.0;
-    const MANAGER_MAX_STEPS = 5;
-    const MANAGER_TARGETS = [25, 50, 100, 150, 200, 0];
-    const PRESTIGE_MIN = 1e8;
-    let PRESTIGE_K = 10;
-    let PRESTIGE_EXP = 0.3;
-    let PRESTIGE_GROWTH = 2;   // required run revenue grows by this factor per prestige
-    const FILE_BONUS_COEF = 0.1;
-    const FILE_BONUS_EXP = 0.35;
-    const BRANCH_COOLDOWN_SEC = 90;
+    const SPRINT_TIERS = BALANCE.sprint.tiers;
+    const SPRINT_POWER_SEC = BALANCE.sprint.powerSec;   // Sprint-Bonus: Sekunden Gesamtleistung
+    const HEAT_K_UP = BALANCE.heat.kUp;
+    const HEAT_K_COOL = BALANCE.heat.kCool;
+    const HEAT_FALL_MUL = BALANCE.heat.fallMul;
+    const HEAT_SIZE_K = BALANCE.heat.sizeK;
+    const MANAGER_BASE_COST = BALANCE.manager.baseCost;
+    const MANAGER_COST_GROWTH = BALANCE.manager.costGrowth;
+    const MANAGER_BUDGET = BALANCE.manager.budget;
+    const MANAGER_INTERVAL = BALANCE.manager.interval;
+    const MANAGER_MAX_STEPS = BALANCE.manager.maxSteps;
+    const MANAGER_TARGETS = BALANCE.manager.targets;
+    const PRESTIGE_MIN = BALANCE.prestige.min;
+    const PRESTIGE_K = BALANCE.prestige.k;
+    const PRESTIGE_EXP = BALANCE.prestige.exp;
+    const PRESTIGE_GROWTH = BALANCE.prestige.growth;
+    const FILE_BONUS_COEF = BALANCE.prestige.fileCoef;
+    const FILE_BONUS_EXP = BALANCE.prestige.fileExp;
+    const BRANCH_COOLDOWN_SEC = BALANCE.branchCooldownSec;
     function prestigeMulFromFiles(f) { return 1 + FILE_BONUS_COEF * Math.pow(Math.max(0, f || 0), FILE_BONUS_EXP); }
 
     const MISSION_CATEGORY_RULES = [
@@ -5409,7 +5511,7 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
       const now = Date.now();
       return {
         meta: {
-          saveVersion: 11,
+          saveVersion: Platform.CURRENT_VERSION,
           createdAt: now,
           savedAt: now
         },
@@ -5528,6 +5630,11 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
     let STATE = createInitialState();
 
     const Engine = {
+      // Ereignisse: Die Engine kennt die Oberfläche nicht. Sie meldet nur ("tabs" = Tab-Zustand geändert,
+      // "shell" = Kopf-/Menüleiste neu aufbauen); die View hängt sich beim Start per Engine.on() ein.
+      _listeners: {},
+      on(evt, fn) { (this._listeners[evt] = this._listeners[evt] || []).push(fn); },
+      emit(evt, data) { (this._listeners[evt] || []).forEach(fn => { try { fn(data); } catch (e) {} }); },
       lastPerfNow: performance.now(),
       lastTickWallTime: Date.now(),
       offlineReport: null,
@@ -6947,14 +7054,14 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
         if (kind === "bomb") { const r = this.applyBomb(); return r ? "Bombe: " + r.id : "kein Büro-Upgrade vorhanden"; }
         if (kind === "tabs_all") {
           STATE.ui.tabs = { logistics: 1, turf: 1, hq: 1, cartel: 1 };
-          View.syncTabs();
+          this.emit("tabs");
           return "Alle Tabs frei";
         }
         if (kind === "tabs_none") {
           STATE.ui.tabs = { logistics: 0, turf: 0, hq: 0, cartel: 0 };
           STATE.ui.tabNew = {};
           STATE.ui.activeTab = "businesses";
-          View.syncTabs(); View.syncShellControls();
+          this.emit("tabs"); this.emit("shell");
           return "Tabs gesperrt (Freischaltung startet neu)";
         }
         if (kind === "lv10" || kind === "lv100") {
@@ -7644,15 +7751,15 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
         return best;
       },
 
-      heatFee() { const h = STATE.heat || 0; return h >= 75 ? 0.10 : (h >= 60 ? 0.05 : 0); },
-      heatCoupMalus() { return Math.max(0, Math.min(1, ((STATE.heat || 0) - 40) / 45)) * 0.15; },
-      heatHustleMul() { return 1 + Math.max(0, Math.min(1, ((STATE.heat || 0) - 40) / 45)) * 0.20; },
-      heatWashMul() { const h = STATE.heat || 0; return h >= 75 ? 0.85 : (h >= 60 ? 0.92 : 1); },
+      heatFee() { const h = STATE.heat || 0, B = BALANCE.heat; return h >= B.feeAt1 ? B.fee1 : (h >= B.feeAt2 ? B.fee2 : 0); },
+      heatCoupMalus() { return Math.max(0, Math.min(1, ((STATE.heat || 0) - BALANCE.heat.radarStart) / BALANCE.heat.radarSpan)) * BALANCE.heat.coupMalusMax; },
+      heatHustleMul() { return 1 + Math.max(0, Math.min(1, ((STATE.heat || 0) - BALANCE.heat.radarStart) / BALANCE.heat.radarSpan)) * BALANCE.heat.hustleRadarMax; },
+      heatWashMul() { const h = STATE.heat || 0, B = BALANCE.heat; return h >= B.washAt1 ? B.wash1 : (h >= B.washAt2 ? B.wash2 : 1); },
       dirtyLocked() { return !!STATE.dirtyLock; },
       updateDirtyLock() {
         const h = STATE.heat || 0;
-        if (!STATE.dirtyLock && h >= 75) STATE.dirtyLock = true;
-        else if (STATE.dirtyLock && h < 65) STATE.dirtyLock = false;
+        if (!STATE.dirtyLock && h >= BALANCE.heat.lockOn) STATE.dirtyLock = true;
+        else if (STATE.dirtyLock && h < BALANCE.heat.lockOff) STATE.dirtyLock = false;
       },
 
       getDualPurchaseQuotes(bizId) {
@@ -7991,7 +8098,6 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
 
       getRadioNews() {
         const en = STATE.settings && STATE.settings.lang === "EN";
-        const L = (d, e) => (en ? e : d);
         const city = STATE.boss.city || "Berlin-Süd";
         const boss = STATE.boss.name || "Kowalski";
         const out = [];
@@ -8184,7 +8290,7 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
         const pupBoni = this.getPrestigeUpgradeBonuses();
         const prestigeMul = prestigeMulFromFiles(STATE.stats.filesEarnedTotal);
         const radarPenalty = this.heatHustleMul();
-        const favorBoostMul = STATE.boostTimer > 0 ? 2.0 : 1.0;
+        const favorBoostMul = STATE.boostTimer > 0 ? BALANCE.economy.favorBoostMul : 1.0;
 
         const baseGlobalMul = prestigeMul * pupBoni.pupIncomeMul * gangBoni.gangIncomeMul * itemBoni.itemGlobalIncomeMul * offBoni.officeIncomeMul;
 
@@ -8210,7 +8316,7 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
           const milestones = this.getReachedMilestonesCount(st.level);
           const milestoneMul = Math.pow(2, milestones);
           const supplyMul = (1 + supplyAddMap[b.id]) * supplyMulMap[b.id];
-          const branchIncomeMul = st.branch === "A" ? 1.5 : 1.0;
+          const branchIncomeMul = st.branch === "A" ? BALANCE.economy.branchAIncomeMul : 1.0;
           const epochItemMul = itemBoni.epochMulMap[b.epochId] || 1;
           const epochTurfMul = turfBoni.epochTurfMul[b.epochId] || 1;
 
@@ -8225,12 +8331,12 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
           basePowerCps += Number.isFinite(baseP) ? baseP : 0;
           totalPowerCps += safePower;
 
-          const branchHeatFactor = st.branch === "B" ? 0.75 : 1.0;
+          const branchHeatFactor = st.branch === "B" ? BALANCE.economy.branchBHeatMul : 1.0;
           const effHeatMul = b.heatMul * branchHeatFactor;
 
           if (st.mode === "launder") {
-            grossDirtyCps += safePower * 0.45;
-            rawWashCapacityCps += safePower * 1.20;
+            grossDirtyCps += safePower * BALANCE.economy.launderDirtyShare;
+            rawWashCapacityCps += safePower * BALANCE.economy.launderWashShare;
             coolWeight += safePower;
           } else {
             grossDirtyCps += safePower;
@@ -8239,7 +8345,7 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
         }
 
         let washFallback = false;
-        if (rawWashCapacityCps <= 0 && grossDirtyCps > 0) { rawWashCapacityCps = grossDirtyCps * 0.25; washFallback = true; }
+        if (rawWashCapacityCps <= 0 && grossDirtyCps > 0) { rawWashCapacityCps = grossDirtyCps * BALANCE.economy.washFallbackShare; washFallback = true; }
         if (totalPowerCps > 0) {
           const sizeFactor = sumLevels / (sumLevels + HEAT_SIZE_K);
           heatGainPerSec = HEAT_K_UP * sizeFactor * (hotWeight / totalPowerCps);
@@ -8247,13 +8353,13 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
         }
         let washMulAll = logBoni.washSpeedMul * itemBoni.washSpeedMul * pupBoni.washMul;
         // Ohne Tarnung-Betriebe bleibt die Wäsche der Engpass: Boni wirken nur abgeschwächt (max. ca. 95 % des Schwarzgelds)
-        if (washFallback) washMulAll = 1 + Math.max(0, washMulAll - 1) * 0.35;
+        if (washFallback) washMulAll = 1 + Math.max(0, washMulAll - 1) * BALANCE.economy.washFallbackDamp;
         const washCapacityCps = rawWashCapacityCps * washMulAll;
 
         const totalDepotMul = logBoni.depotMultiplier + offBoni.depotMulAdd + itemBoni.depotMulAdd + pupBoni.depotAdd;
-        const depotCapacity = Math.max(1000, (1000 + totalPowerCps * 30) * totalDepotMul);
+        const depotCapacity = Math.max(BALANCE.economy.depotMin, (BALANCE.economy.depotBase + totalPowerCps * BALANCE.economy.depotPerPowerSec) * totalDepotMul);
         const dirtyRatio = depotCapacity > 0 ? ((STATE.currencies.dirtyCash || 0) / depotCapacity) : 0;
-        const overflowHeat = dirtyRatio >= 0.99 ? 0.85 : (dirtyRatio >= 0.80 ? 0.35 : 0);
+        const overflowHeat = dirtyRatio >= BALANCE.heat.overflowFullRatio ? BALANCE.heat.overflowFullHeat : (dirtyRatio >= BALANCE.heat.overflowWarnRatio ? BALANCE.heat.overflowWarnHeat : 0);
 
         const dirtyStock = STATE.currencies.dirtyCash || 0;
         const sustainableWashDirty = dirtyStock > washCapacityCps * 0.5
@@ -8261,8 +8367,8 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
           : Math.min(washCapacityCps, grossDirtyCps + dirtyStock);
         const cleanIncomeCps = sustainableWashDirty * logBoni.washEfficiency * this.heatWashMul();
 
-        const cappedPassiveHeatPenalty = Math.min(0.35, (gangBoni.passiveHeatPenalty || 0) + (itemBoni.passiveHeatPenalty || 0));
-        const heatDecayPerSec = 0.03 + 0.0025 * STATE.heat + launderCoolPerSec + logBoni.heatDecayBonus + turfBoni.heatDecayBonus + gangBoni.heatDecayBonus + itemBoni.heatDecayBonus + pupBoni.heatDecayBonus + offBoni.heatDecayBonus;
+        const cappedPassiveHeatPenalty = Math.min(BALANCE.heat.passiveCap, (gangBoni.passiveHeatPenalty || 0) + (itemBoni.passiveHeatPenalty || 0));
+        const heatDecayPerSec = BALANCE.heat.decayBase + BALANCE.heat.decayPerHeat * STATE.heat + launderCoolPerSec + logBoni.heatDecayBonus + turfBoni.heatDecayBonus + gangBoni.heatDecayBonus + itemBoni.heatDecayBonus + pupBoni.heatDecayBonus + offBoni.heatDecayBonus;
         const heatNetRaw = (heatGainPerSec + overflowHeat + cappedPassiveHeatPenalty) - heatDecayPerSec;
         const heatNetPerSec = heatNetRaw < 0 ? heatNetRaw * HEAT_FALL_MUL : heatNetRaw;
 
@@ -8270,9 +8376,9 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
         const clickExtras = (1 + (gangBoni.razziaShield * 2.5)) * itemBoni.clickPowerMul * pupBoni.clickMul * turfBoni.turfClickMul * offBoni.clickMul * gangBoni.gangClickMul;
         const clickDamp = clickExtras > 1 ? Math.sqrt(clickExtras) / clickExtras : 1;   // stacked tap boosts count only by their square root
         const clickBonusMul = clickExtras * clickDamp * comboMul;
-        const clickValue = (2.5 + totalPowerCps * CLICK_POWER_SHARE) * clickBonusMul;
+        const clickValue = (BALANCE.tap.base + totalPowerCps * CLICK_POWER_SHARE) * clickBonusMul;
 
-        const _baseDecay = 0.03 + 0.0025 * STATE.heat;
+        const _baseDecay = BALANCE.heat.decayBase + BALANCE.heat.decayPerHeat * STATE.heat;
         const bd = {
           a0: bdA0, a1: bdA1, a2: bdA2, a3: bdA3,
           prestige: prestigeMul, pup: pupBoni.pupIncomeMul, gang: gangBoni.gangIncomeMul, item: itemBoni.itemGlobalIncomeMul, office: offBoni.officeIncomeMul,
@@ -8280,7 +8386,7 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
           heatLoad: heatGainPerSec, overflow: overflowHeat, passive: cappedPassiveHeatPenalty,
           launderCool: launderCoolPerSec, baseDecay: _baseDecay, infra: heatDecayPerSec - _baseDecay - launderCoolPerSec,
           fallMul: heatNetRaw < 0 ? HEAT_FALL_MUL : 1,
-          clickBase: 2.5 + totalPowerCps * CLICK_POWER_SHARE, combo: comboMul, clickItem: itemBoni.clickPowerMul, clickPup: pupBoni.clickMul,
+          clickBase: BALANCE.tap.base + totalPowerCps * CLICK_POWER_SHARE, combo: comboMul, clickItem: itemBoni.clickPowerMul, clickPup: pupBoni.clickMul,
           clickTurf: turfBoni.turfClickMul, clickOffice: offBoni.clickMul, clickGang: gangBoni.gangClickMul, clickShield: (1 + gangBoni.razziaShield * 2.5), clickDamp
         };
         return {
@@ -8338,18 +8444,18 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
       },
 
       clickHustle() {
-        STATE.hustleCombo = Math.min(6, (STATE.hustleCombo || 0) + 1);
+        STATE.hustleCombo = Math.min(BALANCE.tap.comboMax, (STATE.hustleCombo || 0) + 1);
         if (STATE.hustleCombo > (STATE.stats.maxCombo || 0)) STATE.stats.maxCombo = STATE.hustleCombo;
-        STATE.hustleDecayTimer = 1.6 + this.getOfficeBonuses().comboDecayBonus;
+        STATE.hustleDecayTimer = BALANCE.tap.comboDecaySec + this.getOfficeBonuses().comboDecayBonus;
         const word = this.pickNextHustleWord();
-        const isOverdrive = STATE.hustleCombo >= 6;
-        const isCrit = Math.random() < 0.15;
+        const isOverdrive = STATE.hustleCombo >= BALANCE.tap.comboMax;
+        const isCrit = Math.random() < BALANCE.tap.critChance;
         const stats = this.getStats();
 
-        const baseHeatAdd = isCrit ? 0.38 : (isOverdrive ? 0.26 : 0.09);
-        STATE.heat = Math.min(100, STATE.heat + baseHeatAdd * (stats.hustleHeatFactor || 1) * (this.sprint && !this.sprint.offered ? 0.25 : 1));
+        const baseHeatAdd = isCrit ? BALANCE.tap.heatCrit : (isOverdrive ? BALANCE.tap.heatOverdrive : BALANCE.tap.heatNormal);
+        STATE.heat = Math.min(100, STATE.heat + baseHeatAdd * (stats.hustleHeatFactor || 1) * (this.sprint && !this.sprint.offered ? BALANCE.tap.sprintHeatFactor : 1));
 
-        const gained = stats.clickValue * 1.5 * (isCrit ? 5 : 1);
+        const gained = stats.clickValue * BALANCE.tap.cashMul * (isCrit ? BALANCE.tap.critMul : 1);
         this.addDirtyCash(gained, stats.depotCapacity);
         STATE.stats.totalClicks += 1;
         this.inspectorClick();
@@ -8767,7 +8873,7 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
         } catch (e) {}
         let vp = "";
         try { vp = innerWidth + "x" + innerHeight; } catch (e) {}
-        this.add("START", "v3.25.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
+        this.add("START", "v3.30.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
         this.flush();
       },
       flush() {
@@ -9543,10 +9649,10 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
 
     // Tabs werden nach und nach freigeschaltet (Summe aller Betriebs-Stufen). Zahlen hier anpassen.
     const TAB_UNLOCK = [
-      { k: "logistics", lv: 40 },
-      { k: "turf", lv: 60 },
-      { k: "hq", lv: 80 },
-      { k: "cartel", lv: 100 }
+      { k: "logistics", lv: BALANCE.tabs.logistics },
+      { k: "turf", lv: BALANCE.tabs.turf },
+      { k: "hq", lv: BALANCE.tabs.hq },
+      { k: "cartel", lv: BALANCE.tabs.cartel }
     ];
     // Hustle-Button: grau bis der erste Betrieb gekauft ist und der Schalter (Hustle/Tarnung) erklärt wurde
     function hustleOpen() {
@@ -9555,6 +9661,52 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
       return !!(tp.off || (tp.done && tp.done.mode) || (STATE.stats.totalClicks || 0) >= 1 || (STATE.stats.prestigeCount || 0) > 0);
     }
     function tabOpen(k) { const T = STATE && STATE.ui && STATE.ui.tabs; return k === "businesses" || !T || !!T[k]; }
+
+    // Währung: Deutsch "€", Englisch "$" (überall). Statische Zahlen-Stellen nutzen .cur-pre/.cur-suf (CSS, Sprache am <html>),
+    // alles andere ersetzt ein Beobachter in den Textknoten (Zeichen vor die Zahl gestellt) und stellt es beim Wechsel zurück.
+    const Currency = {
+      _orig: new WeakMap(), _obs: null,
+      en() { return !!(typeof STATE !== "undefined" && STATE.settings && STATE.settings.lang === "EN"); },
+      sym() { return this.en() ? "$" : "€"; },
+      conv(txt) {
+        return txt.replace(/([+\-−–]?)(\d[\d.,]*(?:\s?(?:Qa|Qi|Sx|K|M|B|T))?)\s?€/g, (m, sg, num) => sg + "$" + num).replace(/€/g, "$");
+      },
+      proc(node) {
+        const d = node.data;
+        if (!d || d.indexOf("€") < 0) return;
+        const p = node.parentElement;
+        if (!p || (p.closest && p.closest(".cur-suf,script,style,textarea"))) return;
+        this._orig.set(node, d);
+        node.data = this.conv(d);
+      },
+      walk(root) {
+        const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+        let n; while ((n = w.nextNode())) this.proc(n);
+      },
+      restore() {
+        const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        let n; while ((n = w.nextNode())) { if (this._orig.has(n)) { n.data = this._orig.get(n); this._orig.delete(n); } }
+      },
+      sync() {
+        if (!document.body || typeof MutationObserver === "undefined") return;
+        if (this.en()) {
+          if (!this._obs) {
+            this._obs = new MutationObserver(recs => {
+              for (let i = 0; i < recs.length; i++) {
+                const r = recs[i];
+                if (r.type === "characterData") this.proc(r.target);
+                else r.addedNodes.forEach(nd => { if (nd.nodeType === 3) this.proc(nd); else if (nd.nodeType === 1) this.walk(nd); });
+              }
+            });
+            this._obs.observe(document.body, { subtree: true, childList: true, characterData: true });
+          }
+          this.walk(document.body);
+        } else if (this._obs) {
+          this._obs.disconnect(); this._obs = null;
+          this.restore();
+        }
+      }
+    };
 
     const View = {
       bindCache: {},
@@ -9606,6 +9758,7 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
         if (ctrlBar) ctrlBar.classList.toggle("hidden", STATE.ui.activeTab !== "businesses");
         document.documentElement.lang = (STATE.settings.lang || "DE").toLowerCase();
         applyTheme();
+        Currency.sync();
       },
 
       syncTabs() {
@@ -10969,7 +11122,7 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
                     <div class="biz-icon">${renderIcon(b.iconKey, 17)}</div>
                     <div class="biz-title-wrap">
                       <div class="biz-name">${t(b.nameKey)}</div>
-                      <div class="biz-meta"><span class="num" data-bind="biz-cps-${b.id}">0,00</span> €/s</div>
+                      <div class="biz-meta"><span class="cur-pre"></span><span class="num" data-bind="biz-cps-${b.id}">0,00</span><span class="cur-suf"> €</span>/s</div>
                     </div>
                   </div>
                   <div class="biz-level-pill"><span data-bind="biz-lvl-${b.id}">${st.level}</span></div>
@@ -10990,13 +11143,13 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
                       <span>${t("biz.buy.clean")}</span>
                       <span class="num" data-bind="biz-cnt-clean-${b.id}">(+1)</span>
                     </div>
-                    <div class="dual-buy-price num"><span data-bind="biz-cost-clean-${b.id}">0,00</span> €</div>
+                    <div class="dual-buy-price num"><span class="cur-pre"></span><span data-bind="biz-cost-clean-${b.id}">0,00</span><span class="cur-suf"> €</span></div>
                   </button>
                   <button type="button" class="comic-btn dirty-buy dual-buy-btn" data-buy-biz="${b.id}" data-pay="dirtyCash" data-bind="biz-btn-dirty-${b.id}">
                     <div class="dual-buy-top">
                       <span class="dual-buy-lbl">${t("biz.buy.dirty")} <span class="num" data-bind="biz-cnt-dirty-${b.id}">+1</span> (ab +3,5% ${renderIcon("siren", 10)})</span>
                     </div>
-                    <div class="dual-buy-price num"><span data-bind="biz-cost-dirty-${b.id}">0,00</span> €</div>
+                    <div class="dual-buy-price num"><span class="cur-pre"></span><span data-bind="biz-cost-dirty-${b.id}">0,00</span><span class="cur-suf"> €</span></div>
                   </button>
                 </div>
               </article>
@@ -11710,7 +11863,7 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
                 <p style="font-size:12px;">${t("archive.prestige.desc", { min: formatNumber(Engine.getPrestigeMin()) })}</p>
                 <div class="stat-row">
                   <span>${t("archive.prestige.liferev")}</span>
-                  <span><span class="num" data-bind="arch-liferev">0,00</span> €</span>
+                  <span><span class="cur-pre"></span><span class="num" data-bind="arch-liferev">0,00</span><span class="cur-suf"> €</span></span>
                 </div>
                 <div class="stat-row">
                   <span>${t("archive.prestige.totalfiles")}</span>
@@ -11913,7 +12066,6 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
       showWarModal() {
         const w = STATE.war; if (!w) return;
         const en = STATE.settings && STATE.settings.lang === "EN";
-        const L = (d, e) => en ? e : d;
         const W = Engine.WAR, tf = REGISTRY.TURF[w.turf];
         const def = Engine.warDefense(), atk = w.atk, mx = Math.max(def, atk) * 1.05;
         const chance = Math.round(Engine.warChance() * 100);
@@ -11981,7 +12133,6 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
         const el = this.goalEl || (this.goalEl = document.getElementById("goal-strip"));
         if (!el) return;
         const en = STATE.settings && STATE.settings.lang === "EN";
-        const L = (d, e) => (en ? e : d);
         const g = (STATE.social && STATE.social.named) ? Engine.nextGoal() : null;
         if (!g) { if (!el.hidden) el.hidden = true; return; }
         if (el.hidden) el.hidden = false;
@@ -12031,7 +12182,6 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
         this.hintKind = want;
         if (!want) { el.hidden = true; return; }
         const en = STATE.settings && STATE.settings.lang === "EN";
-        const L = (d, e) => (en ? e : d);
         let txt = "", btn = "";
         if (want === "backup") { txt = L("Sichere deinen Spielstand: Er liegt nur in diesem Browser.", "Back up your save: it only lives in this browser."); btn = L("Kopieren", "Copy"); }
         else if (want === "a2hs-ios") { txt = L("Tipp: In Safari Teilen, dann Zum Home-Bildschirm. So startet das Spiel wie eine App.", "Tip: in Safari tap Share, then Add to Home Screen to start it like an app."); btn = "OK"; }
@@ -12139,7 +12289,7 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
           for (let l = 1; l < 3; l++) for (let y = -40 + (off % 40); y < H; y += 40) ctx.fillRect(l * LW - 2, y, 4, 22);
           for (const o of objs) {
             const cx = o.lane * LW + LW / 2;
-            if (o.type === "pkg") { ctx.fillStyle = "#C28A3E"; ctx.fillRect(cx - 17, o.y - 15, 34, 30); ctx.strokeStyle = "#1A1A1A"; ctx.lineWidth = 3; ctx.strokeRect(cx - 17, o.y - 15, 34, 30); ctx.fillStyle = "#1A1A1A"; ctx.font = "900 16px sans-serif"; ctx.textAlign = "center"; ctx.fillText("€", cx, o.y + 6); }
+            if (o.type === "pkg") { ctx.fillStyle = "#C28A3E"; ctx.fillRect(cx - 17, o.y - 15, 34, 30); ctx.strokeStyle = "#1A1A1A"; ctx.lineWidth = 3; ctx.strokeRect(cx - 17, o.y - 15, 34, 30); ctx.fillStyle = "#1A1A1A"; ctx.font = "900 16px sans-serif"; ctx.textAlign = "center"; ctx.fillText(Currency.sym(), cx, o.y + 6); }
             else { ctx.fillStyle = "#E0453A"; ctx.fillRect(cx - 30, o.y - 12, 60, 24); ctx.fillStyle = "#fff"; for (let k = 0; k < 4; k++) ctx.fillRect(cx - 30 + k * 16 + 4, o.y - 12, 8, 24); ctx.strokeStyle = "#1A1A1A"; ctx.lineWidth = 3; ctx.strokeRect(cx - 30, o.y - 12, 60, 24); }
           }
           if (!(inv > 0 && Math.floor(inv * 12) % 2 === 0)) { ctx.fillStyle = "#FBF8F0"; ctx.fillRect(vx - 20, VY - 30, 40, 60); ctx.strokeStyle = "#1A1A1A"; ctx.lineWidth = 3; ctx.strokeRect(vx - 20, VY - 30, 40, 60); ctx.fillStyle = "#1A1A1A"; ctx.fillRect(vx - 14, VY - 26, 28, 14); ctx.fillStyle = "#E2A326"; ctx.fillRect(vx - 14, VY + 6, 28, 18); }
@@ -13603,7 +13753,6 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
 
       showJobModal() {
         const en = STATE.settings && STATE.settings.lang === "EN";
-        const L = (d, e) => en ? e : d;
         const body = document.getElementById("app-modal-body");
         body.innerHTML = `
           <h2 class="panel-title">${L("Team-Tagesjob", "Team daily job")}</h2>
@@ -13638,7 +13787,6 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
 
       showSendModal(rid) {
         const en = STATE.settings && STATE.settings.lang === "EN";
-        const L = (d, e) => en ? e : d;
         const r = (SOC.ensure().rivals[rid]) || { name: "?" };
         const body = document.getElementById("app-modal-body");
         body.innerHTML = `
@@ -13750,7 +13898,7 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
               ${devHtml}
 
               <div class="version-footer" data-action="tap-version">
-                Hustlers: Urban Edition • v3.25.0
+                Hustlers: Urban Edition • v3.30.0
               </div>
               <div style="text-align:center;font-size:11px;padding:0 0 22px;"><a href="impressum.html" target="_blank" rel="noopener" style="color:var(--accent-concrete);">Impressum &amp; Datenschutz</a></div>
         </div>`;
@@ -14021,7 +14169,6 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
 
       showIntro() {
         const en = STATE.settings && STATE.settings.lang === "EN";
-        const L = (d, e) => en ? e : d;
         const body = document.getElementById("app-modal-body");
         body.innerHTML = `
           <h2 class="panel-title">${L("Willkommen im Kiez", "Welcome to the hood")}</h2>
@@ -14043,7 +14190,6 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
 
       showNamePrompt() {
         const en = STATE.settings && STATE.settings.lang === "EN";
-        const L = (d, e) => en ? e : d;
         const so = SOC.ensure();
         const cur = (STATE.boss.name && STATE.boss.name !== "Kowalski") ? STATE.boss.name : "";
         const body = document.getElementById("app-modal-body");
@@ -14086,7 +14232,6 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
 
       renderFriends(vp, subNavHtml) {
         const en = STATE.settings && STATE.settings.lang === "EN";
-        const L = (d, e) => en ? e : d;
         const so = SOC.ensure();
         const code = SOC.makeCard();
         const list = Object.values(so.rivals).sort((a, b) => (b.rev || 0) - (a.rev || 0));
@@ -14137,7 +14282,6 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
         const modal = document.getElementById("app-modal");
         const body = document.getElementById("app-modal-body");
         const en = STATE.settings && STATE.settings.lang === "EN";
-        const L = (d, e) => en ? e : d;
         const sec = Math.max(0, Math.floor(report.seconds || 0));
         const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), sc = sec % 60;
         const durText = h > 0 ? `${h} ${L("Std.", "h")} ${m} ${L("Min.", "min")}` : m > 0 ? `${m} ${L("Min.", "min")} ${sc} ${L("Sek.", "s")}` : `${sc} ${L("Sek.", "s")}`;
@@ -14164,7 +14308,6 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
       showBreakdownModal() {
         const st = Engine.getStats(), bd = st.bd;
         const en = STATE.settings && STATE.settings.lang === "EN";
-        const L = (d, e) => en ? e : d;
         const row = (lbl, val, cls, tot) => `<div class="bd-row ${tot ? "tot" : ""}"><span>${lbl}</span><span class="num ${cls || ""}">${val}</span></div>`;
         const sd = (a, b) => b > 0 ? a / b : 1;
         const mrow = (lbl, v, cls) => Math.abs(v - 1) < 0.0005 ? "" : row(lbl, "×" + formatNumber(v, 2), cls);
@@ -14312,6 +14455,8 @@ html[data-theme="dark"] .mini-hustle-btn.hb-locked,html[data-theme="dark"] .hust
       const loaded = Platform.loadGame();
       if (loaded) Engine.applyLoadedState(loaded, true);
       else Engine.ensureStateIntegrity();
+      Engine.on("tabs", () => View.syncTabs());
+      Engine.on("shell", () => View.syncShellControls());
       View.init();
       Online.start();
 
