@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="ba91ec08f5">
+  <meta name="build-id" content="5f38bfaab0">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2627,6 +2627,12 @@ html[lang="en"] .cur-suf{display:none}
 
 /* Bargeld = Ziel: grüner Innenrahmen, schwarze Außenlinie und Schatten bleiben */
 .cash-dual-grid .cash-hero-box:not(.dirty-box){box-shadow:inset 0 0 0 4px var(--c-cash),var(--shadow-comic-sm)!important;padding:7px 11px 7px 11px!important}
+
+/* v58: Kauf-Feedback: aufsteigendes +N und Button-Druck */
+.fx-float{position:fixed;z-index:9000;pointer-events:none;transform:translateX(-50%);font:900 18px var(--font-mono,monospace);color:#8be04a;-webkit-text-stroke:3px #111;paint-order:stroke fill;animation:fxFloat .7s ease-out forwards}
+@keyframes fxFloat{0%{opacity:0;transform:translate(-50%,6px) scale(.7)}20%{opacity:1;transform:translate(-50%,-4px) scale(1.15)}100%{opacity:0;transform:translate(-50%,-34px) scale(1)}}
+html:not([data-fx="0"]) .biz-buy-btn:active,html:not([data-fx="0"]) .dual-buy-btn:active{transform:translate(2px,2px) scale(.98,.94);box-shadow:1px 1px 0 var(--line)}
+html[data-fx="0"] .fx-float{display:none}
 </style>
   <script data-goatcounter="https://hustlers.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -3062,7 +3068,7 @@ html[lang="en"] .cur-suf{display:none}
         "mis.cat.corrupt": "Korruption",
         "mis.cat.race": "Straßenrennen",
 
-        "mis.req.drugs": "Späti „Eckstein“ St. 1",
+        "mis.req.drugs": "Späti Eckstein St. 1",
         "mis.req.extort": "Drehspieß „Boss-Kebab“ St. 1",
         "mis.req.fights": "Wettbüro „Sichere Bank“ St. 1",
         "mis.req.gamble": "Spielothek „Goldene Sieben“ St. 1",
@@ -3138,94 +3144,94 @@ html[lang="en"] .cur-suf{display:none}
         "epoch.holding.name": "Holding",
 
         // Betriebe (30)
-        "biz.spaeti.name": "Späti „Eckstein“",
+        "biz.spaeti.name": "Späti Eckstein",
         "biz.spaeti.a": "Nachtschalter (+50% Leistung)",
         "biz.spaeti.b": "Nachbarschaftspaket (-15% Kosten, -25% Fahndung)",
-        "biz.flaschen.name": "Pfand-Logistik „Mehrweg“",
+        "biz.flaschen.name": "Pfand Mehrweg",
         "biz.flaschen.a": "Industriepresse (+50% Leistung)",
         "biz.flaschen.b": "Hinterhof-Depot (-15% Kosten, -25% Fahndung)",
-        "biz.handyshop.name": "Handy-Klinik „Unlocker“",
+        "biz.handyshop.name": "Handy-Klinik",
         "biz.handyshop.a": "Express-Displaytausch (+50% Leistung)",
         "biz.handyshop.b": "Prepaid-Strohmann (-15% Kosten, -25% Fahndung)",
-        "biz.doener.name": "Drehspieß „Boss-Kebab“",
+        "biz.doener.name": "Boss-Kebab",
         "biz.doener.a": "Geheimsoße Deluxe (+50% Leistung)",
         "biz.doener.b": "Kühlketten-Tarnung (-15% Kosten, -25% Fahndung)",
-        "biz.tipico.name": "Wettbüro „Sichere Bank“",
+        "biz.tipico.name": "Wettbüro",
         "biz.tipico.a": "Live-Quoten-Terminal (+50% Leistung)",
         "biz.tipico.b": "Konzessions-Gutachten (-15% Kosten, -25% Fahndung)",
-        "biz.spielhalle.name": "Spielothek „Goldene Sieben“",
+        "biz.spielhalle.name": "Goldene Sieben",
         "biz.spielhalle.a": "VIP-Automatenzone (+50% Leistung)",
         "biz.spielhalle.b": "Schallschutz-Fassade (-15% Kosten, -25% Fahndung)",
-        "biz.tattoo.name": "Tattoo-Studio „Reine Haut“",
+        "biz.tattoo.name": "Reine Haut",
         "biz.tattoo.a": "Gast-Tätowierer (+50% Leistung)",
         "biz.tattoo.b": "Hygiene-Zertifikat (-15% Kosten, -25% Fahndung)",
-        "biz.shisha.name": "Shisha-Lounge „Nebelwand“",
+        "biz.shisha.name": "Nebelwand",
         "biz.shisha.a": "Premium-Molasse (+50% Leistung)",
         "biz.shisha.b": "Abluft-Filteranlage (-15% Kosten, -25% Fahndung)",
-        "biz.barber.name": "Barber-Shop „Klinge & Cash“",
+        "biz.barber.name": "Klinge & Cash",
         "biz.barber.a": "Express-Konturschnitt (+50% Leistung)",
         "biz.barber.b": "Kassenbuch-Glättung (-15% Kosten, -25% Fahndung)",
-        "biz.pfandhaus.name": "Leihhaus „Schmelzpunkt“",
+        "biz.pfandhaus.name": "Leihhaus",
         "biz.pfandhaus.a": "Sofort-Beleihung (+50% Leistung)",
         "biz.pfandhaus.b": "Herkunfts-Amnesie (-15% Kosten, -25% Fahndung)",
-        "biz.autohof.name": "Gebrauchtwagen „Export-Perle“",
+        "biz.autohof.name": "Export-Perle",
         "biz.autohof.a": "Tacho-Kosmetik (+50% Leistung)",
         "biz.autohof.b": "Zollkennzeichen-Pool (-15% Kosten, -25% Fahndung)",
-        "biz.boxclub.name": "Boxkeller „Schwergewicht“",
+        "biz.boxclub.name": "Boxkeller",
         "biz.boxclub.a": "Hinterhof-Gala (+50% Leistung)",
         "biz.boxclub.b": "Jugendsport-Förderverein (-15% Kosten, -25% Fahndung)",
-        "biz.waschsalon.name": "Textilpflege „Weiße Weste“",
+        "biz.waschsalon.name": "Weiße Weste",
         "biz.waschsalon.a": "24h-Heißmangel (+50% Leistung)",
         "biz.waschsalon.b": "Chemische Reinigung (-15% Kosten, -25% Fahndung)",
-        "biz.spedition.name": "Nacht-Logistik „Rollfeld“",
+        "biz.spedition.name": "Rollfeld",
         "biz.spedition.a": "Doppelte Ladeböden (+50% Leistung)",
         "biz.spedition.b": "Digitale Frachtbriefe (-15% Kosten, -25% Fahndung)",
-        "biz.kuehlhaus.name": "Zoll-Kühlhaus „Nordkai“",
+        "biz.kuehlhaus.name": "Kühlhaus Nordkai",
         "biz.kuehlhaus.a": "Tiefkühl-Sonderlager (+50% Leistung)",
         "biz.kuehlhaus.b": "Veterinär-Stempel (-15% Kosten, -25% Fahndung)",
-        "biz.schrottplatz.name": "Metallhandel „Rost & Rendite“",
+        "biz.schrottplatz.name": "Rost & Rendite",
         "biz.schrottplatz.a": "Kupfer-Schnellschmelze (+50% Leistung)",
         "biz.schrottplatz.b": "Wiegeschein-Archiv (-15% Kosten, -25% Fahndung)",
-        "biz.technoclub.name": "Bunker-Club „Subfrequenz“",
+        "biz.technoclub.name": "Subfrequenz",
         "biz.technoclub.a": "72-Stunden-Weekender (+50% Leistung)",
         "biz.technoclub.b": "Kulturstätten-Status (-15% Kosten, -25% Fahndung)",
-        "biz.reederei.name": "Binnenschifffahrt „Tiefgang“",
+        "biz.reederei.name": "Reederei Tiefgang",
         "biz.reederei.a": "Container-Umschlag (+50% Leistung)",
         "biz.reederei.b": "Binnenflaggen-Register (-15% Kosten, -25% Fahndung)",
-        "biz.security.name": "Wachdienst „Schwarzer Schild“",
+        "biz.security.name": "Schwarzer Schild",
         "biz.security.a": "VIP-Begleitschutz (+50% Leistung)",
         "biz.security.b": "Einsatzleiter-Funknetz (-15% Kosten, -25% Fahndung)",
-        "biz.inkassobuer.name": "Forderungsmanagement „Mahnstufe 4“",
+        "biz.inkassobuer.name": "Mahnstufe 4",
         "biz.inkassobuer.a": "Express-Vollstreckung (+50% Leistung)",
         "biz.inkassobuer.b": "Außergerichtlicher Vergleich (-15% Kosten, -25% Fahndung)",
-        "biz.bauloewe.name": "Generalbau „Beton & Söhne“",
+        "biz.bauloewe.name": "Beton & Söhne",
         "biz.bauloewe.a": "Nachtschicht-Kolonne (+50% Leistung)",
         "biz.bauloewe.b": "Subunternehmer-Kaskade (-15% Kosten, -25% Fahndung)",
-        "biz.galerie.name": "Kunstgalerie „Freifläche“",
+        "biz.galerie.name": "Galerie Freifläche",
         "biz.galerie.a": "Vernissage-Auktion (+50% Leistung)",
         "biz.galerie.b": "Freihafen-Zollfreilager (-15% Kosten, -25% Fahndung)",
-        "biz.spielbank.name": "Privat-Casino „Rien ne va plus“",
+        "biz.spielbank.name": "Privat-Casino",
         "biz.spielbank.a": "High-Roller-Salon (+50% Leistung)",
         "biz.spielbank.b": "Stiftungs-Konzession (-15% Kosten, -25% Fahndung)",
-        "biz.privatbank.name": "Privatbankhaus „Kiez & Co.“",
+        "biz.privatbank.name": "Kiez & Co.",
         "biz.privatbank.a": "Nummernkonten-Service (+50% Leistung)",
         "biz.privatbank.b": "Compliance-Abteilung (-15% Kosten, -25% Fahndung)",
-        "biz.krypto.name": "Mining-Farm „Blockkette“",
+        "biz.krypto.name": "Blockkette",
         "biz.krypto.a": "Tumble-Mixer-Protokoll (+50% Leistung)",
         "biz.krypto.b": "Abwärme-Grünstrom-Label (-15% Kosten, -25% Fahndung)",
-        "biz.briefkasten.name": "Offshore-Kanzlei „Inselblick“",
+        "biz.briefkasten.name": "Inselblick",
         "biz.briefkasten.a": "Lizenzgebühren-Karussell (+50% Leistung)",
         "biz.briefkasten.b": "Inhaberaktien-Tresor (-15% Kosten, -25% Fahndung)",
-        "biz.stiftung.name": "Familienstiftung „Gemeinwohl“",
+        "biz.stiftung.name": "Stiftung Gemeinwohl",
         "biz.stiftung.a": "Spendengala-Abzug (+50% Leistung)",
         "biz.stiftung.b": "Ehrenvorsitz im Beirat (-15% Kosten, -25% Fahndung)",
-        "biz.freihandelszone.name": "Sonderwirtschaftszone „Transit“",
+        "biz.freihandelszone.name": "Zone Transit",
         "biz.freihandelszone.a": "24/7-Freigabe-Terminal (+50% Leistung)",
         "biz.freihandelszone.b": "Diplomatischer Kurierstatus (-15% Kosten, -25% Fahndung)",
-        "biz.clearing.name": "Clearing-Stelle „Nullsummenspiel“",
+        "biz.clearing.name": "Nullsummenspiel",
         "biz.clearing.a": "Hochfrequenz-Abwicklung (+50% Leistung)",
         "biz.clearing.b": "Bankgeheimnis-Paragraph (-15% Kosten, -25% Fahndung)",
-        "biz.treuhand.name": "Dach-Treuhand „Metropole AG“",
+        "biz.treuhand.name": "Metropole AG",
         "biz.treuhand.a": "Syndikats-Dividende (+50% Leistung)",
         "biz.treuhand.b": "Staatsauftrag-Immunität (-15% Kosten, -25% Fahndung)",
 
@@ -3796,7 +3802,7 @@ html[lang="en"] .cur-suf{display:none}
         "mis.cat.corrupt": "Corruption",
         "mis.cat.race": "Street Race",
 
-        "mis.req.drugs": "Corner Store „Eckstein“ lvl 1",
+        "mis.req.drugs": "Eckstein Store lvl 1",
         "mis.req.extort": "Kebab Joint „Boss Grill“ lvl 1",
         "mis.req.fights": "Bookmaker „Sure Bet“ lvl 1",
         "mis.req.gamble": "Arcade „Golden Seven“ lvl 1",
@@ -3871,94 +3877,94 @@ html[lang="en"] .cur-suf{display:none}
         "epoch.city.name": "Downtown",
         "epoch.holding.name": "Holding",
 
-        "biz.spaeti.name": "Corner Store „Eckstein“",
+        "biz.spaeti.name": "Eckstein Store",
         "biz.spaeti.a": "Night Window (+50% Output)",
         "biz.spaeti.b": "Neighborhood Pact (-15% Cost, -25% Heat)",
-        "biz.flaschen.name": "Bottle Logistics „Return“",
+        "biz.flaschen.name": "Bottle Return",
         "biz.flaschen.a": "Industrial Compactor (+50% Output)",
         "biz.flaschen.b": "Backyard Depot (-15% Cost, -25% Heat)",
-        "biz.handyshop.name": "Phone Clinic „Unlocker“",
+        "biz.handyshop.name": "Phone Clinic",
         "biz.handyshop.a": "Express Screen Swap (+50% Output)",
         "biz.handyshop.b": "Burner Front (-15% Cost, -25% Heat)",
-        "biz.doener.name": "Kebab Joint „Boss Grill“",
+        "biz.doener.name": "Boss Grill",
         "biz.doener.a": "Secret Sauce Deluxe (+50% Output)",
         "biz.doener.b": "Cold-Chain Cover (-15% Cost, -25% Heat)",
-        "biz.tipico.name": "Bookmaker „Sure Bet“",
+        "biz.tipico.name": "Sure Bet",
         "biz.tipico.a": "Live Odds Terminal (+50% Output)",
         "biz.tipico.b": "License Loophole (-15% Cost, -25% Heat)",
-        "biz.spielhalle.name": "Arcade „Golden Seven“",
+        "biz.spielhalle.name": "Golden Seven",
         "biz.spielhalle.a": "VIP Slot Lounge (+50% Output)",
         "biz.spielhalle.b": "Soundproof Facade (-15% Cost, -25% Heat)",
-        "biz.tattoo.name": "Tattoo Parlor „Clean Ink“",
+        "biz.tattoo.name": "Clean Ink",
         "biz.tattoo.a": "Guest Artist (+50% Output)",
         "biz.tattoo.b": "Hygiene Certificate (-15% Cost, -25% Heat)",
-        "biz.shisha.name": "Hookah Lounge „Smokescreen“",
+        "biz.shisha.name": "Smokescreen",
         "biz.shisha.a": "Imported Tobacco (+50% Output)",
         "biz.shisha.b": "Carbon Filter Exhaust (-15% Cost, -25% Heat)",
-        "biz.barber.name": "Barber Shop „Blade & Cash“",
+        "biz.barber.name": "Blade & Cash",
         "biz.barber.a": "Express Fade (+50% Output)",
         "biz.barber.b": "Ledger Trim (-15% Cost, -25% Heat)",
-        "biz.pfandhaus.name": "Pawn Shop „Melting Point“",
+        "biz.pfandhaus.name": "Pawn Shop",
         "biz.pfandhaus.a": "Instant Appraisal (+50% Output)",
         "biz.pfandhaus.b": "Origin Amnesia (-15% Cost, -25% Heat)",
-        "biz.autohof.name": "Used Cars „Export Gem“",
+        "biz.autohof.name": "Export Gem",
         "biz.autohof.a": "Odometer Polish (+50% Output)",
         "biz.autohof.b": "Transit Plate Pool (-15% Cost, -25% Heat)",
-        "biz.boxclub.name": "Boxing Gym „Heavyweight“",
+        "biz.boxclub.name": "Boxing Gym",
         "biz.boxclub.a": "Underground Bout (+50% Output)",
         "biz.boxclub.b": "Youth Charity Status (-15% Cost, -25% Heat)",
-        "biz.waschsalon.name": "Laundromat „Clean Slate“",
+        "biz.waschsalon.name": "Clean Slate",
         "biz.waschsalon.a": "24h Spin Cycle (+50% Output)",
         "biz.waschsalon.b": "Dry-Clean Cover (-15% Cost, -25% Heat)",
-        "biz.spedition.name": "Night Freight „Runway“",
+        "biz.spedition.name": "Runway",
         "biz.spedition.a": "False-Floor Trailers (+50% Output)",
         "biz.spedition.b": "Digital Waybills (-15% Cost, -25% Heat)",
-        "biz.kuehlhaus.name": "Cold Storage „North Pier“",
+        "biz.kuehlhaus.name": "North Pier",
         "biz.kuehlhaus.a": "Deep-Freeze Vault (+50% Output)",
         "biz.kuehlhaus.b": "Customs Seal (-15% Cost, -25% Heat)",
-        "biz.schrottplatz.name": "Scrapyard „Rust & Yield“",
+        "biz.schrottplatz.name": "Rust & Yield",
         "biz.schrottplatz.a": "Rapid Copper Smelt (+50% Output)",
         "biz.schrottplatz.b": "Weighbridge Archive (-15% Cost, -25% Heat)",
-        "biz.technoclub.name": "Bunker Club „Sub-Bass“",
+        "biz.technoclub.name": "Sub-Bass",
         "biz.technoclub.a": "72-Hour Weekender (+50% Output)",
         "biz.technoclub.b": "Cultural Venue Grant (-15% Cost, -25% Heat)",
-        "biz.reederei.name": "Barge Line „Deep Draft“",
+        "biz.reederei.name": "Deep Draft",
         "biz.reederei.a": "Container Turnaround (+50% Output)",
         "biz.reederei.b": "Inland Flag Registry (-15% Cost, -25% Heat)",
-        "biz.security.name": "Security „Black Shield“",
+        "biz.security.name": "Black Shield",
         "biz.security.a": "VIP Escort Detail (+50% Output)",
         "biz.security.b": "Dispatch Radio Net (-15% Cost, -25% Heat)",
-        "biz.inkassobuer.name": "Debt Recovery „Final Notice“",
+        "biz.inkassobuer.name": "Final Notice",
         "biz.inkassobuer.a": "Express Enforcement (+50% Output)",
         "biz.inkassobuer.b": "Out-of-Court Settlement (-15% Cost, -25% Heat)",
-        "biz.bauloewe.name": "Contractors „Concrete & Sons“",
+        "biz.bauloewe.name": "Concrete & Sons",
         "biz.bauloewe.a": "Night-Shift Crew (+50% Output)",
         "biz.bauloewe.b": "Subcontractor Cascade (-15% Cost, -25% Heat)",
-        "biz.galerie.name": "Art Gallery „White Cube“",
+        "biz.galerie.name": "White Cube",
         "biz.galerie.a": "Opening Night Auction (+50% Output)",
         "biz.galerie.b": "Freeport Bonded Vault (-15% Cost, -25% Heat)",
-        "biz.spielbank.name": "Private Casino „Rien ne va plus“",
+        "biz.spielbank.name": "Private Casino",
         "biz.spielbank.a": "High-Roller Salon (+50% Output)",
         "biz.spielbank.b": "Foundation Charter (-15% Cost, -25% Heat)",
-        "biz.privatbank.name": "Private Bank „Kiez & Co.“",
+        "biz.privatbank.name": "Kiez & Co.",
         "biz.privatbank.a": "Numbered Accounts (+50% Output)",
         "biz.privatbank.b": "Compliance Desk (-15% Cost, -25% Heat)",
-        "biz.krypto.name": "Mining Farm „Block Chain“",
+        "biz.krypto.name": "Block Chain",
         "biz.krypto.a": "Tumble Mixer Protocol (+50% Output)",
         "biz.krypto.b": "Green-Heat Subsidy (-15% Cost, -25% Heat)",
-        "biz.briefkasten.name": "Offshore Firm „Island View“",
+        "biz.briefkasten.name": "Island View",
         "biz.briefkasten.a": "Royalty Carousel (+50% Output)",
         "biz.briefkasten.b": "Bearer Share Vault (-15% Cost, -25% Heat)",
-        "biz.stiftung.name": "Family Trust „Public Good“",
+        "biz.stiftung.name": "Public Good",
         "biz.stiftung.a": "Charity Gala Write-Off (+50% Output)",
         "biz.stiftung.b": "Advisory Board Seat (-15% Cost, -25% Heat)",
-        "biz.freihandelszone.name": "Free Trade Zone „Transit“",
+        "biz.freihandelszone.name": "Transit Zone",
         "biz.freihandelszone.a": "24/7 Clearance Hub (+50% Output)",
         "biz.freihandelszone.b": "Diplomatic Courier (-15% Cost, -25% Heat)",
-        "biz.clearing.name": "Clearing House „Zero Sum“",
+        "biz.clearing.name": "Zero Sum",
         "biz.clearing.a": "High-Frequency Settle (+50% Output)",
         "biz.clearing.b": "Secrecy Statute (-15% Cost, -25% Heat)",
-        "biz.treuhand.name": "Apex Holding „Metropole Corp“",
+        "biz.treuhand.name": "Metropole Corp",
         "biz.treuhand.a": "Syndicate Dividend (+50% Output)",
         "biz.treuhand.b": "State Contract Immunity (-15% Cost, -25% Heat)",
 
@@ -8873,7 +8879,7 @@ html[lang="en"] .cur-suf{display:none}
         } catch (e) {}
         let vp = "";
         try { vp = innerWidth + "x" + innerHeight; } catch (e) {}
-        this.add("START", "v3.30.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
+        this.add("START", "v3.31.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
         this.flush();
       },
       flush() {
@@ -9014,6 +9020,15 @@ html[lang="en"] .cur-suf{display:none}
           const c = document.querySelector("#tab-viewport .event-card"); if (!c) return;
           c.classList.remove("fx-ev-in"); void c.offsetWidth; c.classList.add("fx-ev-in");
         });
+      },
+      floatText(el, text) {
+        if (!el || !this.level() || !document.body.animate) return;
+        const r = el.getBoundingClientRect();
+        const i = document.createElement("span");
+        i.className = "fx-float"; i.textContent = text;
+        i.style.left = (r.left + r.width / 2 + (Math.random() * 30 - 15)) + "px"; i.style.top = (r.top + 2) + "px";
+        document.body.appendChild(i);
+        setTimeout(() => { if (i.parentNode) i.parentNode.removeChild(i); }, 750);
       },
       pulse(el) { if (!el || !this.level()) return; el.classList.remove("fx-pulse"); void el.offsetWidth; el.classList.add("fx-pulse"); },
       confetti() {
@@ -10131,6 +10146,8 @@ html[lang="en"] .cur-suf{display:none}
             FX.milestone(mb && mb.closest(".biz-card"));
           }
           FX.stamp(bizId);
+          const fbtn = document.querySelector('[data-bind="biz-btn-clean-' + bizId + '"]') || document.querySelector('[data-bind="biz-btn-dirty-' + bizId + '"]');
+          if (!res.milestone) FX.floatText(fbtn, "+" + (res.bought || 1));
         } else {
           if (!this.holdInterval) { Platform.playTone("deny"); Platform.haptic("fail"); }
           this.stopHoldBuy();
@@ -13898,7 +13915,7 @@ html[lang="en"] .cur-suf{display:none}
               ${devHtml}
 
               <div class="version-footer" data-action="tap-version">
-                Hustlers: Urban Edition • v3.30.0
+                Hustlers: Urban Edition • v3.31.0
               </div>
               <div style="text-align:center;font-size:11px;padding:0 0 22px;"><a href="impressum.html" target="_blank" rel="noopener" style="color:var(--accent-concrete);">Impressum &amp; Datenschutz</a></div>
         </div>`;
