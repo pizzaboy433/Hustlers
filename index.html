@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="5f38bfaab0">
+  <meta name="build-id" content="58cf100ea7">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2633,6 +2633,10 @@ html[lang="en"] .cur-suf{display:none}
 @keyframes fxFloat{0%{opacity:0;transform:translate(-50%,6px) scale(.7)}20%{opacity:1;transform:translate(-50%,-4px) scale(1.15)}100%{opacity:0;transform:translate(-50%,-34px) scale(1)}}
 html:not([data-fx="0"]) .biz-buy-btn:active,html:not([data-fx="0"]) .dual-buy-btn:active{transform:translate(2px,2px) scale(.98,.94);box-shadow:1px 1px 0 var(--line)}
 html[data-fx="0"] .fx-float{display:none}
+
+/* v58: iPhone-Homescreen: Falls die Seite kürzer als der Bildschirm ist (dvh-Eigenheit), nicht als schwarzer Balken, sondern in Papierfarbe auslaufen lassen */
+@media (display-mode: standalone){html{background-color:var(--bg-paper)}}
+html.is-standalone{background-color:var(--bg-paper)}
 </style>
   <script data-goatcounter="https://hustlers.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -14123,9 +14127,19 @@ html[data-fx="0"] .fx-float{display:none}
         if (!r.ok || !r.j || !Array.isArray(r.j.top)) { document.getElementById("board-list").innerHTML = `<p class="on-note">${L("Die Rangliste ist gerade nicht erreichbar.", "The leaderboard is not reachable right now.")}</p>`; return; }
         const myId = SOC.ensure().id;
         let inTop = false;
-        let html = r.j.top.map((x, i) => { const me = x.id === myId; if (me) inTop = true; return `<div class="on-row${me ? " me" : ""}"><span class="on-rank">${i + 1}.</span><span class="on-name">${this.onlineEsc(x.name)}</span><span class="on-val num">${formatNumber(x.rev || 0)} €</span></div>`; }).join("");
-        if (!r.j.top.length) html = `<p class="on-note">${L("Noch niemand in der Liste. Sei der Erste.", "Nobody on the list yet. Be the first.")}</p>`;
-        if (r.j.me && !inTop) html += `<div class="on-row me"><span class="on-rank">${r.j.me.rank}.</span><span class="on-name">${L("Du", "You")}</span><span class="on-val num">${formatNumber(r.j.me.rev || 0)} €</span></div>`;
+        // Der Server liefert die Top-Liste kurz zwischengespeichert, den eigenen Rang aber live.
+        // Deshalb den eigenen Eintrag an der richtigen Stelle einsortieren statt unten anzuhängen.
+        const rows = r.j.top.map(x => { const me = x.id === myId; if (me) inTop = true; return { name: this.onlineEsc(x.name), rev: x.rev || 0, me }; });
+        let tail = null;
+        if (r.j.me && !inTop) {
+          const mine = { name: L("Du", "You"), rev: r.j.me.rev || 0, me: true };
+          const pos = Math.max(0, Math.min(rows.length, (r.j.me.rank || rows.length + 1) - 1));
+          if (pos < rows.length) rows.splice(pos, 0, mine); else tail = { rank: r.j.me.rank, row: mine };
+        }
+        const rowHtml = (x, n) => `<div class="on-row${x.me ? " me" : ""}"><span class="on-rank">${n}.</span><span class="on-name">${x.name}</span><span class="on-val num">${formatNumber(x.rev)} €</span></div>`;
+        let html = rows.map((x, i) => rowHtml(x, i + 1)).join("");
+        if (!r.j.top.length && !tail && !rows.length) html = `<p class="on-note">${L("Noch niemand in der Liste. Sei der Erste.", "Nobody on the list yet. Be the first.")}</p>`;
+        if (tail) html += rowHtml(tail.row, tail.rank);
         box.innerHTML = html;
       },
       showCodeModal(code, first) {
