@@ -8,7 +8,7 @@
   <script>try { if (navigator.standalone === true) document.documentElement.classList.add("is-standalone"); } catch (e) {}</script>
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="fdfe144a42">
+  <meta name="build-id" content="2f9a7cf77c">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -2857,24 +2857,14 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         </svg>
         <span data-i18n="nav.businesses">Betriebe</span>
       </button>
-      <button type="button" class="nav-tab" data-action="switch-tab" data-tab="logistics">
-        <span class="tab-badge" data-bind="badge-logistics"></span>
-        <svg width="17" height="17" viewBox="0 0 24 24" stroke-width="2.3">
-          <rect x="1" y="3" width="15" height="13" rx="1"/>
-          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
-          <circle cx="5.5" cy="18.5" r="2.5"/>
-          <circle cx="18.5" cy="18.5" r="2.5"/>
-        </svg>
-        <span data-i18n="nav.logistics">Logistik</span>
-      </button>
-      <button type="button" class="nav-tab" data-action="switch-tab" data-tab="turf">
-        <span class="tab-badge" data-bind="badge-turf"></span>
+      <button type="button" class="nav-tab" data-action="switch-tab" data-tab="district">
+        <span class="tab-badge" data-bind="badge-district"></span>
         <svg width="17" height="17" viewBox="0 0 24 24" stroke-width="2.3">
           <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
           <line x1="8" y1="2" x2="8" y2="18"/>
           <line x1="16" y1="6" x2="16" y2="22"/>
         </svg>
-        <span data-i18n="nav.turf">Revier</span>
+        <span data-i18n="nav.district">Viertel</span>
       </button>
       <button type="button" class="nav-tab" data-action="switch-tab" data-tab="cartel">
         <span class="tab-badge" data-bind="badge-cartel"></span>
@@ -2892,6 +2882,18 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           <line x1="4" y1="20" x2="20" y2="20"/>
         </svg>
         <span data-i18n="nav.hq">HQ</span>
+      </button>
+      <button type="button" class="nav-tab" data-action="switch-tab" data-tab="network">
+        <span class="tab-badge" data-bind="badge-network"></span>
+        <svg width="17" height="17" viewBox="0 0 24 24" stroke-width="2.3">
+          <circle cx="12" cy="5" r="3"/>
+          <circle cx="5" cy="19" r="3"/>
+          <circle cx="19" cy="19" r="3"/>
+          <line x1="10.5" y1="7.6" x2="6.5" y2="16.4"/>
+          <line x1="13.5" y1="7.6" x2="17.5" y2="16.4"/>
+          <line x1="8" y1="19" x2="16" y2="19"/>
+        </svg>
+        <span data-i18n="nav.network">Netzwerk</span>
       </button>
     </nav>
 
@@ -3019,9 +3021,9 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         "tip.box.title": "Boxkampf",
         "tip.box.text": "Der Boss bietet einen Kampf um Geld an. Wische vom Schlag weg zum Ausweichen und tippe danach schnell zum Kontern. Wildes Tippen macht müde. Du entscheidest den Einsatz.",
         "tip.pkg.title": "Päckchen",
-        "tip.pkg.text": "Ein Freund hat dir ein Päckchen geschickt. Öffne Kartell → Freunde und tippe auf ÖFFNEN. Ob Geschenk, Prüfer oder Bombe, siehst du erst dann.",
+        "tip.pkg.text": "Ein Freund hat dir ein Päckchen geschickt. Öffne Netzwerk → Freunde und tippe auf ÖFFNEN. Ob Geschenk, Prüfer oder Bombe, siehst du erst dann.",
         "tip.friends.title": "Freunde",
-        "tip.friends.text": "Füge im Kartell unter Freunde Mitspieler hinzu. Dann könnt ihr euch Päckchen schicken und eure Umsätze vergleichen.",
+        "tip.friends.text": "Füge im Netzwerk unter Freunde Mitspieler hinzu. Dann könnt ihr euch Päckchen schicken und eure Umsätze vergleichen.",
         "tip.audit.title": "Steuerprüfer",
         "tip.audit.text": "Er legt einen Betrieb lahm und die Fahndung steigt, solange er da ist. ZAHLEN kostet Geld, ABLENKEN legt den Betrieb kurz still, STANDHALTEN (viele Tipps) kostet nichts.",
         "tip.lock.title": "Schwarzgeld gesperrt",
@@ -3040,10 +3042,12 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         "nav.turf": "Revier",
         "nav.cartel": "Kartell",
         "nav.hq": "HQ",
+        "nav.district": "Viertel",
+        "nav.network": "Netzwerk",
 
         "cartel.sub.crew": "Crew",
         "cartel.sub.market": "Börse",
-        "cartel.sub.ware": "Ware",
+        "cartel.sub.ware": "Ausrüstung",
         "cartel.sub.friends": "Freunde",
         "cartel.net_boni": "Netto-Bilanz (Crew & Ware):",
         "market.refresh": "Kurs-Wechsel in {sec}s",
@@ -3753,9 +3757,9 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         "tip.box.title": "Boxing match",
         "tip.box.text": "The boss offers a fight for money. Swipe away from the punch to dodge, then tap quickly to counter. Wild tapping makes you tired. You choose the stake.",
         "tip.pkg.title": "Package",
-        "tip.pkg.text": "A friend sent you a package. Open Cartel → Friends and tap OPEN. Gift, auditor or bomb – you only find out then.",
+        "tip.pkg.text": "A friend sent you a package. Open Network → Friends and tap OPEN. Gift, auditor or bomb – you only find out then.",
         "tip.friends.title": "Friends",
-        "tip.friends.text": "Add other players under Cartel → Friends. Then you can send each other packages and compare revenue.",
+        "tip.friends.text": "Add other players under Network → Friends. Then you can send each other packages and compare revenue.",
         "tip.audit.title": "Tax auditor",
         "tip.audit.text": "He shuts down a business and heat keeps rising while he is around. PAY costs money, DISTRACT shuts the business down briefly, STAND FIRM (many taps) costs nothing.",
         "tip.lock.title": "Dirty cash locked",
@@ -3774,10 +3778,12 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         "nav.turf": "Turf",
         "nav.cartel": "Cartel",
         "nav.hq": "HQ",
+        "nav.district": "District",
+        "nav.network": "Network",
 
         "cartel.sub.crew": "Crew",
         "cartel.sub.market": "Market",
-        "cartel.sub.ware": "Goods",
+        "cartel.sub.ware": "Gear",
         "cartel.sub.friends": "Friends",
         "cartel.net_boni": "Net Balance (Crew & Goods):",
         "market.refresh": "Rate shift in {sec}s",
@@ -4972,7 +4978,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         const log = (ok, name, detail) => results.push({ ok, name, detail });
 
         try {
-          const tabs = ["businesses", "logistics", "turf", "cartel", "hq"];
+          const tabs = ["businesses", "logistics", "turf", "cartel", "hq", "network"];
           const originalTab = STATE.ui.activeTab;
           for (let i = 0; i < tabs.length; i++) {
             STATE.ui.activeTab = tabs[i];
@@ -5468,7 +5474,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         sprintHeatFactor: 0.25     // während eines laufenden Sprints
       },
       // --- Freischaltung der Tabs (Summe aller Betriebs-Stufen) ---
-      tabs: { logistics: 40, turf: 60, hq: 80, cartel: 100 },
+      tabs: { network: 20, logistics: 40, turf: 60, hq: 80, cartel: 100 },
       // --- Sanfter Einstieg: Freischaltung nach Lebenszeit-Umsatz ---
       gate: { event: 5000, insp: 10000, sprint: 25000, war: 60000 },
       milestones: [25, 50, 100, 150, 200],
@@ -6388,10 +6394,14 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         if (STATE.settings.theme !== "dark") STATE.settings.theme = "light";
         if (STATE.ui.activeTab === "board") { STATE.ui.activeTab = "hq"; STATE.ui.hqSubTab = "milestones"; }
         if (STATE.ui.activeTab === "archive") { STATE.ui.activeTab = "hq"; STATE.ui.hqSubTab = "vault"; }
-        const validTabs = ["businesses", "logistics", "turf", "cartel", "hq"];
+        const validTabs = ["businesses", "logistics", "turf", "cartel", "hq", "network"];
+        if (STATE.ui.activeTab === "cartel" && STATE.ui.cartelSubTab === "friends") STATE.ui.activeTab = "network";
+        if (STATE.ui.cartelSubTab === "friends") STATE.ui.cartelSubTab = "crew";
         if (!validTabs.includes(STATE.ui.activeTab)) STATE.ui.activeTab = "businesses";
+        if (!["logistics", "turf"].includes(STATE.ui.districtSubTab)) STATE.ui.districtSubTab = "logistics";
+        if (!["friends", "board", "goal"].includes(STATE.ui.netSubTab)) STATE.ui.netSubTab = "friends";
         if (!["office", "coups", "milestones", "vault"].includes(STATE.ui.hqSubTab)) STATE.ui.hqSubTab = "office";
-        if (!["crew", "market", "ware", "friends"].includes(STATE.ui.cartelSubTab)) STATE.ui.cartelSubTab = "crew";
+        if (!["crew", "market", "ware"].includes(STATE.ui.cartelSubTab)) STATE.ui.cartelSubTab = "crew";
         if (!["list", "managers"].includes(STATE.ui.bizSubTab)) STATE.ui.bizSubTab = "list";
         if (!STATE.ui.seenSignatures || typeof STATE.ui.seenSignatures !== "object") {
           STATE.ui.seenSignatures = { businesses: "", logistics: "", turf: "", cartel: "" };
@@ -6401,6 +6411,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           const v = played ? 1 : 0;
           STATE.ui.tabs = { logistics: v, turf: v, hq: v, cartel: v };
         }
+        if (STATE.ui.tabs.network === undefined) STATE.ui.tabs.network = 0;   // v60: neuer Tab, kommt per Freischaltung (mit Story)
         if (!STATE.ui.tabNew || typeof STATE.ui.tabNew !== "object") STATE.ui.tabNew = {};
         if (!Engine._devReset) { Engine._devReset = true; STATE.ui.devUnlocked = false; }
         if (!tabOpen(STATE.ui.activeTab)) STATE.ui.activeTab = "businesses";
@@ -7167,12 +7178,12 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           return "Manager-Tab frei (Story folgt)";
         }
         if (kind === "tabs_all") {
-          STATE.ui.tabs = { logistics: 1, turf: 1, hq: 1, cartel: 1 };
+          STATE.ui.tabs = { network: 1, logistics: 1, turf: 1, hq: 1, cartel: 1 };
           this.emit("tabs");
           return "Alle Tabs frei";
         }
         if (kind === "tabs_none") {
-          STATE.ui.tabs = { logistics: 0, turf: 0, hq: 0, cartel: 0 };
+          STATE.ui.tabs = { network: 0, logistics: 0, turf: 0, hq: 0, cartel: 0 };
           STATE.ui.tabNew = {};
           STATE.ui.activeTab = "businesses";
           this.emit("tabs"); this.emit("shell");
@@ -8363,11 +8374,15 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         const turfOcc = (this.turfOccList ? this.turfOccList() : []).length > 0;
         const turfBadge = (turfOcc && activeTab !== "turf") ? "urgent" : checkNewDot("turf");
 
+        const logBadge = checkNewDot("logistics");
+        const netUrgent = activeTab !== "network" && STATE.social && ((STATE.social.inbox && STATE.social.inbox.some(e => !e.opened)) || (Online.st.req && Online.st.req.length) || (Online.st.goal && Online.st.goal.claimable));
         return {
           businesses: bizBadge,
-          logistics: checkNewDot("logistics"),
+          logistics: logBadge,
           turf: turfBadge,
-          cartel: (activeTab !== "cartel" && STATE.social && ((STATE.social.inbox && STATE.social.inbox.some(e => !e.opened)) || (Online.st.req && Online.st.req.length) || (Online.st.goal && Online.st.goal.claimable))) ? "urgent" : checkNewDot("cartel"),
+          district: (logBadge === "urgent" || turfBadge === "urgent") ? "urgent" : ((logBadge === "new" || turfBadge === "new") ? "new" : "none"),
+          cartel: checkNewDot("cartel"),
+          network: netUrgent ? "urgent" : "none",
           hq: hqUrgent && activeTab !== "hq" ? "urgent" : "none"
         };
       },
@@ -8458,7 +8473,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           const so = STATE.social;
           if (so && so.inbox && so.inbox.some(e => !e.opened)) {
             const e = so.inbox.find(x => !x.opened);
-            out.unshift({ kind: "live", key: "pkg", tag: L("PÄCKCHEN", "PACKAGE"), text: L(`Funkspruch: Ein Päckchen von ${e.name} wartet im Kartell. Wer weiß, was drin ist.`, `Radio message: a package from ${e.name} is waiting in the cartel. Who knows what's inside.`) });
+            out.unshift({ kind: "live", key: "pkg", tag: L("PÄCKCHEN", "PACKAGE"), text: L(`Funkspruch: Ein Päckchen von ${e.name} wartet im Netzwerk. Wer weiß, was drin ist.`, `Radio message: a package from ${e.name} is waiting in your network. Who knows what's inside.`) });
           }
           const rv = so && so.rivals ? Object.values(so.rivals) : [];
           if (rv.length) {
@@ -8522,6 +8537,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         res["hq:coups"] = missionDone ? "urgent" : "none";
         res["hq:milestones"] = (boardReady || this.weekReady()) ? "urgent" : "none";
         res["hq:vault"] = this.getClaimableFiles() >= 1 ? "urgent" : "none";
+        res["district:logistics"] = (ui.tabNew && ui.tabNew.logistics === 2) ? "new" : "none";
+        res["district:turf"] = (ui.tabNew && ui.tabNew.turf === 2) ? "new" : ((this.turfOccList ? this.turfOccList() : []).length > 0 && ui.activeTab !== "turf" ? "urgent" : "none");
         res["biz:managers"] = (STATE.mgr && STATE.mgr.dot) ? "new" : (this.canUpgradeMgrRank() && STATE.mgr && STATE.mgr.tab ? "new" : "none");
         return res;
       },
@@ -9118,9 +9135,9 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         when: () => Engine.escapeAvailable(), done: () => !!document.querySelector("[data-e-cell]"),
         target: '[data-bind="escape-btn"]' },
       { id: "friends",
-        when: () => tabOpen("cartel") && COACH_Q.totalLevels() >= 40 && !(STATE.social && Object.keys(STATE.social.rivals || {}).length),
-        done: () => !!(STATE.social && Object.keys(STATE.social.rivals || {}).length) || (STATE.ui.activeTab === "cartel" && STATE.ui.cartelSubTab === "friends"),
-        target: '.nav-tab[data-tab="cartel"]' },
+        when: () => tabOpen("network") && COACH_Q.totalLevels() >= 40 && !(STATE.social && Object.keys(STATE.social.rivals || {}).length),
+        done: () => !!(STATE.social && Object.keys(STATE.social.rivals || {}).length) || STATE.ui.activeTab === "network",
+        target: '.nav-tab[data-tab="network"]' },
       { id: "prestige",
         when: () => tabOpen("hq") && Engine.getClaimableFiles() >= 1 && (STATE.stats.prestigeCount || 0) === 0,
         done: () => (STATE.stats.prestigeCount || 0) > 0 || (STATE.ui.activeTab === "hq" && STATE.ui.hqSubTab === "vault"),
@@ -9150,7 +9167,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         } catch (e) {}
         let vp = "";
         try { vp = innerWidth + "x" + innerHeight; } catch (e) {}
-        this.add("START", "v3.32.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
+        this.add("START", "v3.33.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
         this.flush();
       },
       flush() {
@@ -9590,7 +9607,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         const nm = r ? r.name : "?";
         const code = this.makePkg(toId, kind);
         DBG.add("SOC", "send pkg " + this.KINDS[kind] + " to " + toId);
-        return { ok: true, text: (en ? "Hustlers: a package for you from " + this.cleanName(STATE.boss.name, 16) + "! Open it in Cartel > Friends: " : "Hustlers: Päckchen für dich von " + this.cleanName(STATE.boss.name, 16) + "! Im Kartell > Freunde einfügen und öffnen: ") + code, name: nm };
+        return { ok: true, text: (en ? "Hustlers: a package for you from " + this.cleanName(STATE.boss.name, 16) + "! Open it in Network > Friends: " : "Hustlers: Päckchen für dich von " + this.cleanName(STATE.boss.name, 16) + "! Im Netzwerk > Freunde einfügen und öffnen: ") + code, name: nm };
       },
       importPkg(p) {
         const so = this.ensure();
@@ -9728,7 +9745,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         const en = STATE.settings && STATE.settings.lang === "EN";
         const c = this.makeJob();
         if (!c) return "";
-        return (en ? "Hustlers team job: my result is in! Paste in Cartel > Friends: " : "Hustlers Team-Tagesjob: mein Ergebnis steht! Im Kartell > Freunde einfügen: ") + c;
+        return (en ? "Hustlers team job: my result is in! Paste in Network > Friends: " : "Hustlers Team-Tagesjob: mein Ergebnis steht! Im Netzwerk > Freunde einfügen: ") + c;
       },
       importJob(j) {
         const so = this.ensure();
@@ -9748,7 +9765,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
       shareText() {
         const en = STATE.settings && STATE.settings.lang === "EN";
         const code = this.makeCard();
-        return (en ? "Hustlers: " + this.cleanName(STATE.boss.name, 16) + " wants to meet you in the underworld. Paste this code in Cartel > Friends: " : "Hustlers: " + this.cleanName(STATE.boss.name, 16) + " will dich in der Unterwelt treffen. Code im Kartell > Freunde einfügen: ") + code;
+        return (en ? "Hustlers: " + this.cleanName(STATE.boss.name, 16) + " wants to meet you in the underworld. Paste this code in Network > Friends: " : "Hustlers: " + this.cleanName(STATE.boss.name, 16) + " will dich in der Unterwelt treffen. Code im Netzwerk > Freunde einfügen: ") + code;
       }
     };
     window.SOC = SOC;
@@ -9935,6 +9952,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
 
     // Tabs werden nach und nach freigeschaltet (Summe aller Betriebs-Stufen). Zahlen hier anpassen.
     const TAB_UNLOCK = [
+      { k: "network", lv: BALANCE.tabs.network },
       { k: "logistics", lv: BALANCE.tabs.logistics },
       { k: "turf", lv: BALANCE.tabs.turf },
       { k: "hq", lv: BALANCE.tabs.hq },
@@ -9946,7 +9964,9 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
       const tp = STATE.ui.tips || {};
       return !!(tp.off || (tp.done && tp.done.mode) || (STATE.stats.totalClicks || 0) >= 1 || (STATE.stats.prestigeCount || 0) > 0);
     }
-    function tabOpen(k) { const T = STATE && STATE.ui && STATE.ui.tabs; return k === "businesses" || !T || !!T[k]; }
+    function tabOpen(k) { const T = STATE && STATE.ui && STATE.ui.tabs; if (k === "district") k = "logistics"; return k === "businesses" || !T || !!T[k]; }
+    // Viertel = Logistik + Revier (zwei Ansichten unter einem Knopf der Leiste)
+    function navKeyOf(k) { return (k === "logistics" || k === "turf") ? "district" : k; }
 
     // Währung: Deutsch "€", Englisch "$" (überall). Statische Zahlen-Stellen nutzen .cur-pre/.cur-suf (CSS, Sprache am <html>),
     // alles andere ersetzt ein Beobachter in den Textknoten (Zeichen vor die Zahl gestellt) und stellt es beim Wechsel zurück.
@@ -10033,7 +10053,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
       syncShellControls() {
         const navs = document.querySelectorAll(".nav-tab");
         for (let i = 0; i < navs.length; i++) {
-          navs[i].classList.toggle("active", navs[i].getAttribute("data-tab") === STATE.ui.activeTab);
+          navs[i].classList.toggle("active", navs[i].getAttribute("data-tab") === navKeyOf(STATE.ui.activeTab));
         }
         const btns = document.querySelectorAll("[data-action='set-buy-mode']");
         for (let i = 0; i < btns.length; i++) {
@@ -10063,13 +10083,18 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
       tabStoryText(k) {
         const en = STATE.settings && STATE.settings.lang === "EN";
         const S = {
+          network: [
+            ["Neu: Netzwerk", "New: Network"],
+            ["Niemand wird allein Boss. Im Netzwerk triffst du andere Bosse: Füge Freunde hinzu, schickt euch Päckchen und vergleicht eure Umsätze. Wer weiß, vielleicht steht in einem Päckchen auch mal eine böse Überraschung.",
+             "Nobody becomes boss alone. In the Network you meet other bosses: add friends, send each other packages and compare your revenue. Who knows, one day a package might hold a nasty surprise."]
+          ],
           logistics: [
-            ["Neu: Logistik", "New: Routes"],
-            ["Der Laden läuft, doch Scheine und Ware müssen irgendwie von A nach B. Ein Kumpel mit Roller kennt jede Abkürzung im Viertel und fragt nicht viel. Unter Logistik baust du Routen aus: Sie waschen Geld, vergrößern dein Depot und halten die Ware in Bewegung.",
-             "The shop is running, but cash and goods still have to get from A to B. A buddy with a scooter knows every shortcut in the neighbourhood and asks no questions. Under Routes you expand lanes that launder money, grow your stash and keep goods moving."]
+            ["Neu: Viertel", "New: District"],
+            ["Der Laden läuft, doch Scheine und Ware müssen irgendwie von A nach B. Ein Kumpel mit Roller kennt jede Abkürzung im Viertel und fragt nicht viel. Im Viertel baust du unter Logistik Routen aus: Sie waschen Geld, vergrößern dein Depot und halten die Ware in Bewegung.",
+             "The shop is running, but cash and goods still have to get from A to B. A buddy with a scooter knows every shortcut in the neighbourhood and asks no questions. In the District you expand routes that launder money, grow your stash and keep goods moving."]
           ],
           turf: [
-            ["Neu: Revier", "New: Turf"],
+            ["Neu im Viertel: Revier", "New in District: Turf"],
             ["Dein Block gehört dir noch nicht richtig, und andere Banden schauen schon herüber. Im Revier kaufst du Straßenzüge. Sie stärken deine Betriebe und bringen Einfluss. Aber wer Land hat, wird irgendwann angegriffen.",
              "Your block isn't really yours yet, and other crews are already looking over. In Turf you buy streets. They boost your businesses and bring influence. But whoever holds land gets attacked sooner or later."]
           ],
@@ -10080,8 +10105,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           ],
           cartel: [
             ["Neu: Kartell", "New: Cartel"],
-            ["Du bist zu groß für Einzelkämpfer. Im Kartell heuerst du Crew an, kaufst Ausrüstung, handelst an der Börse und tauschst Visitenkarten mit anderen Bossen. Wer Freunde hat, bekommt Päckchen.",
-             "You've outgrown lone wolves. In the Cartel you hire crew, buy gear, trade on the market and swap business cards with other bosses. Who has friends gets packages."]
+            ["Du bist zu groß für Einzelkämpfer. Im Kartell heuerst du Crew an, kaufst Ausrüstung und handelst an der Börse.",
+             "You've outgrown lone wolves. In the Cartel you hire crew, buy gear and trade on the market."]
           ]
         }[k];
         return S ? { title: S[0][en ? 1 : 0], text: S[1][en ? 1 : 0], go: en ? "TAKE A LOOK" : "ANSEHEN", later: en ? "LATER" : "SPÄTER" } : null;
@@ -10742,7 +10767,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
             const tab = actionEl.getAttribute("data-tab"), sub = actionEl.getAttribute("data-sub");
             Platform.haptic(10);
             if (sub) { STATE.ui.activeTab = "hq"; STATE.ui.hqSubTab = sub; this.renderActiveTab(); }
-            else { const nb = document.querySelector('[data-action="switch-tab"][data-tab="' + tab + '"]'); if (nb) nb.click(); }
+            else { if (tab === "logistics" || tab === "turf") STATE.ui.districtSubTab = tab; const nb = document.querySelector('[data-action="switch-tab"][data-tab="' + navKeyOf(tab) + '"]'); if (nb) nb.click(); }
           } else if (action === "office-hotspot") {
             const spot = actionEl.getAttribute("data-spot");
             if (Engine.triggerOfficeHotspot(spot)) {
@@ -10857,7 +10882,9 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           } else if (action === "tab-story-go") {
             const tk = actionEl.getAttribute("data-tab");
             document.getElementById("app-modal").classList.remove("open");
-            const nb = document.querySelector('[data-action="switch-tab"][data-tab="' + tk + '"]'); if (nb) nb.click();
+            if (tk === "logistics" || tk === "turf") STATE.ui.districtSubTab = tk;
+            if (tk === "network") STATE.ui.netSubTab = "friends";
+            const nb = document.querySelector('[data-action="switch-tab"][data-tab="' + navKeyOf(tk) + '"]'); if (nb) nb.click();
           } else if (action === "goal-go") {
             const g = Engine.nextGoal();
             const tab = g && g.kind === "prestige" ? "hq" : "businesses";
@@ -10882,7 +10909,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
             Platform.saveGame(true);
             this.hintKind = undefined; this.updateHintUI();
           } else if (action === "switch-tab") {
-            const tab = actionEl.getAttribute("data-tab");
+            let tab = actionEl.getAttribute("data-tab");
+            if (tab === "district") tab = (STATE.ui.districtSubTab === "turf" && tabOpen("turf")) ? "turf" : "logistics";
             if (tab && STATE.ui.activeTab !== tab && tabOpen(tab)) {
               this.stopHoldBuy();
               STATE.ui.activeTab = tab;
@@ -10899,9 +10927,26 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
               this.renderActiveTab();
               this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
             }
+          } else if (action === "switch-district-sub") {
+            const sub = actionEl.getAttribute("data-sub");
+            if (["logistics", "turf"].includes(sub) && tabOpen(sub) && STATE.ui.activeTab !== sub) {
+              STATE.ui.districtSubTab = sub;
+              STATE.ui.activeTab = sub;
+              Engine.markTabSeen(sub);
+              this.syncShellControls();
+              this.renderActiveTab();
+              this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
+            }
+          } else if (action === "switch-net-sub") {
+            const sub = actionEl.getAttribute("data-sub");
+            if (["friends", "board", "goal"].includes(sub)) {
+              STATE.ui.netSubTab = sub;
+              this.renderActiveTab();
+              this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
+            }
           } else if (action === "switch-cartel-sub") {
             const sub = actionEl.getAttribute("data-sub");
-            if (["crew", "market", "ware", "friends"].includes(sub)) {
+            if (["crew", "market", "ware"].includes(sub)) {
               STATE.ui.cartelSubTab = sub;
               this.renderActiveTab();
               this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
@@ -11607,7 +11652,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           const sortedLog = KIEZ_API.getSortedCollection("LOGISTICS");
           const isEn = STATE.settings.lang === "EN";
           let shownLockedPreview = false;
-          const cards = [eventBanner, `
+          STATE.ui.districtSubTab = "logistics";
+          const cards = [eventBanner, this.districtSubNavHTML(), `
             <section class="panel-box" style="padding:7px 10px;">
               <div class="stat-row" style="border-bottom:none; padding:0;">
                 <span style="font-weight:900;">${t("logistics.cap")}</span>
@@ -11679,7 +11725,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           const sortedTurf = KIEZ_API.getSortedCollection("TURF");
           const isEn = STATE.settings.lang === "EN";
           let shownLockedPreview = false;
-          const cards = [eventBanner, `
+          STATE.ui.districtSubTab = "turf";
+          const cards = [eventBanner, this.districtSubNavHTML(), `
             <section class="panel-box" style="padding:7px 10px;">
               <div class="stat-row" style="border-bottom:none; padding:0;">
                 <span style="font-weight:900;">${t("turf.passive_clout")}</span>
@@ -11750,6 +11797,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
             `);
           }
           vp.innerHTML = cards.join("");
+        } else if (tab === "network") {
+          this.renderNetwork(vp, eventBanner);
         } else if (tab === "cartel") {
           const stats = Engine.getStats();
           const subTab = STATE.ui.cartelSubTab || "crew";
@@ -11762,7 +11811,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           `;
 
           const subNavHtml = `
-            <div class="subnav-bar-4">
+            <div class="subnav-bar-3">
               <button type="button" class="subtab-btn ${subTab === "crew" ? "active" : ""}" data-action="switch-cartel-sub" data-sub="crew">
                 <span class="tab-badge sub-badge" data-bind="badge-sub-cartel-crew"></span>
                 ${renderIcon("crew", 13)} <span>${t("cartel.sub.crew")}</span>
@@ -11774,15 +11823,10 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
                 <span class="tab-badge sub-badge" data-bind="badge-sub-cartel-ware"></span>
                 ${renderIcon("goods", 13)} <span>${t("cartel.sub.ware")}</span>
               </button>
-              <button type="button" class="subtab-btn ${subTab === "friends" ? "active" : ""}" data-action="switch-cartel-sub" data-sub="friends">
-                ${renderIcon("crew", 13)} <span>${t("cartel.sub.friends")}</span>
-              </button>
             </div>
           `;
 
-          if (subTab === "friends") {
-            this.renderFriends(vp, eventBanner + subNavHtml);
-          } else if (subTab === "market") {
+          if (subTab === "market") {
             const ms = STATE.marketState || { timer: 45, newsKey: "market.news.normal", mults: {} };
             const goodsList = [
               { key: "drugs",   icon: "drugs",   nameKey: "ui.curr.drugs" },
@@ -12588,7 +12632,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         let txt = "", val = "", pct = 0;
         if (g.kind === "buy") { txt = L("Kaufe ", "Buy ") + nm(g.id); val = formatNumber(g.cost, 0) + " €"; pct = g.cost > 0 ? cash / g.cost : 1; }
         else if (g.kind === "unlock") { txt = nm(g.prevId) + L(" auf Stufe ", " to level ") + g.min + " \u2192 " + nm(g.id); val = g.lvl + "/" + g.min; pct = g.lvl / g.min; }
-        else if (g.kind === "tab") { const nmT = { logistics: L("Logistik", "Routes"), turf: L("Revier", "Turf"), hq: "HQ", cartel: L("Kartell", "Cartel") }[g.key]; txt = L("Schalte frei: ", "Unlock: ") + nmT + L(" (Betriebs-Stufen)", " (business levels)"); val = g.have + "/" + g.need; pct = g.need > 0 ? g.have / g.need : 1; }
+        else if (g.kind === "tab") { const nmT = { network: L("Netzwerk", "Network"), logistics: L("Viertel", "District"), turf: L("Revier", "Turf"), hq: "HQ", cartel: L("Kartell", "Cartel") }[g.key]; txt = L("Schalte frei: ", "Unlock: ") + nmT + L(" (Betriebs-Stufen)", " (business levels)"); val = g.have + "/" + g.need; pct = g.need > 0 ? g.have / g.need : 1; }
         else if (g.kind === "prestige") { txt = L("Neustart möglich: +", "Restart ready: +") + formatNumber(g.n, 0) + L(" Akten", " files"); val = ""; pct = 1; }
         else { txt = L("Ausbauen: ", "Upgrade: ") + nm(g.id); val = formatNumber(g.cost, 0) + " €"; pct = g.cost > 0 ? cash / g.cost : 1; }
         const key = txt + "|" + val + "|" + en;
@@ -13840,7 +13884,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         }
 
         const badgeStates = Engine.evaluateTabBadges();
-        const tabKeys = ["businesses", "logistics", "turf", "cartel", "hq"];
+        const tabKeys = ["businesses", "district", "cartel", "hq", "network"];
         for (let i = 0; i < tabKeys.length; i++) {
           const k = tabKeys[i];
           const badgeNode = b[`badge-${k}`];
@@ -13849,7 +13893,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           if (stateVal === "urgent") {
             setCls(badgeNode, "tab-badge urgent");
             setTxt(badgeNode, "!");
-          } else if (stateVal === "new" || (STATE.ui.tabNew && STATE.ui.tabNew[k] === 2) || (k === "businesses" && STATE.mgr && STATE.mgr.dot)) {
+          } else if (stateVal === "new" || (STATE.ui.tabNew && (STATE.ui.tabNew[k] === 2 || (k === "district" && (STATE.ui.tabNew.logistics === 2 || STATE.ui.tabNew.turf === 2)))) || (k === "businesses" && STATE.mgr && STATE.mgr.dot)) {
             setCls(badgeNode, "tab-badge new-dot");
             setTxt(badgeNode, "");
           } else {
@@ -14355,7 +14399,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
               ${devHtml}
 
               <div class="version-footer" data-action="tap-version">
-                Hustlers: Urban Edition • v3.32.0
+                Hustlers: Urban Edition • v3.33.0
               </div>
               <div style="text-align:center;font-size:11px;padding:0 0 22px;"><a href="impressum.html" target="_blank" rel="noopener" style="color:var(--accent-concrete);">Impressum &amp; Datenschutz</a></div>
         </div>`;
@@ -14382,7 +14426,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
       onOnlineChange() {
         const tab = STATE.ui.activeTab;
         if (this.settingsOpen) { const bx = document.getElementById("save-io-box"); if (!bx || !bx.value) this.refreshSettings(); return; }
-        if ((tab === "cartel" && STATE.ui.cartelSubTab === "friends") || (tab === "hq" && STATE.ui.hqSubTab === "vault")) {
+        if (tab === "network" || (tab === "hq" && STATE.ui.hqSubTab === "vault")) {
           const m = document.getElementById("app-modal");
           if (!m || !m.classList.contains("open")) this.renderActiveTab();
         }
@@ -14697,6 +14741,33 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
 
       socMsg(txt) { const el = document.getElementById("soc-msg"); if (el) el.textContent = txt; this.toast(txt, ""); },
 
+      districtSubNavHTML() {
+        if (!tabOpen("turf")) return "";
+        const sub = STATE.ui.activeTab === "turf" ? "turf" : "logistics";
+        return `<div class="subnav-bar-2">
+          <button type="button" class="subtab-btn ${sub === "logistics" ? "active" : ""}" data-action="switch-district-sub" data-sub="logistics"><span class="tab-badge sub-badge" data-bind="badge-sub-district-logistics"></span>${renderIcon("truck", 13)} <span>${t("nav.logistics")}</span></button>
+          <button type="button" class="subtab-btn ${sub === "turf" ? "active" : ""}" data-action="switch-district-sub" data-sub="turf"><span class="tab-badge sub-badge" data-bind="badge-sub-district-turf"></span>${renderIcon("map", 13)} <span>${t("nav.turf")}</span></button>
+        </div>`;
+      },
+
+      renderNetwork(vp, eventBanner) {
+        const subs = [["friends", L("Freunde", "Friends"), "crew"]];
+        if (Online.feat("lb")) subs.push(["board", L("Rangliste", "Ranking"), "chart"]);
+        if (Online.feat("goal")) subs.push(["goal", L("Wochenziel", "Weekly goal"), "target"]);
+        let sub = STATE.ui.netSubTab || "friends";
+        if (!subs.some(x => x[0] === sub)) sub = "friends";
+        const nav = subs.length > 1 ? `<div class="subnav-bar-${subs.length}">${subs.map(([k, lbl, ic]) =>
+          `<button type="button" class="subtab-btn ${sub === k ? "active" : ""}" data-action="switch-net-sub" data-sub="${k}">${renderIcon(ic, 13)} <span>${lbl}</span></button>`).join("")}</div>` : "";
+        if (sub === "board") {
+          vp.innerHTML = eventBanner + nav + this.onlineBoardCardHTML();
+        } else if (sub === "goal") {
+          if (Online.feat("goal")) Online.goalLoad(false);
+          vp.innerHTML = eventBanner + nav + (this.onlineGoalCardHTML() || `<section class="biz-card" style="padding:10px;"><p style="opacity:.7;margin:0;">${L("Wochenziel wird geladen …", "Loading weekly goal …")}</p></section>`);
+        } else {
+          this.renderFriends(vp, eventBanner + nav);
+        }
+      },
+
       renderFriends(vp, subNavHtml) {
         const en = STATE.settings && STATE.settings.lang === "EN";
         const so = SOC.ensure();
@@ -14733,7 +14804,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
             <div id="soc-msg" style="margin-top:6px; font-weight:900; min-height:16px;"></div>
           </section>
           ${this.jobSection(L, esc)}` : "";
-        vp.innerHTML = subNavHtml + this.onlineGoalCardHTML() + this.onlineBoardCardHTML() + this.onlineFriendsCardHTML() + oldHtml + `
+        vp.innerHTML = subNavHtml + this.onlineFriendsCardHTML() + oldHtml + `
           ${(so.inbox.length || Engine.bombList().length) ? `<section class="biz-card" style="padding:10px;">
             <h3 class="panel-title" style="margin:0 0 6px;">${L("Päckchen", "Packages")}</h3>
             ${Engine.bombList().map(b => `<div class="bomb-row"><span>${esc(t(REGISTRY.OFFICE[b.id].nameKey))} · ${Math.ceil(b.left / 60)} min</span><button type="button" class="comic-btn" style="min-height:28px;" data-action="repair-bomb" data-offid="${b.id}">${L("REPARIEREN 3 Gefallen", "REPAIR 3 favors")}</button></div>`).join("")}
