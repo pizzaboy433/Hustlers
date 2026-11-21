@@ -8,7 +8,7 @@
   <script>try { if (navigator.standalone === true) document.documentElement.classList.add("is-standalone"); } catch (e) {}</script>
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="dd1d172bf8">
+  <meta name="build-id" content="e534f5b949">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -503,6 +503,50 @@ html, body {
   color: #FFCE3B;
 }
 /* === SUB-TABS === */
+.subnav-bar-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border: var(--border-comic);
+  box-shadow: var(--shadow-comic-sm);
+  background: var(--bg-card);
+  flex-shrink: 0;
+  position: sticky;
+  top: -7px;
+  z-index: 20;
+}
+/* === MANAGER-TAB (v59) === */
+.mgr-ranks { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; }
+.mgr-ranks i { display: block; height: 10px; border: 1.5px solid var(--line); background: var(--bg-paper); }
+.mgr-ranks i.on { background: var(--text); }
+.mgr-sub { font-size: 11px; font-weight: 800; }
+.mgr-note { font-size: 10.5px; font-weight: 700; line-height: 1.35; opacity: .8; }
+.mgr-miss { color: var(--c-cost); }
+.mgr-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap; padding: 4px 0; border-bottom: 1px dashed rgba(26, 26, 26, .3); font-size: 10.5px; font-weight: 900; text-transform: uppercase; }
+.mgr-row:last-of-type { border-bottom: none; }
+.mgr-row > span:first-child { display: inline-flex; flex-direction: column; gap: 1px; }
+.mgr-row.locked { opacity: .45; }
+.mgr-row .mgr-lock { display: inline-flex; align-items: center; gap: 3px; font-size: 9.5px; font-weight: 800; text-transform: none; }
+.mgr-row .buy-mode-group { flex-wrap: nowrap; }
+.mgr-row .mode-btn { min-width: 0; min-height: 30px; padding: 0 6px; }
+.mgr-row .mode-btn:disabled { cursor: not-allowed; }
+.mgr-val { text-transform: none; font-size: 11px; }
+.mgr-card-body .mgr-row { flex-direction: column; align-items: stretch; gap: 3px; }
+.mgr-card-body .mgr-row > span:first-child { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 6px; }
+.mgr-card-body .mgr-row .buy-mode-group, .mgr-card-body .mgr-row .mini-square-btn { width: 100%; }
+.mgr-card-body .mgr-row .mode-btn { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 379px) {
+  .mgr-row { flex-direction: column; align-items: stretch; gap: 3px; }
+  .mgr-row > span:first-child { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .mgr-row .buy-mode-group { width: 100%; }
+  .mgr-row .mode-btn { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+.mgr-card { background: var(--bg-card); border: var(--border-comic); box-shadow: var(--shadow-comic-sm); padding: 6px 8px; display: flex; flex-direction: column; gap: 4px; }
+.mgr-card.paused { background: var(--p4); }
+.mgr-card-head { display: flex; align-items: center; gap: 6px; }
+.mgr-card-main { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 1px; background: transparent; border: none; padding: 0; text-align: left; color: var(--text); font-family: var(--font-sans); cursor: pointer; }
+.mgr-card-name { font-size: 12px; font-weight: 900; }
+.mgr-card-sub { font-size: 10.5px; font-weight: 800; opacity: .8; }
+.mgr-card-body { border-top: 1.5px solid var(--line); padding-top: 3px; }
 .subnav-bar-3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -3245,8 +3289,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
 
         "mgr.hire": "Manager anheuern",
         "mgr.active": "Manager",
-        "mgr.target": "Ausbau bis St. {n}",
-        "mgr.target.inf": "Ausbau unbegrenzt",
+        "mgr.target": "Ziel lvl {n}",
+        "mgr.target.inf": "Ziel ∞",
         "mgr.waitbranch": "wartet auf Zweig",
         "biz.locked.prev": "Nächstes Ziel • Benötigt {prevName} St. {minLevel}",
         "biz.supply.add": "+{val}% für {target}",
@@ -3978,8 +4022,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
 
         "mgr.hire": "Hire manager",
         "mgr.active": "Manager",
-        "mgr.target": "Upgrades up to lvl {n}",
-        "mgr.target.inf": "Upgrades unlimited",
+        "mgr.target": "Target lvl {n}",
+        "mgr.target.inf": "Target ∞",
         "mgr.waitbranch": "waiting for branch",
         "biz.locked.prev": "Next Target • Requires {prevName} lvl {minLevel}",
         "biz.supply.add": "+{val}% for {target}",
@@ -4972,7 +5016,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
     const Platform = {
       SAVE_KEY: "hustlers_urban_save_v1",
       BACKUP_KEY: "hustlers_urban_backup_v1",
-      CURRENT_VERSION: 11,         // aktuelle Spielstand-Version (bei neuem Format erhöhen + Schritt in migrateSave ergänzen)
+      CURRENT_VERSION: 12,         // aktuelle Spielstand-Version (bei neuem Format erhöhen + Schritt in migrateSave ergänzen)
       PREMIGRATE_KEY: "hustlers_urban_premigrate_v1",   // Kopie des alten Spielstands, bevor er umgewandelt wird
       memoryFallback: {},
       audioCtx: null,
@@ -5071,6 +5115,15 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           if (!migrated.office || typeof migrated.office !== "object") migrated.office = {};
           migrated.pendingBribe = null;
           migrated.meta.saveVersion = 11;
+        }
+
+        if ((migrated.meta.saveVersion || 11) < 12) {
+          // v59: Manager-Rang + Einstellungen. Bestehende Manager behalten Ziel, bekommen Rang 1 und Standardwerte.
+          if (!migrated.mgr || typeof migrated.mgr !== "object") {
+            migrated.mgr = { rank: 1, g: { budget: 0.25, reserve: 0, branch: "wait", prio: "order", dirty: false, dirtyBudget: 0.25, dirtyFallback: true }, order: [], tab: 0, dot: 0, story: 0 };
+          }
+          if (migrated.ui && typeof migrated.ui === "object" && !migrated.ui.bizSubTab) migrated.ui.bizSubTab = "list";
+          migrated.meta.saveVersion = 12;
         }
 
         return migrated;
@@ -5432,7 +5485,19 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         }
       },
       // --- Manager (Automatik) ---
-      manager: { baseCost: 4, costGrowth: 1.28, budget: 0.25, interval: 1.0, maxSteps: 5, targets: [25, 50, 100, 150, 200, 0] },
+      manager: {
+        baseCost: 4, costGrowth: 1.28, budget: 0.25, interval: 1.0, maxSteps: 5, targets: [25, 50, 100, 150, 200, 0],
+        // Manager-Rang (gemeinsam für alle Manager). rankCost[r-1] = Preis für Rang r: [Akten, Drogen]
+        rankCost: [[0, 0], [10, 3], [20, 5], [35, 8], [60, 12], [100, 16], [160, 20], [250, 24], [400, 35], [800, 60]],
+        unlock: { pause: 2, target: 2, budget: 3, branch: 4, prio: 5, dirty: 10 },   // ab welchem Rang
+        intervalByRank: [[8, 0.5], [6, 0.75]],    // Takt in Sekunden (höchster erreichter Rang zählt)
+        stepsByRank: [[9, 12], [7, 8]],           // Stufen pro Takt und Manager
+        budgetOpts: [0.10, 0.25, 0.50, 1.00],     // Anteil vom Bargeld
+        reserveOpts: [0, 60, 600, 3600],          // Reserve = so viele Sekunden Bargeld-Einkommen bleiben liegen
+        dirtyBudgetOpts: [0.10, 0.25, 0.50, 1.00],// Anteil vom Schwarzgeld (ab Rang 10)
+        dirtyMul: 2.5,                            // Schwarzkauf-Aufschlag (wie beim Spieler)
+        dirtyHeat: 3.5                            // Fahndung pro Schwarzkauf-Paket (wie beim Spieler)
+      },
       // --- Prestige (Akten) ---
       prestige: { min: 1e8, k: 10, exp: 0.3, growth: 2, fileCoef: 0.1, fileExp: 0.35 }
     };
@@ -5497,6 +5562,11 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
     const MANAGER_INTERVAL = BALANCE.manager.interval;
     const MANAGER_MAX_STEPS = BALANCE.manager.maxSteps;
     const MANAGER_TARGETS = BALANCE.manager.targets;
+    const MANAGER_RANK_MAX = BALANCE.manager.rankCost.length;
+    const MGR_DEFAULTS = { budget: BALANCE.manager.budget, reserve: 0, branch: "wait", prio: "order", dirty: false, dirtyBudget: 0.25, dirtyFallback: true };
+    // welche Einstellung an welchem Freischalt-Merkmal hängt
+    const MGR_KEY_FEAT = { budget: "budget", reserve: "budget", branch: "branch", prio: "prio", dirty: "dirty", dirtyBudget: "dirty", dirtyFallback: "dirty" };
+    const MGR_OV_KEYS = ["budget", "reserve", "branch", "dirty", "dirtyBudget", "dirtyFallback"];
     const PRESTIGE_MIN = BALANCE.prestige.min;
     const PRESTIGE_K = BALANCE.prestige.k;
     const PRESTIGE_EXP = BALANCE.prestige.exp;
@@ -5547,6 +5617,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           activeTab: "businesses",
           hqSubTab: "office",
           cartelSubTab: "crew",
+          bizSubTab: "list",
           buyMode: "1",
           devUnlocked: false,
           tips: { off: false, done: {} },
@@ -5631,6 +5702,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         office: {},
         businesses: {},
         managers: {},
+        mgr: { rank: 1, g: { budget: 0.25, reserve: 0, branch: "wait", prio: "order", dirty: false, dirtyBudget: 0.25, dirtyFallback: true }, order: [], tab: 0, dot: 0, story: 0 },
         logistics: {},
         turf: {},
         gang: {},
@@ -6314,6 +6386,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         if (!validTabs.includes(STATE.ui.activeTab)) STATE.ui.activeTab = "businesses";
         if (!["office", "coups", "milestones", "vault"].includes(STATE.ui.hqSubTab)) STATE.ui.hqSubTab = "office";
         if (!["crew", "market", "ware", "friends"].includes(STATE.ui.cartelSubTab)) STATE.ui.cartelSubTab = "crew";
+        if (!["list", "managers"].includes(STATE.ui.bizSubTab)) STATE.ui.bizSubTab = "list";
         if (!STATE.ui.seenSignatures || typeof STATE.ui.seenSignatures !== "object") {
           STATE.ui.seenSignatures = { businesses: "", logistics: "", turf: "", cartel: "" };
         }
@@ -6394,8 +6467,14 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           const mm = STATE.managers[mid];
           if (!REGISTRY.BUSINESSES[mid] || !mm || typeof mm !== "object" || !mm.hired) { delete STATE.managers[mid]; continue; }
           mm.hired = true;
-          mm.target = MANAGER_TARGETS.includes(mm.target) ? mm.target : 0;
+          const tg = Math.floor(Number(mm.target));
+          mm.target = Number.isFinite(tg) && tg >= 0 && tg <= 99999 ? tg : 0;
+          mm.paused = mm.paused === true;
+          const ov = (mm.ov && typeof mm.ov === "object") ? mm.ov : {};
+          mm.ov = {};
+          for (const k of MGR_OV_KEYS) { if (ov[k] !== undefined && Engine.mgrValid(k, ov[k])) mm.ov[k] = ov[k]; }
         }
+        Engine.mgrEnsure();
 
         if (!STATE.logistics || typeof STATE.logistics !== "object") STATE.logistics = {};
         const sortedLog = KIEZ_API.getSortedCollection("LOGISTICS");
@@ -7066,6 +7145,21 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         if (kind === "war") { STATE.war = null; const ok = this.warSpawn(); return ok ? "Revierkampf" : "kein Revier gekauft"; }
         if (kind === "raid") { STATE.heat = 90; STATE.razziaCooldown = 0; return "Razzia-Warnung"; }
         if (kind === "bomb") { const r = this.applyBomb(); return r ? "Bombe: " + r.id : "kein Büro-Upgrade vorhanden"; }
+        if (kind === "mgr_up" || kind === "mgr_max" || kind === "mgr_reset") {
+          const M = this.mgrEnsure();
+          M.rank = kind === "mgr_max" ? MANAGER_RANK_MAX : kind === "mgr_reset" ? 1 : Math.min(MANAGER_RANK_MAX, M.rank + 1);
+          return "Manager-Rang " + M.rank;
+        }
+        if (kind === "mgr_all") {
+          let n = 0;
+          biz.forEach(b => { const st = STATE.businesses[b.id]; if (st && st.unlocked && !(STATE.managers[b.id] && STATE.managers[b.id].hired)) { STATE.managers[b.id] = { hired: true, target: 0, paused: false, ov: {} }; n++; } });
+          this.mgrCheckUnlock();
+          return n + " Manager eingestellt";
+        }
+        if (kind === "mgr_tab") {
+          const M = this.mgrEnsure(); M.tab = 1; M.dot = 1; M.story = 1;
+          return "Manager-Tab frei (Story folgt)";
+        }
         if (kind === "tabs_all") {
           STATE.ui.tabs = { logistics: 1, turf: 1, hq: 1, cartel: 1 };
           this.emit("tabs");
@@ -7784,7 +7878,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
 
       _dualQuotes(bizId) {
         const st = STATE.businesses[bizId];
-        const STREET_MUL = 2.5;
+        const STREET_MUL = BALANCE.manager.dirtyMul;
         if (!st) {
           return {
             clean: { count: 1, cost: Infinity, canAfford: false },
@@ -7931,7 +8025,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         const cost = this.getManagerCost(bizId);
         if (!Number.isFinite(cost) || STATE.currencies.files < cost) return false;
         STATE.currencies.files = Math.max(0, STATE.currencies.files - cost);
-        STATE.managers[bizId] = { hired: true, target: 0 };
+        STATE.managers[bizId] = { hired: true, target: 0, paused: false, ov: {} };
+        this.mgrCheckUnlock();
         return true;
       },
 
@@ -7973,37 +8068,198 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         return true;
       },
 
-      runManagers(dt) {
-        const res = { bought: 0, structural: false };
-        if (!STATE.managers) return res;
-        this.managerAcc = (this.managerAcc || 0) + dt;
-        if (this.managerAcc < MANAGER_INTERVAL) return res;
-        this.managerAcc = 0;
-        const sorted = KIEZ_API.getSortedCollection("BUSINESSES");
-        for (let i = 0; i < sorted.length; i++) {
-          const b = sorted[i];
-          const m = STATE.managers[b.id];
-          const st = STATE.businesses[b.id];
-          if (!m || !m.hired || !st || !st.unlocked) continue;
-          for (let n = 0; n < MANAGER_MAX_STEPS; n++) {
-            if (m.target > 0 && st.level >= m.target) break;
-            if (st.level >= 25 && !st.branch) break;
-            const cost = this.calcBuyCost(b.id, st.level, 1);
-            if (!Number.isFinite(cost) || cost <= 0) break;
-            const limit = st.level === 0 ? STATE.currencies.cash : STATE.currencies.cash * MANAGER_BUDGET;
-            if (cost > limit) break;
-            STATE.currencies.cash = Math.max(0, STATE.currencies.cash - cost);
-            const prev = st.level;
-            st.level += 1;
-            const reached = this.getReachedMilestonesCount(st.level);
-            if (reached > (st.milestonesClaimed || 0)) {
-              STATE.currencies.cred += reached - (st.milestonesClaimed || 0);
-              st.milestonesClaimed = reached;
-            }
-            res.bought += 1;
-            if (prev === 0 || (prev < 25 && st.level >= 25)) res.structural = true;
-          }
+      // --- Manager-Rang & Einstellungen (v59) ---
+      mgrValid(key, v) {
+        const BM = BALANCE.manager;
+        if (key === "budget") return BM.budgetOpts.includes(v);
+        if (key === "reserve") return BM.reserveOpts.includes(v);
+        if (key === "branch") return ["wait", "A", "B"].includes(v);
+        if (key === "prio") return ["order", "cheap", "milestone", "custom"].includes(v);
+        if (key === "dirty" || key === "dirtyFallback") return v === true || v === false;
+        if (key === "dirtyBudget") return BM.dirtyBudgetOpts.includes(v);
+        return false;
+      },
+      mgrEnsure() {
+        let M = STATE.mgr;
+        if (!M || typeof M !== "object") M = STATE.mgr = {};
+        const r = Math.floor(Number(M.rank));
+        M.rank = (r >= 1 && r <= MANAGER_RANK_MAX) ? r : 1;
+        const G = (M.g && typeof M.g === "object") ? M.g : {};
+        const ng = {};
+        for (const k of Object.keys(MGR_DEFAULTS)) ng[k] = this.mgrValid(k, G[k]) ? G[k] : MGR_DEFAULTS[k];
+        M.g = ng;
+        if (!Array.isArray(M.order)) M.order = [];
+        M.order = M.order.filter((id, i, a) => typeof id === "string" && REGISTRY.BUSINESSES[id] && a.indexOf(id) === i);
+        M.tab = M.tab ? 1 : 0;
+        M.dot = M.dot ? 1 : 0;
+        M.story = [0, 1, 2].includes(M.story) ? M.story : 0;
+        return M;
+      },
+      mgrRank() { return (STATE.mgr && STATE.mgr.rank) || 1; },
+      mgrHas(feat) { const need = BALANCE.manager.unlock[feat]; return !need || this.mgrRank() >= need; },
+      mgrInterval() { const r = this.mgrRank(); for (const [lv, v] of BALANCE.manager.intervalByRank) if (r >= lv) return v; return MANAGER_INTERVAL; },
+      mgrSteps() { const r = this.mgrRank(); for (const [lv, v] of BALANCE.manager.stepsByRank) if (r >= lv) return v; return MANAGER_MAX_STEPS; },
+      mgrNextCost() {
+        const r = this.mgrRank();
+        if (r >= MANAGER_RANK_MAX) return null;
+        const c = BALANCE.manager.rankCost[r];
+        return { rank: r + 1, files: c[0], drugs: c[1] };
+      },
+      canUpgradeMgrRank() {
+        const c = this.mgrNextCost();
+        return !!c && (STATE.currencies.files || 0) >= c.files && (STATE.currencies.drugs || 0) >= c.drugs;
+      },
+      upgradeMgrRank() {
+        if (!this.canUpgradeMgrRank()) return false;
+        const c = this.mgrNextCost();
+        STATE.currencies.files = Math.max(0, STATE.currencies.files - c.files);
+        STATE.currencies.drugs = Math.max(0, STATE.currencies.drugs - c.drugs);
+        STATE.mgr.rank = c.rank;
+        return true;
+      },
+      // wirksamer Wert einer Einstellung für einen Betrieb (Ausnahme > Grundeinstellung > Standard)
+      mgrVal(bizId, key) {
+        if (!this.mgrHas(MGR_KEY_FEAT[key])) return MGR_DEFAULTS[key];
+        const m = bizId && STATE.managers[bizId];
+        if (m && m.ov && m.ov[key] !== undefined && key !== "prio") return m.ov[key];
+        return STATE.mgr.g[key];
+      },
+      setMgrGlobal(key, v) {
+        if (!this.mgrValid(key, v) || !this.mgrHas(MGR_KEY_FEAT[key])) return false;
+        STATE.mgr.g[key] = v;
+        return true;
+      },
+      setMgrOverride(bizId, key, v) {
+        const m = STATE.managers[bizId];
+        if (!m || !m.hired || !MGR_OV_KEYS.includes(key) || !this.mgrHas(MGR_KEY_FEAT[key])) return false;
+        if (!m.ov) m.ov = {};
+        if (v === null) { delete m.ov[key]; return true; }
+        if (!this.mgrValid(key, v)) return false;
+        m.ov[key] = v;
+        return true;
+      },
+      mgrHasOverride(bizId) {
+        const m = STATE.managers[bizId];
+        if (!m || !m.ov) return false;
+        return MGR_OV_KEYS.some(k => m.ov[k] !== undefined && this.mgrHas(MGR_KEY_FEAT[k]));
+      },
+      toggleMgrPause(bizId) {
+        const m = STATE.managers[bizId];
+        if (!m || !m.hired || !this.mgrHas("pause")) return false;
+        m.paused = !m.paused;
+        return true;
+      },
+      stepMgrTarget(bizId, delta) {
+        const m = STATE.managers[bizId], st = STATE.businesses[bizId];
+        if (!m || !m.hired || !st) return false;
+        if (!this.mgrHas("target")) return this.cycleManagerTarget(bizId);
+        if (delta === 0) { m.target = 0; return true; }
+        const base = m.target > 0 ? m.target : Math.max(25, Math.ceil((st.level + 1) / 25) * 25);
+        m.target = Math.max(1, Math.min(99999, base + delta));
+        return true;
+      },
+      // Manager in Anzeige-Reihenfolge (eigene Reihenfolge, wenn Priorität "eigene" gewählt)
+      getMgrOrder() {
+        const sorted = KIEZ_API.getSortedCollection("BUSINESSES").map(b => b.id).filter(id => STATE.managers[id] && STATE.managers[id].hired);
+        if (this.mgrVal(null, "prio") !== "custom") return sorted;
+        const M = STATE.mgr;
+        const out = M.order.filter(id => sorted.includes(id));
+        for (const id of sorted) if (!out.includes(id)) out.push(id);
+        return out;
+      },
+      moveMgr(bizId, dir) {
+        if (this.mgrVal(null, "prio") !== "custom") return false;
+        const list = this.getMgrOrder();
+        const i = list.indexOf(bizId), j = i + dir;
+        if (i < 0 || j < 0 || j >= list.length) return false;
+        [list[i], list[j]] = [list[j], list[i]];
+        STATE.mgr.order = list;
+        return true;
+      },
+      mgrCheckUnlock() {
+        const M = STATE.mgr;
+        if (!M || M.tab) return false;
+        const anyHired = Object.keys(STATE.managers || {}).some(id => STATE.managers[id] && STATE.managers[id].hired);
+        if ((STATE.currencies.files || 0) > 0 || ((STATE.stats && STATE.stats.filesEarnedTotal) || 0) > 0 || anyHired) {
+          M.tab = 1; M.dot = 1; if (!M.story) M.story = 1;
+          return true;
         }
+        return false;
+      },
+
+      runManagers(dt, stats) {
+        const res = { bought: 0, structural: false };
+        if (!STATE.managers || !STATE.mgr) return res;
+        this.managerAcc = (this.managerAcc || 0) + dt;
+        if (this.managerAcc < this.mgrInterval()) return res;
+        this.managerAcc = 0;
+        const steps = this.mgrSteps();
+        const income = (stats && stats.cleanIncomeCps) || 0;
+        const list = [];
+        for (const id of this.getMgrOrder()) {
+          const m = STATE.managers[id], st = STATE.businesses[id];
+          if (!m || !m.hired || !st || !st.unlocked) continue;
+          if (m.paused && this.mgrHas("pause")) continue;
+          // Zweig vorwählen
+          if (st.level >= 25 && !st.branch) {
+            const br = this.mgrVal(id, "branch");
+            if (br !== "wait" && !((st.branchCooldown || 0) > 0) && this.selectBranch(id, br)) res.structural = true;
+          }
+          list.push({ id, m, st, n: 0, dirtyN: 0,
+            budget: this.mgrVal(id, "budget"),
+            reserve: this.mgrVal(id, "reserve") * income,
+            dirty: this.mgrVal(id, "dirty"),
+            dirtyBudget: this.mgrVal(id, "dirtyBudget"),
+            fallback: this.mgrVal(id, "dirtyFallback") });
+        }
+        if (!list.length) return res;
+        const nextCost = c => this.calcBuyCost(c.id, c.st.level, 1);
+        const tryBuy = (c) => {
+          const st = c.st;
+          if (c.n >= steps) return false;
+          if (c.m.target > 0 && st.level >= c.m.target) return false;
+          if (st.level >= 25 && !st.branch) return false;
+          const cost = nextCost(c);
+          if (!Number.isFinite(cost) || cost <= 0) return false;
+          const cash = STATE.currencies.cash;
+          const free = cash - c.reserve;
+          const cashLim = st.level === 0 ? free : Math.min(cash * c.budget, free);
+          const canCash = cost <= cashLim;
+          let useDirty = false;
+          if (c.dirty && !this.dirtyLocked()) {
+            const canDirty = cost * BALANCE.manager.dirtyMul <= (STATE.currencies.dirtyCash || 0) * c.dirtyBudget;
+            useDirty = c.fallback ? (!canCash && canDirty) : canDirty;
+          }
+          if (!useDirty && !canCash) return false;
+          if (useDirty) { STATE.currencies.dirtyCash = Math.max(0, STATE.currencies.dirtyCash - cost * BALANCE.manager.dirtyMul); c.dirtyN += 1; }
+          else STATE.currencies.cash = Math.max(0, cash - cost);
+          const prev = st.level;
+          st.level += 1;
+          const reached = this.getReachedMilestonesCount(st.level);
+          if (reached > (st.milestonesClaimed || 0)) {
+            STATE.currencies.cred += reached - (st.milestonesClaimed || 0);
+            st.milestonesClaimed = reached;
+          }
+          c.n += 1;
+          res.bought += 1;
+          if (prev === 0 || (prev < 25 && st.level >= 25)) res.structural = true;
+          return true;
+        };
+        const prio = this.mgrVal(null, "prio");
+        if (prio === "cheap" || prio === "milestone") {
+          const toMs = c => { const i = this.getNextMilestoneInfo(c.st.level); return i.isMax ? Infinity : Math.max(0, i.next - c.st.level); };
+          for (let guard = 0; guard < steps * list.length; guard++) {
+            const order = list.filter(c => c.n < steps).map(c => ({ c, cost: nextCost(c), ms: prio === "milestone" ? toMs(c) : 0 }))
+              .sort((a, b) => (a.ms - b.ms) || (a.cost - b.cost));
+            let any = false;
+            for (const o of order) if (tryBuy(o.c)) { any = true; break; }
+            if (!any) break;
+          }
+        } else {
+          for (const c of list) { while (tryBuy(c)) { /* bis Budget, Ziel oder Stufen pro Takt erreicht */ } }
+        }
+        // Schwarzkauf: Fahndung wie beim Kauf von Hand (pro Betrieb ein Paket je Takt)
+        for (const c of list) if (c.dirtyN > 0) STATE.heat = Math.min(100, STATE.heat + BALANCE.manager.dirtyHeat * Math.min(4, Math.sqrt(c.dirtyN)));
         if (res.bought > 0 && this.updateUnlocks()) res.structural = true;
         return res;
       },
@@ -8260,6 +8516,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         res["hq:coups"] = missionDone ? "urgent" : "none";
         res["hq:milestones"] = (boardReady || this.weekReady()) ? "urgent" : "none";
         res["hq:vault"] = this.getClaimableFiles() >= 1 ? "urgent" : "none";
+        res["biz:managers"] = (STATE.mgr && STATE.mgr.dot) ? "new" : (this.canUpgradeMgrRank() && STATE.mgr && STATE.mgr.tab ? "new" : "none");
         return res;
       },
 
@@ -8786,7 +9043,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           razziaTriggered = true;
         }
 
-        const mgrRes = this.runManagers(dt);
+        const mgrRes = this.runManagers(dt, stats);
 
         return {
           dt,
@@ -8887,7 +9144,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         } catch (e) {}
         let vp = "";
         try { vp = innerWidth + "x" + innerHeight; } catch (e) {}
-        this.add("START", "v3.31.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
+        this.add("START", "v3.32.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
         this.flush();
       },
       flush() {
@@ -9834,7 +10091,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         const m = document.getElementById("app-modal");
         if (m && m.classList.contains("open")) return;
         const pend = TAB_UNLOCK.find(u => STATE.ui.tabNew[u.k] === 1);
-        if (!pend) return;
+        if (!pend) { Engine.mgrCheckUnlock(); if (STATE.mgr && STATE.mgr.story === 1) this.showMgrStory(); return; }
         const tx = this.tabStoryText(pend.k);
         if (!tx) { STATE.ui.tabNew[pend.k] = 2; return; }
         STATE.ui.tabNew[pend.k] = 2;
@@ -9849,6 +10106,126 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         m.classList.add("open");
         Platform.playTone("coin", 6); Platform.haptic(20);
         Platform.saveGame(true);
+      },
+
+      bizSubNavHTML() {
+        const sub = STATE.ui.bizSubTab === "managers" ? "managers" : "list";
+        return `<div class="subnav-bar-2">
+          <button type="button" class="subtab-btn ${sub === "list" ? "active" : ""}" data-action="switch-biz-sub" data-sub="list">${renderIcon("store", 13)} <span>${L("Betriebe", "Businesses")}</span></button>
+          <button type="button" class="subtab-btn ${sub === "managers" ? "active" : ""}" data-action="switch-biz-sub" data-sub="managers"><span class="tab-badge sub-badge" data-bind="badge-sub-biz-managers"></span>${renderIcon("crew", 13)} <span>${L("Manager", "Managers")}</span></button>
+        </div>`;
+      },
+
+      showMgrStory() {
+        const m = document.getElementById("app-modal");
+        if (!m || m.classList.contains("open")) return;
+        STATE.mgr.story = 2;
+        this.settingsOpen = false;
+        const body = document.getElementById("app-modal-body");
+        body.innerHTML = `<h2 class="panel-title">${L("Neu: Manager-Büro", "New: Manager Office")}</h2>
+          <p style="font-weight:700;line-height:1.5;margin:0;">${L("Deine Manager brauchen mehr als einen Zettel mit einer Zielstufe. Im Manager-Büro legst du fest, wie viel Geld sie ausgeben dürfen, welchen Zweig sie nehmen und wer zuerst dran ist. Mit Akten und Drogen steigen sie im Rang und lernen dazu. Ganz oben wissen sie sogar, wie man mit Schwarzgeld einkauft.",
+            "Your managers need more than a note with a target level. In the Manager Office you decide how much money they may spend, which branch they take and who goes first. With files and drugs they rise in rank and learn new tricks. At the top they even know how to shop with dirty cash.")}</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;">
+            <button type="button" class="comic-btn primary" data-action="mgr-story-go">${L("ANSEHEN", "TAKE A LOOK")}</button>
+            <button type="button" class="comic-btn" data-action="close-modal">${L("SPÄTER", "LATER")}</button>
+          </div>`;
+        m.classList.add("open");
+        Platform.playTone("coin", 6); Platform.haptic(20);
+        Platform.saveGame(true);
+      },
+
+      // Manager-Tab (Unter-Tab im Betriebe-Tab)
+      managersHTML() {
+        const M = Engine.mgrEnsure(), BM = BALANCE.manager, rank = M.rank;
+        const pct = v => Math.round(v * 100) + "%";
+        const resLbl = v => v === 0 ? L("Aus", "Off") : v < 3600 ? (v / 60) + L(" Min", " min") : (v / 3600) + L(" Std", " h");
+        const prioLbl = { order: L("Liste", "List"), cheap: L("Günstig", "Cheap"), milestone: L("Meilen.", "Milest."), custom: L("Eigene", "Custom") };
+        const featName = {
+          2: L("Pause und freie Zielstufe", "Pause and free target level"), 3: L("Budget und Reserve wählbar", "Choose budget and reserve"),
+          4: L("Zweig vorwählen", "Preselect branch"), 5: L("Priorität", "Priority"), 6: L("Takt 0,75 s", "Tick 0.75 s"),
+          7: L("8 Stufen pro Takt", "8 levels per tick"), 8: L("Takt 0,5 s", "Tick 0.5 s"), 9: L("12 Stufen pro Takt", "12 levels per tick"),
+          10: L("Schwarzgeld nutzen", "Use dirty cash")
+        };
+        const seg = (opts, cur, attrs, locked) => `<div class="buy-mode-group">${opts.map(([v, lbl]) =>
+          `<button type="button" class="mode-btn ${cur === v ? "active" : ""}" ${attrs(v)} ${locked ? "disabled" : ""}>${lbl}</button>`).join("")}</div>`;
+        const row = (label, feat, inner) => {
+          const need = BM.unlock[feat], locked = need && rank < need;
+          return `<div class="mgr-row ${locked ? "locked" : ""}"><span>${label}${locked ? `<span class="mgr-lock">${renderIcon("lock", 10)} ${L("ab Rang", "rank")} ${need}</span>` : ""}</span>${inner(locked)}</div>`;
+        };
+        const gAttr = key => v => `data-action="mgr-set" data-key="${key}" data-val="${String(v)}"`;
+        const interval = Engine.mgrInterval(), steps = Engine.mgrSteps();
+        const nx = Engine.mgrNextCost();
+        const haveF = STATE.currencies.files || 0, haveD = STATE.currencies.drugs || 0;
+        const rankBox = `<section class="panel-box">
+          <h2 class="panel-title"><span>${renderIcon("crew", 14)} ${L("Manager-Rang", "Manager rank")}</span><span class="num">${rank} / ${MANAGER_RANK_MAX}</span></h2>
+          <div class="mgr-ranks">${Array.from({ length: MANAGER_RANK_MAX }, (_, i) => `<i class="${i < rank ? "on" : ""}"></i>`).join("")}</div>
+          <div class="mgr-sub">${L("Takt", "Tick")} <b class="num">${formatNumber(interval, 2)} s</b> • <b class="num">${steps}</b> ${L("Stufen pro Takt", "levels per tick")}</div>
+          ${nx ? `<div class="mgr-sub">${L("Nächster Rang", "Next rank")} ${nx.rank}: <b>${featName[nx.rank] || ""}</b></div>
+          <button type="button" class="comic-btn primary" data-action="mgr-rank-up" data-bind="mgr-rank-btn" ${Engine.canUpgradeMgrRank() ? "" : "disabled"}>
+            ${L("Aufwerten", "Upgrade")} • <span class="num ${haveF < nx.files ? "mgr-miss" : ""}" data-bind="mgr-cost-files">${formatNumber(nx.files, 0)}</span> ${t("ui.curr.files")} • <span class="num ${haveD < nx.drugs ? "mgr-miss" : ""}" data-bind="mgr-cost-drugs">${formatNumber(nx.drugs, 0)}</span> ${t("ui.curr.drugs")}
+          </button>` : `<div class="mgr-sub"><b>${L("Höchster Rang erreicht.", "Top rank reached.")}</b></div>`}
+        </section>`;
+        const G = M.g;
+        const globalBox = `<section class="panel-box">
+          <h2 class="panel-title">${L("Grundeinstellung", "Default settings")}</h2>
+          <div class="mgr-note">${L("Gilt für alle Manager. Einzelne Manager können unten abweichen.", "Applies to all managers. Single managers can differ below.")}</div>
+          ${row(L("Budget", "Budget"), "budget", lk => seg(BM.budgetOpts.map(v => [v, pct(v)]), G.budget, gAttr("budget"), lk))}
+          ${row(L("Reserve", "Reserve"), "budget", lk => seg(BM.reserveOpts.map(v => [v, resLbl(v)]), G.reserve, gAttr("reserve"), lk))}
+          ${row(L("Zweig", "Branch"), "branch", lk => seg([["wait", L("Warten", "Wait")], ["A", "A"], ["B", "B"]], G.branch, gAttr("branch"), lk))}
+          ${row(L("Priorität", "Priority"), "prio", lk => seg(["order", "cheap", "milestone", "custom"].map(v => [v, prioLbl[v]]), G.prio, gAttr("prio"), lk))}
+          ${row(L("Schwarzgeld", "Dirty cash"), "dirty", lk => seg([[false, L("Aus", "Off")], [true, L("An", "On")]], G.dirty, gAttr("dirty"), lk))}
+          ${row(L("Schwarz-Budget", "Dirty budget"), "dirty", lk => seg(BM.dirtyBudgetOpts.map(v => [v, pct(v)]), G.dirtyBudget, gAttr("dirtyBudget"), lk))}
+          ${row(L("Nur als Ersatz", "Fallback only"), "dirty", lk => seg([[true, L("Ja", "Yes")], [false, L("Nein", "No")]], G.dirtyFallback, gAttr("dirtyFallback"), lk))}
+          <div class="mgr-note">${L("Reserve: so viel Bargeld-Einkommen bleibt immer liegen. Priorität: Liste = Reihenfolge der Betriebe, Günstig = billigste Stufe zuerst, Meilen. = wer am nächsten am Meilenstein ist.", "Reserve: this much cash income always stays untouched. Priority: List = business order, Cheap = cheapest level first, Milest. = closest to the next milestone.")}</div>
+          ${rank >= BM.unlock.dirty ? `<div class="mgr-note">${L("Schwarzkauf kostet ×2,5 und bringt Fahndung wie beim Kauf von Hand. Ab der Schwarzgeld-Sperre kauft der Manager nicht mehr schwarz.", "Dirty purchases cost ×2.5 and add heat like buying by hand. During the dirty cash lock the manager stops buying dirty.")}</div>` : ""}
+        </section>`;
+        const ids = Engine.getMgrOrder();
+        const custom = Engine.mgrVal(null, "prio") === "custom";
+        const cards = ids.map((id, idx) => {
+          const b = REGISTRY.BUSINESSES[id], st = STATE.businesses[id], m = STATE.managers[id];
+          const open = STATE.ui.mgrOpen === id;
+          const ov = Engine.mgrHasOverride(id);
+          const tgt = m.target > 0 ? `${L("Ziel", "Target")} lvl ${m.target}` : `${L("Ziel", "Target")} ∞`;
+          const state = (m.paused && Engine.mgrHas("pause")) ? L("Pause", "Paused") : (st.level >= 25 && !st.branch && Engine.mgrVal(id, "branch") === "wait") ? t("mgr.waitbranch") : (m.target > 0 && st.level >= m.target) ? L("Ziel erreicht", "target reached") : L("aktiv", "active");
+          let body = "";
+          if (open) {
+            const oAttr = key => v => `data-action="mgr-ov" data-biz="${id}" data-key="${key}" data-val="${String(v)}"`;
+            const cur = key => (m.ov && m.ov[key] !== undefined) ? m.ov[key] : "std";
+            const STD = ["std", L("Std", "Def")];
+            const tgtInner = Engine.mgrHas("target")
+              ? `<div class="buy-mode-group">${[-25, -5].map(d => `<button type="button" class="mode-btn" data-action="mgr-tgt" data-biz="${id}" data-d="${d}">${d}</button>`).join("")}${[5, 25].map(d => `<button type="button" class="mode-btn" data-action="mgr-tgt" data-biz="${id}" data-d="${d}">+${d}</button>`).join("")}<button type="button" class="mode-btn ${m.target === 0 ? "active" : ""}" data-action="mgr-tgt" data-biz="${id}" data-d="0">∞</button></div>`
+              : `<button type="button" class="mini-square-btn" data-action="mgr-tgt" data-biz="${id}" data-d="1">${m.target > 0 ? "lvl " + m.target : "∞"} ▸</button>`;
+            body = `<div class="mgr-card-body">
+              <div class="mgr-row"><span>${L("Zielstufe", "Target level")} <b class="mgr-val num">${m.target > 0 ? "lvl " + m.target : "∞"}</b></span>${tgtInner}</div>
+              ${row(L("Status", "Status"), "pause", lk => seg([[false, L("Aktiv", "Active")], [true, L("Pause", "Pause")]], m.paused === true, v => `data-action="mgr-pause" data-biz="${id}" data-val="${String(v)}"`, lk))}
+              ${row(L("Budget", "Budget"), "budget", lk => seg([STD, ...BM.budgetOpts.map(v => [v, pct(v)])], cur("budget"), oAttr("budget"), lk))}
+              ${row(L("Reserve", "Reserve"), "budget", lk => seg([STD, ...BM.reserveOpts.map(v => [v, resLbl(v)])], cur("reserve"), oAttr("reserve"), lk))}
+              ${row(L("Zweig", "Branch"), "branch", lk => seg([STD, ["wait", L("Warten", "Wait")], ["A", t(b.branchA_key)], ["B", t(b.branchB_key)]], cur("branch"), oAttr("branch"), lk))}
+              ${row(L("Schwarzgeld", "Dirty cash"), "dirty", lk => seg([STD, [false, L("Aus", "Off")], [true, L("An", "On")]], cur("dirty"), oAttr("dirty"), lk))}
+              ${row(L("Schwarz-Budget", "Dirty budget"), "dirty", lk => seg([STD, ...BM.dirtyBudgetOpts.map(v => [v, pct(v)])], cur("dirtyBudget"), oAttr("dirtyBudget"), lk))}
+              ${row(L("Nur als Ersatz", "Fallback only"), "dirty", lk => seg([STD, [true, L("Ja", "Yes")], [false, L("Nein", "No")]], cur("dirtyFallback"), oAttr("dirtyFallback"), lk))}
+              <div class="mgr-note">${L("Std = wie Grundeinstellung.", "Def = same as default settings.")}</div>
+            </div>`;
+          }
+          const moveBtns = custom ? `<button type="button" class="mini-square-btn" data-action="mgr-move" data-biz="${id}" data-d="-1" ${idx === 0 ? "disabled" : ""}>▲</button><button type="button" class="mini-square-btn" data-action="mgr-move" data-biz="${id}" data-d="1" ${idx === ids.length - 1 ? "disabled" : ""}>▼</button>` : "";
+          return `<article class="mgr-card ${m.paused && Engine.mgrHas("pause") ? "paused" : ""}" data-mgr-card="${id}">
+            <div class="mgr-card-head">
+              <div class="biz-icon">${renderIcon(b.iconKey, 15)}</div>
+              <button type="button" class="mgr-card-main" data-action="mgr-open" data-biz="${id}">
+                <span class="mgr-card-name">${t(b.nameKey)} <span class="num">lvl <span data-bind="mgr-lv-${id}">${st.level}</span></span></span>
+                <span class="mgr-card-sub">${tgt} • ${state} • ${ov ? L("Ausnahme", "Custom") : L("Standard", "Default")}</span>
+              </button>
+              ${moveBtns}
+              <button type="button" class="mini-square-btn" data-action="mgr-open" data-biz="${id}">${open ? "▾" : "▸"}</button>
+            </div>
+            ${body}
+          </article>`;
+        });
+        const listBox = `<section class="panel-box">
+          <h2 class="panel-title"><span>${L("Deine Manager", "Your managers")}</span><span class="num">${ids.length}</span></h2>
+          ${ids.length ? "" : `<div class="mgr-note">${L("Noch keine Manager. Stelle sie an der Betriebs-Karte für Akten ein.", "No managers yet. Hire them on the business card for files.")}</div>`}
+        </section>`;
+        return rankBox + globalBox + listBox + cards.join("");
       },
 
       cacheStaticBindings() {
@@ -10596,6 +10973,48 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
               this.renderActiveTab();
               this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
             }
+          } else if (action === "switch-biz-sub") {
+            const sub = actionEl.getAttribute("data-sub");
+            if (["list", "managers"].includes(sub)) {
+              this.stopHoldBuy();
+              STATE.ui.bizSubTab = sub;
+              if (sub === "managers" && STATE.mgr) STATE.mgr.dot = 0;
+              this.renderActiveTab();
+              this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
+            }
+          } else if (action === "mgr-story-go" || action === "mgr-goto") {
+            if (action === "mgr-story-go") document.getElementById("app-modal").classList.remove("open");
+            Engine.mgrCheckUnlock();
+            if (STATE.mgr && STATE.mgr.tab) {
+              this.stopHoldBuy();
+              STATE.ui.activeTab = "businesses";
+              STATE.ui.bizSubTab = "managers";
+              STATE.mgr.dot = 0;
+              if (action === "mgr-goto") STATE.ui.mgrOpen = actionEl.getAttribute("data-biz");
+              this.syncShellControls();
+              this.renderActiveTab();
+              FX.fade();
+              this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
+              if (action === "mgr-goto") { const card = document.querySelector('[data-mgr-card="' + STATE.ui.mgrOpen + '"]'); if (card && card.scrollIntoView) card.scrollIntoView({ block: "center" }); }
+            }
+          } else if (action && action.indexOf("mgr-") === 0 && ["mgr-rank-up", "mgr-set", "mgr-ov", "mgr-pause", "mgr-tgt", "mgr-open", "mgr-move"].includes(action)) {
+            const biz = actionEl.getAttribute("data-biz");
+            const raw = actionEl.getAttribute("data-val");
+            const val = raw === "true" ? true : raw === "false" ? false : raw === "std" ? null : (raw !== null && raw !== "" && !isNaN(Number(raw)) ? Number(raw) : raw);
+            let ok = false;
+            if (action === "mgr-rank-up") { ok = Engine.upgradeMgrRank(); if (ok) { Platform.playTone("coin", 6); Platform.haptic(20); } }
+            else if (action === "mgr-set") ok = Engine.setMgrGlobal(actionEl.getAttribute("data-key"), val);
+            else if (action === "mgr-ov") ok = Engine.setMgrOverride(biz, actionEl.getAttribute("data-key"), val);
+            else if (action === "mgr-pause") { const m = STATE.managers[biz]; ok = !!m && (m.paused === true) !== val && Engine.toggleMgrPause(biz); }
+            else if (action === "mgr-tgt") { const d = Number(actionEl.getAttribute("data-d")); ok = d === 1 && !Engine.mgrHas("target") ? Engine.cycleManagerTarget(biz) : Engine.stepMgrTarget(biz, d); }
+            else if (action === "mgr-open") { STATE.ui.mgrOpen = STATE.ui.mgrOpen === biz ? null : biz; ok = true; }
+            else if (action === "mgr-move") ok = Engine.moveMgr(biz, Number(actionEl.getAttribute("data-d")));
+            if (ok) {
+              if (action !== "mgr-rank-up") Platform.haptic(8);
+              Platform.saveGame(true);
+              this.renderActiveTab();
+              this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
+            }
           } else if (action === "mgr-target") {
             if (Engine.cycleManagerTarget(actionEl.getAttribute("data-biz"))) {
               Platform.haptic(10);
@@ -11057,7 +11476,9 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           epoch_holding: "ep-holding"
         };
 
-        if (tab === "businesses") {
+        if (tab === "businesses" && Engine.mgrEnsure().tab && STATE.ui.bizSubTab === "managers") {
+          vp.innerHTML = eventBanner + this.bizSubNavHTML() + this.managersHTML();
+        } else if (tab === "businesses") {
           const sortedBiz = KIEZ_API.getSortedCollection("BUSINESSES");
           const mgrBulk = Engine.getAffordableManagersSummary();
           const bulkMgrHtml = (STATE.currencies.files > 0 && mgrBulk.count >= 1)
@@ -11066,7 +11487,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
               </button>`
             : "";
 
-          const html = [eventBanner, bulkMgrHtml];
+          const html = [eventBanner, STATE.mgr && STATE.mgr.tab ? this.bizSubNavHTML() : "", bulkMgrHtml];
           let shownLockedPreview = false;
 
           for (let i = 0; i < sortedBiz.length; i++) {
@@ -11131,8 +11552,9 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
             let mgrHtml;
             if (mgr && mgr.hired) {
               const tgtTxt = mgr.target > 0 ? t("mgr.target", { n: mgr.target }) : t("mgr.target.inf");
-              const waitTxt = (st.level >= 25 && !st.branch) ? ` • ${t("mgr.waitbranch")}` : "";
-              mgrHtml = `<button type="button" class="mgr-btn" data-action="mgr-target" data-biz="${b.id}">${renderIcon("crew", 12)} ${t("mgr.active")}: ${tgtTxt}${waitTxt}</button>`;
+              const waitTxt = (st.level >= 25 && !st.branch && Engine.mgrVal(b.id, "branch") === "wait") ? ` • ${t("mgr.waitbranch")}` : "";
+              const pauseTxt = (mgr.paused && Engine.mgrHas("pause")) ? ` • ${L("Pause", "Paused")}` : "";
+              mgrHtml = `<button type="button" class="mgr-btn" data-action="mgr-goto" data-biz="${b.id}">${renderIcon("crew", 12)} ${t("mgr.active")}: ${tgtTxt}${pauseTxt}${waitTxt} ▸</button>`;
             } else {
               const mCost = Engine.getManagerCost(b.id);
               const canHire = STATE.currencies.files >= mCost;
@@ -13427,7 +13849,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           if (stateVal === "urgent") {
             setCls(badgeNode, "tab-badge urgent");
             setTxt(badgeNode, "!");
-          } else if (stateVal === "new" || (STATE.ui.tabNew && STATE.ui.tabNew[k] === 2)) {
+          } else if (stateVal === "new" || (STATE.ui.tabNew && STATE.ui.tabNew[k] === 2) || (k === "businesses" && STATE.mgr && STATE.mgr.dot)) {
             setCls(badgeNode, "tab-badge new-dot");
             setTxt(badgeNode, "");
           } else {
@@ -13445,7 +13867,15 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           setTxt(n, v === "urgent" ? "!" : "");
         });
 
-        if (STATE.ui.activeTab === "businesses") {
+        if (STATE.ui.activeTab === "businesses" && STATE.ui.bizSubTab === "managers" && STATE.mgr && STATE.mgr.tab) {
+          if (b["mgr-rank-btn"]) {
+            b["mgr-rank-btn"].disabled = !Engine.canUpgradeMgrRank();
+            const nx = Engine.mgrNextCost();
+            if (nx && b["mgr-cost-files"]) b["mgr-cost-files"].classList.toggle("mgr-miss", (STATE.currencies.files || 0) < nx.files);
+            if (nx && b["mgr-cost-drugs"]) b["mgr-cost-drugs"].classList.toggle("mgr-miss", (STATE.currencies.drugs || 0) < nx.drugs);
+          }
+          for (const id of Object.keys(STATE.managers)) { const n = b["mgr-lv-" + id]; if (n && STATE.businesses[id]) setTxt(n, String(STATE.businesses[id].level)); }
+        } else if (STATE.ui.activeTab === "businesses") {
           const sortedBiz = KIEZ_API.getSortedCollection("BUSINESSES");
           for (let i = 0; i < sortedBiz.length; i++) {
             const biz = sortedBiz[i];
@@ -13857,6 +14287,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
                   return grp(en ? "Time & cooldowns" : "Zeit & Cooldowns", [["time1h", "+1 Std vorspulen", "Skip +1 h"], ["time8h", "+8 Std vorspulen", "Skip +8 h"], ["cd", "Cooldowns auf 0", "Reset cooldowns"], ["boost", "Boost +10 Min", "Boost +10 min"], ["mission", "Coup sofort fertig", "Finish heist"], ["prestige", "Umsatz für Prestige", "Revenue for prestige"]])
                     + grp(en ? "Spawn" : "Auslösen", [["insp", "Steuerprüfer", "Tax auditor"], ["insp_off", "Prüfer entfernen", "Remove auditor"], ["dealer", "Händler-Event", "Dealer event"], ["raid", "Razzia-Warnung", "Raid warning"], ["bomb", "Büro-Bombe", "Office bomb"], ["war", "Revierkampf", "Turf war"], ["weekdone", "Wochenziele erfüllen", "Complete weekly goals"], ["vault", "Tresor-Spiel", "Safe game"], ["run", "Schmuggel-Fahrt", "Smuggling run"], ["defuse", "Bomben-Päckchen", "Bomb package"], ["cups", "Becher-Spiel", "Cup game"], ["escape", "Fluchtweg-Spiel", "Escape game"], ["box", "Boxkampf", "Boxing match"], ["hen", "Hahnenkampf", "Cockfight"], ["dog", "Hunderennen", "Dog race"], ["dice", "Straßenwürfeln", "Street dice"], ["dart", "Dart", "Darts"]])
                     + grp(en ? "Progress" : "Fortschritt", [["tabs_all", "Alle Tabs freischalten", "Unlock all tabs"], ["tabs_none", "Tabs wieder sperren", "Lock tabs again"], ["lv10", "Betriebe +10 Lvl", "Businesses +10 lvl"], ["lv100", "Betriebe +100 Lvl", "Businesses +100 lvl"], ["items", "Alle Items", "All items"], ["office", "Büro auf Max", "Office max"]])
+                    + grp("Manager", [["mgr_up", "Manager-Rang +1", "Manager rank +1"], ["mgr_max", "Manager-Rang 10", "Manager rank 10"], ["mgr_reset", "Manager-Rang 1", "Manager rank 1"], ["mgr_all", "Alle Manager einstellen", "Hire all managers"], ["mgr_tab", "Manager-Tab + Story", "Manager tab + story"]])
                     + grp(en ? "Friends" : "Freunde", [["rivals", "3 Test-Freunde", "3 test friends"], ["pkg0", "Päckchen: Geschenk", "Package: gift"], ["pkg1", "Päckchen: Prüfer", "Package: auditor"], ["pkg2", "Päckchen: Bombe", "Package: bomb"], ["team", "Tagesjob: 2 Partner", "Daily job: 2 partners"], ["jobreset", "Tagesjob zurücksetzen", "Reset daily job"]])
                     + `<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:6px;"><button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-soc-reset">${en ? "Reset friend limits" : "Freunde-Limits zurück"}</button><button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-soc-favors">${en ? "+20 favors" : "+20 Gefallen"}</button></div>`;
                 })()}
@@ -13923,7 +14354,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
               ${devHtml}
 
               <div class="version-footer" data-action="tap-version">
-                Hustlers: Urban Edition • v3.31.0
+                Hustlers: Urban Edition • v3.32.0
               </div>
               <div style="text-align:center;font-size:11px;padding:0 0 22px;"><a href="impressum.html" target="_blank" rel="noopener" style="color:var(--accent-concrete);">Impressum &amp; Datenschutz</a></div>
         </div>`;
