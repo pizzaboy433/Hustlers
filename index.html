@@ -8,7 +8,7 @@
   <script>try { if (navigator.standalone === true) document.documentElement.classList.add("is-standalone"); } catch (e) {}</script>
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="e534f5b949">
+  <meta name="build-id" content="fdfe144a42">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -547,6 +547,12 @@ html, body {
 .mgr-card-name { font-size: 12px; font-weight: 900; }
 .mgr-card-sub { font-size: 10.5px; font-weight: 800; opacity: .8; }
 .mgr-card-body { border-top: 1.5px solid var(--line); padding-top: 3px; }
+.mgr-hire-row { display: flex; align-items: center; gap: 6px; padding: 4px 0; border-top: 1px dashed rgba(26, 26, 26, .3); }
+.mgr-hire-row .mgr-card-name { flex: 1; min-width: 0; }
+.mgr-hire-row .mgr-hire-btn { width: auto; flex: 0 0 auto; padding: 3px 8px; }
+.biz-pill-wrap { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.biz-mgr-mark { padding: 0; cursor: pointer; touch-action: manipulation; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 1.5px solid var(--line); background: var(--bg-paper); color: var(--text); }
+.biz-mgr-mark.off { opacity: .4; }
 .subnav-bar-3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -10223,9 +10229,23 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         });
         const listBox = `<section class="panel-box">
           <h2 class="panel-title"><span>${L("Deine Manager", "Your managers")}</span><span class="num">${ids.length}</span></h2>
-          ${ids.length ? "" : `<div class="mgr-note">${L("Noch keine Manager. Stelle sie an der Betriebs-Karte für Akten ein.", "No managers yet. Hire them on the business card for files.")}</div>`}
+          ${ids.length ? "" : `<div class="mgr-note">${L("Noch keine Manager. Unten kannst du sie für Akten einstellen.", "No managers yet. Hire them below for files.")}</div>`}
         </section>`;
-        return rankBox + globalBox + listBox + cards.join("");
+        const free = KIEZ_API.getSortedCollection("BUSINESSES").filter(b => STATE.businesses[b.id] && STATE.businesses[b.id].unlocked && !(STATE.managers[b.id] && STATE.managers[b.id].hired));
+        let hireBox = "";
+        if (free.length) {
+          const bulk = Engine.getAffordableManagersSummary();
+          hireBox = `<section class="panel-box">
+            <h2 class="panel-title"><span>${L("Ohne Manager", "Without manager")}</span><span class="num">${free.length}</span></h2>
+            ${bulk.count >= 1 ? `<button type="button" class="comic-btn primary" style="min-height:34px; font-size:11px;" data-action="hire-all-managers">${renderIcon("crew", 13)} <span>${t("mgr.hire_all", { count: bulk.count, cost: formatNumber(bulk.totalCost, 0) })}</span></button>` : ""}
+            ${free.map(b => { const c = Engine.getManagerCost(b.id); return `<div class="mgr-hire-row">
+              <div class="biz-icon">${renderIcon(b.iconKey, 15)}</div>
+              <span class="mgr-card-name">${t(b.nameKey)} <span class="num">lvl ${STATE.businesses[b.id].level}</span></span>
+              <button type="button" class="mgr-btn mgr-hire-btn" data-action="hire-manager" data-biz="${b.id}" data-bind="mgr-hire-${b.id}" ${(STATE.currencies.files || 0) >= c ? "" : "disabled"}>${L("Einstellen", "Hire")} • <span class="num">${formatNumber(c, 0)}</span> ${t("ui.curr.files")}</button>
+            </div>`; }).join("")}
+          </section>`;
+        }
+        return rankBox + globalBox + listBox + cards.join("") + hireBox;
       },
 
       cacheStaticBindings() {
@@ -11480,14 +11500,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           vp.innerHTML = eventBanner + this.bizSubNavHTML() + this.managersHTML();
         } else if (tab === "businesses") {
           const sortedBiz = KIEZ_API.getSortedCollection("BUSINESSES");
-          const mgrBulk = Engine.getAffordableManagersSummary();
-          const bulkMgrHtml = (STATE.currencies.files > 0 && mgrBulk.count >= 1)
-            ? `<button type="button" class="comic-btn primary" style="min-height:34px; font-size:11px;" data-action="hire-all-managers" data-bind="hire-all-mgr-btn">
-                ${renderIcon("crew", 13)} <span data-bind="hire-all-mgr-lbl">${t("mgr.hire_all", { count: mgrBulk.count, cost: formatNumber(mgrBulk.totalCost, 0) })}</span>
-              </button>`
-            : "";
-
-          const html = [eventBanner, STATE.mgr && STATE.mgr.tab ? this.bizSubNavHTML() : "", bulkMgrHtml];
+          const html = [eventBanner, STATE.mgr && STATE.mgr.tab ? this.bizSubNavHTML() : ""];
           let shownLockedPreview = false;
 
           for (let i = 0; i < sortedBiz.length; i++) {
@@ -11549,18 +11562,6 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
             const tagsRowHtml = supplyChip ? `<div class="biz-tags-row">${supplyChip}</div>` : "";
             const isLaunder = st.mode === "launder";
             const mgr = STATE.managers[b.id];
-            let mgrHtml;
-            if (mgr && mgr.hired) {
-              const tgtTxt = mgr.target > 0 ? t("mgr.target", { n: mgr.target }) : t("mgr.target.inf");
-              const waitTxt = (st.level >= 25 && !st.branch && Engine.mgrVal(b.id, "branch") === "wait") ? ` • ${t("mgr.waitbranch")}` : "";
-              const pauseTxt = (mgr.paused && Engine.mgrHas("pause")) ? ` • ${L("Pause", "Paused")}` : "";
-              mgrHtml = `<button type="button" class="mgr-btn" data-action="mgr-goto" data-biz="${b.id}">${renderIcon("crew", 12)} ${t("mgr.active")}: ${tgtTxt}${pauseTxt}${waitTxt} ▸</button>`;
-            } else {
-              const mCost = Engine.getManagerCost(b.id);
-              const canHire = STATE.currencies.files >= mCost;
-              mgrHtml = `<button type="button" class="mgr-btn" data-action="hire-manager" data-biz="${b.id}" data-bind="mgr-btn-${b.id}" ${canHire ? "" : "disabled"}>${renderIcon("crew", 12)} ${t("mgr.hire")} • <span class="num">${formatNumber(mCost, 0)}</span> ${t("ui.curr.files")}</button>`;
-            }
-
             html.push(`
               <article class="biz-card has-rail ${isLaunder ? "m-launder" : "m-hustle"} ${epCls}">
                 <div class="biz-rail"><i data-bind="biz-msbar-${b.id}"></i><span class="biz-rail-txt num" data-bind="biz-ms-${b.id}">×2 bei lvl 25</span></div>
@@ -11572,7 +11573,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
                       <div class="biz-meta"><span class="cur-pre"></span><span class="num" data-bind="biz-cps-${b.id}">0,00</span><span class="cur-suf"> €</span>/s</div>
                     </div>
                   </div>
-                  <div class="biz-level-pill"><span data-bind="biz-lvl-${b.id}">${st.level}</span></div>
+                  <div class="biz-pill-wrap">${mgr && mgr.hired ? `<button type="button" class="biz-mgr-mark ${mgr.paused && Engine.mgrHas("pause") ? "off" : ""}" data-action="mgr-goto" data-biz="${b.id}" aria-label="${t("mgr.active")}">${renderIcon("crew", 12)}</button>` : ""}<div class="biz-level-pill"><span data-bind="biz-lvl-${b.id}">${st.level}</span></div></div>
                 </div>
 
                 <div class="mode-switch-bar" data-action="toggle-biz-mode" data-biz="${b.id}">
@@ -11582,7 +11583,6 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
 
                 ${tagsRowHtml}
                 ${branchSection}
-                ${mgrHtml}
 
                 <div class="dual-buy-grid">
                   <button type="button" class="comic-btn primary dual-buy-btn" data-buy-biz="${b.id}" data-pay="cash" data-bind="biz-btn-clean-${b.id}">
@@ -13875,6 +13875,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
             if (nx && b["mgr-cost-drugs"]) b["mgr-cost-drugs"].classList.toggle("mgr-miss", (STATE.currencies.drugs || 0) < nx.drugs);
           }
           for (const id of Object.keys(STATE.managers)) { const n = b["mgr-lv-" + id]; if (n && STATE.businesses[id]) setTxt(n, String(STATE.businesses[id].level)); }
+          for (const k of Object.keys(b)) { if (k.indexOf("mgr-hire-") === 0) { const id = k.slice(9); b[k].disabled = (STATE.currencies.files || 0) < Engine.getManagerCost(id); } }
         } else if (STATE.ui.activeTab === "businesses") {
           const sortedBiz = KIEZ_API.getSortedCollection("BUSINESSES");
           for (let i = 0; i < sortedBiz.length; i++) {
