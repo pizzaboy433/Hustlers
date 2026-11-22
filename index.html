@@ -8,7 +8,7 @@
   <script>try { if (navigator.standalone === true) document.documentElement.classList.add("is-standalone"); } catch (e) {}</script>
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="2f9a7cf77c">
+  <meta name="build-id" content="60ecd08f1d">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -1082,6 +1082,22 @@ html, body {
   font-weight: 900;
   font-size: 13px;
   text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.biz-type .biz-cat { text-decoration: underline; text-underline-offset: 2px; }
+[data-action="cat-info"] { cursor: pointer; }
+.cat-row { display: flex; justify-content: space-between; gap: 8px; padding: 4px 0; border-bottom: 2px solid var(--line); font-weight: 700; font-size: 12.5px; }
+.cat-row:last-child { border-bottom: none; }
+.cat-row .num { white-space: nowrap; }
+.cat-sec { font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; margin: 10px 0 2px; }
+.biz-type {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text);
+  opacity: .62;
+  line-height: 1.15;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2826,7 +2842,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         <span class="hustle-bubble" data-bind="mini-hustle-word" aria-hidden="true">HUSTLE</span>
         <span class="mini-hustle-top">
           <svg class="comic-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 12V6.2a1.6 1.6 0 0 1 3.2 0V11M12.2 10.6a1.5 1.5 0 0 1 3 0M15.2 11.2a1.5 1.5 0 0 1 3 0v3.6c0 3.6-2.6 6-6 6h-1.3c-2 0-3.3-1-4.3-2.6L4.4 14.4a1.4 1.4 0 0 1 2.3-1.6L9 15M6.6 4.2 5.2 2.8M14.8 4.2l1.4-1.4M10.6 3V1.2"/>
+            <g transform="translate(-1.5 1.2) scale(.92) rotate(18 13 13)"><path d="M8 12V5.5a1.5 1.5 0 0 1 3 0V11M11 10.5V4a1.5 1.5 0 0 1 3 0v6.5M14 10.5V5a1.5 1.5 0 0 1 3 0v6M17 11V7.5a1.5 1.5 0 0 1 3 0v6.3c0 3.9-2.7 6.7-6.4 6.7h-1.2c-2.2 0-3.6-.9-4.8-2.6L3.9 14.4a1.5 1.5 0 0 1 2.4-1.8L8 14.5"/></g><path d="M20.3 4.4l1.6-1.6M21 8h2M17.6 2.6V1"/>
           </svg>
           <span class="mini-hustle-val num" data-bind="mini-click-val">+2,50 €</span>
         </span>
@@ -2908,7 +2924,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
     // === [SECTION: LAYER_1_REGISTRY_AND_LANG] ===
     const ICONS = {
       siren: `<svg class="comic-svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M7 18v-5a5 5 0 0 1 10 0v5"/><path d="M4 18h16"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="4.5" y1="5.5" x2="6.5" y2="7.5"/><line x1="19.5" y1="5.5" x2="17.5" y2="7.5"/></svg>`,
-      tap: `<svg class="comic-svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12V6.2a1.6 1.6 0 0 1 3.2 0V11M12.2 10.6a1.5 1.5 0 0 1 3 0M15.2 11.2a1.5 1.5 0 0 1 3 0v3.6c0 3.6-2.6 6-6 6h-1.3c-2 0-3.3-1-4.3-2.6L4.4 14.4a1.4 1.4 0 0 1 2.3-1.6L9 15M6.6 4.2 5.2 2.8M14.8 4.2l1.4-1.4M10.6 3V1.2"/></svg>`,
+      tap: `<svg class="comic-svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><g transform="translate(-1.5 1.2) scale(.92) rotate(18 13 13)"><path d="M8 12V5.5a1.5 1.5 0 0 1 3 0V11M11 10.5V4a1.5 1.5 0 0 1 3 0v6.5M14 10.5V5a1.5 1.5 0 0 1 3 0v6M17 11V7.5a1.5 1.5 0 0 1 3 0v6.3c0 3.9-2.7 6.7-6.4 6.7h-1.2c-2.2 0-3.6-.9-4.8-2.6L3.9 14.4a1.5 1.5 0 0 1 2.4-1.8L8 14.5"/></g><path d="M20.3 4.4l1.6-1.6M21 8h2M17.6 2.6V1"/></svg>`,
       bolt: `<svg class="comic-svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
       drop: `<svg class="comic-svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>`,
       lock: `<svg class="comic-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
@@ -3207,93 +3223,123 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
 
         // Betriebe (30)
         "biz.spaeti.name": "Späti Eckstein",
+        "biz.spaeti.type": "Kiosk",
         "biz.spaeti.a": "Nachtschalter (+50% Leistung)",
         "biz.spaeti.b": "Nachbarschaftspaket (-15% Kosten, -25% Fahndung)",
         "biz.flaschen.name": "Pfand Mehrweg",
+        "biz.flaschen.type": "Pfandannahme",
         "biz.flaschen.a": "Industriepresse (+50% Leistung)",
         "biz.flaschen.b": "Hinterhof-Depot (-15% Kosten, -25% Fahndung)",
         "biz.handyshop.name": "Handy-Klinik",
+        "biz.handyshop.type": "Handy-Reparatur",
         "biz.handyshop.a": "Express-Displaytausch (+50% Leistung)",
         "biz.handyshop.b": "Prepaid-Strohmann (-15% Kosten, -25% Fahndung)",
         "biz.doener.name": "Boss-Kebab",
+        "biz.doener.type": "Dönerladen",
         "biz.doener.a": "Geheimsoße Deluxe (+50% Leistung)",
         "biz.doener.b": "Kühlketten-Tarnung (-15% Kosten, -25% Fahndung)",
         "biz.tipico.name": "Wettbüro",
+        "biz.tipico.type": "Sportwetten",
         "biz.tipico.a": "Live-Quoten-Terminal (+50% Leistung)",
         "biz.tipico.b": "Konzessions-Gutachten (-15% Kosten, -25% Fahndung)",
         "biz.spielhalle.name": "Goldene Sieben",
+        "biz.spielhalle.type": "Spielhalle",
         "biz.spielhalle.a": "VIP-Automatenzone (+50% Leistung)",
         "biz.spielhalle.b": "Schallschutz-Fassade (-15% Kosten, -25% Fahndung)",
         "biz.tattoo.name": "Reine Haut",
+        "biz.tattoo.type": "Tattoo-Studio",
         "biz.tattoo.a": "Gast-Tätowierer (+50% Leistung)",
         "biz.tattoo.b": "Hygiene-Zertifikat (-15% Kosten, -25% Fahndung)",
         "biz.shisha.name": "Nebelwand",
+        "biz.shisha.type": "Shisha-Bar",
         "biz.shisha.a": "Premium-Molasse (+50% Leistung)",
         "biz.shisha.b": "Abluft-Filteranlage (-15% Kosten, -25% Fahndung)",
         "biz.barber.name": "Klinge & Cash",
+        "biz.barber.type": "Barbershop",
         "biz.barber.a": "Express-Konturschnitt (+50% Leistung)",
         "biz.barber.b": "Kassenbuch-Glättung (-15% Kosten, -25% Fahndung)",
         "biz.pfandhaus.name": "Leihhaus",
+        "biz.pfandhaus.type": "Pfandleihe",
         "biz.pfandhaus.a": "Sofort-Beleihung (+50% Leistung)",
         "biz.pfandhaus.b": "Herkunfts-Amnesie (-15% Kosten, -25% Fahndung)",
         "biz.autohof.name": "Export-Perle",
+        "biz.autohof.type": "Auto-Export",
         "biz.autohof.a": "Tacho-Kosmetik (+50% Leistung)",
         "biz.autohof.b": "Zollkennzeichen-Pool (-15% Kosten, -25% Fahndung)",
         "biz.boxclub.name": "Boxkeller",
+        "biz.boxclub.type": "Boxclub",
         "biz.boxclub.a": "Hinterhof-Gala (+50% Leistung)",
         "biz.boxclub.b": "Jugendsport-Förderverein (-15% Kosten, -25% Fahndung)",
         "biz.waschsalon.name": "Weiße Weste",
+        "biz.waschsalon.type": "Waschsalon",
         "biz.waschsalon.a": "24h-Heißmangel (+50% Leistung)",
         "biz.waschsalon.b": "Chemische Reinigung (-15% Kosten, -25% Fahndung)",
         "biz.spedition.name": "Rollfeld",
+        "biz.spedition.type": "Spedition",
         "biz.spedition.a": "Doppelte Ladeböden (+50% Leistung)",
         "biz.spedition.b": "Digitale Frachtbriefe (-15% Kosten, -25% Fahndung)",
         "biz.kuehlhaus.name": "Kühlhaus Nordkai",
+        "biz.kuehlhaus.type": "Kühllager",
         "biz.kuehlhaus.a": "Tiefkühl-Sonderlager (+50% Leistung)",
         "biz.kuehlhaus.b": "Veterinär-Stempel (-15% Kosten, -25% Fahndung)",
         "biz.schrottplatz.name": "Rost & Rendite",
+        "biz.schrottplatz.type": "Schrottplatz",
         "biz.schrottplatz.a": "Kupfer-Schnellschmelze (+50% Leistung)",
         "biz.schrottplatz.b": "Wiegeschein-Archiv (-15% Kosten, -25% Fahndung)",
         "biz.technoclub.name": "Subfrequenz",
+        "biz.technoclub.type": "Technoclub",
         "biz.technoclub.a": "72-Stunden-Weekender (+50% Leistung)",
         "biz.technoclub.b": "Kulturstätten-Status (-15% Kosten, -25% Fahndung)",
         "biz.reederei.name": "Reederei Tiefgang",
+        "biz.reederei.type": "Containerschiffe",
         "biz.reederei.a": "Container-Umschlag (+50% Leistung)",
         "biz.reederei.b": "Binnenflaggen-Register (-15% Kosten, -25% Fahndung)",
         "biz.security.name": "Schwarzer Schild",
+        "biz.security.type": "Sicherheitsdienst",
         "biz.security.a": "VIP-Begleitschutz (+50% Leistung)",
         "biz.security.b": "Einsatzleiter-Funknetz (-15% Kosten, -25% Fahndung)",
         "biz.inkassobuer.name": "Mahnstufe 4",
+        "biz.inkassobuer.type": "Inkassobüro",
         "biz.inkassobuer.a": "Express-Vollstreckung (+50% Leistung)",
         "biz.inkassobuer.b": "Außergerichtlicher Vergleich (-15% Kosten, -25% Fahndung)",
         "biz.bauloewe.name": "Beton & Söhne",
+        "biz.bauloewe.type": "Baufirma",
         "biz.bauloewe.a": "Nachtschicht-Kolonne (+50% Leistung)",
         "biz.bauloewe.b": "Subunternehmer-Kaskade (-15% Kosten, -25% Fahndung)",
         "biz.galerie.name": "Galerie Freifläche",
+        "biz.galerie.type": "Kunstgalerie",
         "biz.galerie.a": "Vernissage-Auktion (+50% Leistung)",
         "biz.galerie.b": "Freihafen-Zollfreilager (-15% Kosten, -25% Fahndung)",
         "biz.spielbank.name": "Privat-Casino",
+        "biz.spielbank.type": "Spielbank",
         "biz.spielbank.a": "High-Roller-Salon (+50% Leistung)",
         "biz.spielbank.b": "Stiftungs-Konzession (-15% Kosten, -25% Fahndung)",
         "biz.privatbank.name": "Kiez & Co.",
+        "biz.privatbank.type": "Privatbank",
         "biz.privatbank.a": "Nummernkonten-Service (+50% Leistung)",
         "biz.privatbank.b": "Compliance-Abteilung (-15% Kosten, -25% Fahndung)",
         "biz.krypto.name": "Blockkette",
+        "biz.krypto.type": "Krypto-Börse",
         "biz.krypto.a": "Tumble-Mixer-Protokoll (+50% Leistung)",
         "biz.krypto.b": "Abwärme-Grünstrom-Label (-15% Kosten, -25% Fahndung)",
         "biz.briefkasten.name": "Inselblick",
+        "biz.briefkasten.type": "Briefkastenfirma",
         "biz.briefkasten.a": "Lizenzgebühren-Karussell (+50% Leistung)",
         "biz.briefkasten.b": "Inhaberaktien-Tresor (-15% Kosten, -25% Fahndung)",
         "biz.stiftung.name": "Stiftung Gemeinwohl",
+        "biz.stiftung.type": "Wohltätigkeit",
         "biz.stiftung.a": "Spendengala-Abzug (+50% Leistung)",
         "biz.stiftung.b": "Ehrenvorsitz im Beirat (-15% Kosten, -25% Fahndung)",
         "biz.freihandelszone.name": "Zone Transit",
+        "biz.freihandelszone.type": "Freihandelszone",
         "biz.freihandelszone.a": "24/7-Freigabe-Terminal (+50% Leistung)",
         "biz.freihandelszone.b": "Diplomatischer Kurierstatus (-15% Kosten, -25% Fahndung)",
         "biz.clearing.name": "Nullsummenspiel",
+        "biz.clearing.type": "Clearingstelle",
         "biz.clearing.a": "Hochfrequenz-Abwicklung (+50% Leistung)",
         "biz.clearing.b": "Bankgeheimnis-Paragraph (-15% Kosten, -25% Fahndung)",
         "biz.treuhand.name": "Metropole AG",
+        "biz.treuhand.type": "Treuhand-Holding",
         "biz.treuhand.a": "Syndikats-Dividende (+50% Leistung)",
         "biz.treuhand.b": "Staatsauftrag-Immunität (-15% Kosten, -25% Fahndung)",
 
@@ -3320,7 +3366,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         "logistics.max": "MAXIMAL",
         "logistics.locked": "Nächste Route • Benötigt {bizName} (St. {minLv})",
         "log.roller.name": "Block-Kurier-Roller",
-        "log.roller.desc": "Verteilt Scheine über Späti- & Pfand-Kassen.",
+        "log.roller.desc": "Verteilt Scheine über Späti- & Döner-Kassen.",
         "log.bunker.name": "Hinterhof-Bunker & Doppelwand",
         "log.bunker.desc": "Vergrößert dein Schwarzgeld-Depot massiv.",
         "log.transporter.name": "Meilen-Nachttransporter",
@@ -3350,7 +3396,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         "turf.max": "VOLL KONTROLLIERT",
         "turf.locked": "Nächster Sektor • Benötigt {reqCount} Betriebe in „{epochName}“",
         "turf.block.name": "Hinterhof-Sektor (Block)",
-        "turf.block.desc": "Stärkt Betriebe im Block & liefert Revier-Einfluss.",
+        "turf.block.desc": "Stärkt den Handel & liefert Revier-Einfluss.",
         "turf.ubahn.name": "U-Bahn-Unterführung & Wett-Ecke",
         "turf.ubahn.desc": "+15% Hustle-Power/St. & passiv Wettscheine.",
         "turf.meile.name": "Bahnhofs-Meile",
@@ -3362,13 +3408,13 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         "turf.hafen.name": "Nordkai-Hafenbecken",
         "turf.hafen.desc": "Kranführer & Lagerhallen laufen auf Zuruf.",
         "turf.zollfrei.name": "Zollfreilager & Container-Terminal",
-        "turf.zollfrei.desc": "Passiv Waffen-Nachschub & stärkerer Hafen.",
+        "turf.zollfrei.desc": "Passiv Waffen-Nachschub & stärkerer Transport.",
         "turf.city.name": "Banken- & Galerieviertel",
         "turf.city.desc": "Diskrete Absprachen mit Notaren & Privatbankiers.",
         "turf.justiz.name": "Justiz- & Präsidiumsviertel",
         "turf.justiz.desc": "-0,08%/s Fahndung/St. & langer Razzia-Schutz.",
         "turf.luxus.name": "Luxus-Boutiquen & Juweliermeile",
-        "turf.luxus.desc": "Passiv Hehlerware & +City-Einnahmen.",
+        "turf.luxus.desc": "Passiv Hehlerware & +Handel-Einnahmen.",
         "turf.botschaft.name": "Regierungs- & Botschaftsviertel",
         "turf.botschaft.desc": "Diplomatische Immunität & massive Einfluss-Rate.",
         "turf.holding.name": "Metropol-Holding-Turm",
@@ -3942,93 +3988,124 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         "epoch.holding.name": "Holding",
 
         "biz.spaeti.name": "Eckstein Store",
+
+        "biz.spaeti.type": "Corner store",
         "biz.spaeti.a": "Night Window (+50% Output)",
         "biz.spaeti.b": "Neighborhood Pact (-15% Cost, -25% Heat)",
         "biz.flaschen.name": "Bottle Return",
+        "biz.flaschen.type": "Bottle deposit",
         "biz.flaschen.a": "Industrial Compactor (+50% Output)",
         "biz.flaschen.b": "Backyard Depot (-15% Cost, -25% Heat)",
         "biz.handyshop.name": "Phone Clinic",
+        "biz.handyshop.type": "Phone repair",
         "biz.handyshop.a": "Express Screen Swap (+50% Output)",
         "biz.handyshop.b": "Burner Front (-15% Cost, -25% Heat)",
         "biz.doener.name": "Boss Grill",
+        "biz.doener.type": "Kebab shop",
         "biz.doener.a": "Secret Sauce Deluxe (+50% Output)",
         "biz.doener.b": "Cold-Chain Cover (-15% Cost, -25% Heat)",
         "biz.tipico.name": "Sure Bet",
+        "biz.tipico.type": "Sports betting",
         "biz.tipico.a": "Live Odds Terminal (+50% Output)",
         "biz.tipico.b": "License Loophole (-15% Cost, -25% Heat)",
         "biz.spielhalle.name": "Golden Seven",
+        "biz.spielhalle.type": "Slot arcade",
         "biz.spielhalle.a": "VIP Slot Lounge (+50% Output)",
         "biz.spielhalle.b": "Soundproof Facade (-15% Cost, -25% Heat)",
         "biz.tattoo.name": "Clean Ink",
+        "biz.tattoo.type": "Tattoo studio",
         "biz.tattoo.a": "Guest Artist (+50% Output)",
         "biz.tattoo.b": "Hygiene Certificate (-15% Cost, -25% Heat)",
         "biz.shisha.name": "Smokescreen",
+        "biz.shisha.type": "Hookah lounge",
         "biz.shisha.a": "Imported Tobacco (+50% Output)",
         "biz.shisha.b": "Carbon Filter Exhaust (-15% Cost, -25% Heat)",
         "biz.barber.name": "Blade & Cash",
+        "biz.barber.type": "Barbershop",
         "biz.barber.a": "Express Fade (+50% Output)",
         "biz.barber.b": "Ledger Trim (-15% Cost, -25% Heat)",
         "biz.pfandhaus.name": "Pawn Shop",
+        "biz.pfandhaus.type": "Pawnbroker",
         "biz.pfandhaus.a": "Instant Appraisal (+50% Output)",
         "biz.pfandhaus.b": "Origin Amnesia (-15% Cost, -25% Heat)",
         "biz.autohof.name": "Export Gem",
+        "biz.autohof.type": "Car export",
         "biz.autohof.a": "Odometer Polish (+50% Output)",
         "biz.autohof.b": "Transit Plate Pool (-15% Cost, -25% Heat)",
         "biz.boxclub.name": "Boxing Gym",
+        "biz.boxclub.type": "Boxing club",
         "biz.boxclub.a": "Underground Bout (+50% Output)",
         "biz.boxclub.b": "Youth Charity Status (-15% Cost, -25% Heat)",
         "biz.waschsalon.name": "Clean Slate",
+        "biz.waschsalon.type": "Laundromat",
         "biz.waschsalon.a": "24h Spin Cycle (+50% Output)",
         "biz.waschsalon.b": "Dry-Clean Cover (-15% Cost, -25% Heat)",
         "biz.spedition.name": "Runway",
+        "biz.spedition.type": "Freight company",
         "biz.spedition.a": "False-Floor Trailers (+50% Output)",
         "biz.spedition.b": "Digital Waybills (-15% Cost, -25% Heat)",
         "biz.kuehlhaus.name": "North Pier",
+        "biz.kuehlhaus.type": "Cold storage",
         "biz.kuehlhaus.a": "Deep-Freeze Vault (+50% Output)",
         "biz.kuehlhaus.b": "Customs Seal (-15% Cost, -25% Heat)",
         "biz.schrottplatz.name": "Rust & Yield",
+        "biz.schrottplatz.type": "Scrapyard",
         "biz.schrottplatz.a": "Rapid Copper Smelt (+50% Output)",
         "biz.schrottplatz.b": "Weighbridge Archive (-15% Cost, -25% Heat)",
         "biz.technoclub.name": "Sub-Bass",
+        "biz.technoclub.type": "Techno club",
         "biz.technoclub.a": "72-Hour Weekender (+50% Output)",
         "biz.technoclub.b": "Cultural Venue Grant (-15% Cost, -25% Heat)",
         "biz.reederei.name": "Deep Draft",
+        "biz.reederei.type": "Shipping line",
         "biz.reederei.a": "Container Turnaround (+50% Output)",
         "biz.reederei.b": "Inland Flag Registry (-15% Cost, -25% Heat)",
         "biz.security.name": "Black Shield",
+        "biz.security.type": "Security firm",
         "biz.security.a": "VIP Escort Detail (+50% Output)",
         "biz.security.b": "Dispatch Radio Net (-15% Cost, -25% Heat)",
         "biz.inkassobuer.name": "Final Notice",
+        "biz.inkassobuer.type": "Debt collection",
         "biz.inkassobuer.a": "Express Enforcement (+50% Output)",
         "biz.inkassobuer.b": "Out-of-Court Settlement (-15% Cost, -25% Heat)",
         "biz.bauloewe.name": "Concrete & Sons",
+        "biz.bauloewe.type": "Construction firm",
         "biz.bauloewe.a": "Night-Shift Crew (+50% Output)",
         "biz.bauloewe.b": "Subcontractor Cascade (-15% Cost, -25% Heat)",
         "biz.galerie.name": "White Cube",
+        "biz.galerie.type": "Art gallery",
         "biz.galerie.a": "Opening Night Auction (+50% Output)",
         "biz.galerie.b": "Freeport Bonded Vault (-15% Cost, -25% Heat)",
         "biz.spielbank.name": "Private Casino",
+        "biz.spielbank.type": "Gambling house",
         "biz.spielbank.a": "High-Roller Salon (+50% Output)",
         "biz.spielbank.b": "Foundation Charter (-15% Cost, -25% Heat)",
         "biz.privatbank.name": "Kiez & Co.",
+        "biz.privatbank.type": "Private bank",
         "biz.privatbank.a": "Numbered Accounts (+50% Output)",
         "biz.privatbank.b": "Compliance Desk (-15% Cost, -25% Heat)",
         "biz.krypto.name": "Block Chain",
+        "biz.krypto.type": "Crypto exchange",
         "biz.krypto.a": "Tumble Mixer Protocol (+50% Output)",
         "biz.krypto.b": "Green-Heat Subsidy (-15% Cost, -25% Heat)",
         "biz.briefkasten.name": "Island View",
+        "biz.briefkasten.type": "Offshore shell company",
         "biz.briefkasten.a": "Royalty Carousel (+50% Output)",
         "biz.briefkasten.b": "Bearer Share Vault (-15% Cost, -25% Heat)",
         "biz.stiftung.name": "Public Good",
+        "biz.stiftung.type": "Charity",
         "biz.stiftung.a": "Charity Gala Write-Off (+50% Output)",
         "biz.stiftung.b": "Advisory Board Seat (-15% Cost, -25% Heat)",
         "biz.freihandelszone.name": "Transit Zone",
+        "biz.freihandelszone.type": "Free trade zone",
         "biz.freihandelszone.a": "24/7 Clearance Hub (+50% Output)",
         "biz.freihandelszone.b": "Diplomatic Courier (-15% Cost, -25% Heat)",
         "biz.clearing.name": "Zero Sum",
+        "biz.clearing.type": "Clearing house",
         "biz.clearing.a": "High-Frequency Settle (+50% Output)",
         "biz.clearing.b": "Secrecy Statute (-15% Cost, -25% Heat)",
         "biz.treuhand.name": "Metropole Corp",
+        "biz.treuhand.type": "Trust holding",
         "biz.treuhand.a": "Syndicate Dividend (+50% Output)",
         "biz.treuhand.b": "State Contract Immunity (-15% Cost, -25% Heat)",
 
@@ -4054,7 +4131,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         "logistics.max": "MAXED",
         "logistics.locked": "Next Route • Requires {bizName} (lvl {minLv})",
         "log.roller.name": "Block Courier Scooters",
-        "log.roller.desc": "Spreads bills across corner store & bottle registers.",
+        "log.roller.desc": "Spreads bills across corner store & kebab registers.",
         "log.bunker.name": "Backyard Stash Bunker",
         "log.bunker.desc": "Massively expands your Dirty Cash depot.",
         "log.transporter.name": "Strip Night Vans",
@@ -4083,7 +4160,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         "turf.max": "CONTROLLED",
         "turf.locked": "Next Sector • Requires {reqCount} fronts in „{epochName}“",
         "turf.block.name": "Backyard Sector (The Block)",
-        "turf.block.desc": "Boosts all Block fronts & generates passive Clout.",
+        "turf.block.desc": "Boosts all Trade fronts & generates passive Clout.",
         "turf.ubahn.name": "Subway Underpass & Bookie Corner",
         "turf.ubahn.desc": "+15% Hustle tap power/lvl & passive Bet Slips.",
         "turf.meile.name": "Station Strip",
@@ -4095,13 +4172,13 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         "turf.hafen.name": "North Pier Basin",
         "turf.hafen.desc": "Crane operators & warehouses run on your call.",
         "turf.zollfrei.name": "Bonded Warehouse & Terminal",
-        "turf.zollfrei.desc": "Passive Weapons supply & stronger Docks.",
+        "turf.zollfrei.desc": "Passive Weapons supply & stronger Transport.",
         "turf.city.name": "Banking & Gallery District",
         "turf.city.desc": "Quiet handshakes with notaries & private bankers.",
         "turf.justiz.name": "Courthouse & Precinct Quarter",
         "turf.justiz.desc": "-0.08%/s Heat/lvl & longer Raid Shield.",
         "turf.luxus.name": "Luxury Boutiques & Jeweler Row",
-        "turf.luxus.desc": "Passive Stolen Goods & +Downtown income.",
+        "turf.luxus.desc": "Passive Stolen Goods & +Trade income.",
         "turf.botschaft.name": "Embassy & Government Quarter",
         "turf.botschaft.desc": "Diplomatic immunity & massive Clout yield.",
         "turf.holding.name": "Metropole Holding Tower",
@@ -4511,9 +4588,9 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
     const RAW_LOGISTICS = [
       ["log_roller",      "log.roller.name",      "log.roller.desc",      "truck",   "epoch_block",   "biz_flaschen",   5,  4500,   3.5, 5, 0.02, 1, 0.6, 10, 0.30, {}],
       ["log_bunker",      "log.bunker.name",      "log.bunker.desc",      "vault",   "epoch_block",   "biz_doener",     10, 45000,  3.8, 5, 0.01, 0, 0.2, 5,  0.85, {}],
-      ["log_transporter", "log.transporter.name", "log.transporter.desc", "truck",   "epoch_kiez",    "biz_tattoo",     5,  3.5e6,  4.0, 5, 0.04, 1, 0.7, 12, 0.45, {}],
+      ["log_transporter", "log.transporter.name", "log.transporter.desc", "truck",   "epoch_kiez",    "biz_pfandhaus",  5,  3.5e6,  4.0, 5, 0.04, 1, 0.7, 12, 0.45, {}],
       ["log_funk",        "log.funk.name",        "log.funk.desc",        "siren",   "epoch_kiez",    "biz_barber",     10, 4.5e7,  4.2, 5, 0.05, 0, 0.0, 0,  0.15, { hustleHeatReducePct: 7 }],
-      ["log_drugtaxi",    "log.drugtaxi.name",    "log.drugtaxi.desc",    "drugs",   "epoch_kiez",    "biz_pfandhaus",  10, 5.0e8,  4.4, 5, 0.01, 0, 0.0, 5,  0.20, { passiveDrugsPerMin: 1 }],
+      ["log_drugtaxi",    "log.drugtaxi.name",    "log.drugtaxi.desc",    "drugs",   "epoch_kiez",    "biz_shisha",     10, 5.0e8,  4.4, 5, 0.01, 0, 0.0, 5,  0.20, { passiveDrugsPerMin: 1 }],
       ["log_zoll",        "log.zoll.name",        "log.zoll.desc",        "map",     "epoch_hafen",   "biz_waschsalon", 5,  1.2e10, 4.5, 4, 0.06, 1, 0.8, 15, 0.60, {}],
       ["log_kutter",      "log.kutter.name",      "log.kutter.desc",      "weapons", "epoch_hafen",   "biz_kuehlhaus",  10, 2.5e11, 4.7, 4, 0.02, 0, 0.2, 8,  0.35, { passiveWeaponsPerMin: 1, missionSpeedPct: 4 }],
       ["log_kuehlring",   "log.kuehlring.name",   "log.kuehlring.desc",   "goods",   "epoch_hafen",   "biz_reederei",   10, 5.0e12, 4.9, 4, 0.03, 1, 0.5, 18, 0.90, {}],
@@ -4522,6 +4599,37 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
       ["log_viplimo",     "log.viplimo.name",     "log.viplimo.desc",     "tickets", "epoch_city",    "biz_privatbank", 10, 2.0e16, 5.4, 3, 0.04, 1, 0.5, 10, 0.50, { passiveTicketsPerMin: 1, missionChanceAdd: 0.02 }],
       ["log_pipeline",    "log.pipeline.name",    "log.pipeline.desc",    "bolt",    "epoch_holding", "biz_clearing",   10, 8.5e16, 5.5, 2, 0.15, 1, 1.5, 25, 1.50, {}]
     ];
+
+    // Kategorien der Betriebe (v61). Revier-Sektoren stärken eine Kategorie, Logistik-Routen zwei.
+    const CATEGORIES = [
+      { id: "trade",     de: "Handel",      en: "Trade",     icon: "store" },
+      { id: "gastro",    de: "Gastro",      en: "Food & Bar", icon: "goods" },
+      { id: "style",     de: "Style",       en: "Style",     icon: "star" },
+      { id: "gamble",    de: "Glücksspiel", en: "Gambling",  icon: "tickets" },
+      { id: "transport", de: "Transport",   en: "Transport", icon: "truck" },
+      { id: "services",  de: "Dienste",     en: "Services",  icon: "case" },
+      { id: "finance",   de: "Finanzen",    en: "Finance",   icon: "vault" }
+    ];
+    const BIZ_CAT = {
+      biz_spaeti: "trade", biz_flaschen: "trade", biz_handyshop: "trade", biz_pfandhaus: "trade", biz_schrottplatz: "trade",
+      biz_doener: "gastro", biz_shisha: "gastro", biz_technoclub: "gastro",
+      biz_tattoo: "style", biz_barber: "style", biz_waschsalon: "style", biz_galerie: "style",
+      biz_tipico: "gamble", biz_spielhalle: "gamble", biz_boxclub: "gamble", biz_spielbank: "gamble",
+      biz_autohof: "transport", biz_spedition: "transport", biz_kuehlhaus: "transport", biz_reederei: "transport", biz_freihandelszone: "transport",
+      biz_security: "services", biz_inkassobuer: "services", biz_bauloewe: "services", biz_stiftung: "services",
+      biz_privatbank: "finance", biz_krypto: "finance", biz_briefkasten: "finance", biz_clearing: "finance", biz_treuhand: "finance"
+    };
+    const TURF_CAT = {
+      turf_block: "trade", turf_ubahn: "gamble", turf_meile: "gastro", turf_rotlicht: "style", turf_brache: "gamble",
+      turf_hafen: "transport", turf_zollfrei: "transport", turf_city: "finance", turf_justiz: "services",
+      turf_luxus: "trade", turf_botschaft: "services", turf_holding: "finance"
+    };
+    const LOG_CATS = {
+      log_roller: ["trade", "gastro"], log_transporter: ["trade", "transport"], log_drugtaxi: ["gastro", "style"],
+      log_zoll: ["transport", "services"], log_kuehlring: ["transport", "gastro"], log_banking: ["finance", "services"],
+      log_karussell: ["finance", "trade"], log_viplimo: ["gamble", "finance"], log_pipeline: ["*"]
+    };
+    function catName(id) { const c = CATEGORIES.find(x => x.id === id); return c ? L(c.de, c.en) : ""; }
 
     const RAW_TURF = [
       ["turf_block",     "turf.block.name",     "turf.block.desc",     "map",     "epoch_block",   2, 3500,   3.4, 5, 0.35, 22, {}],
@@ -4547,12 +4655,12 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
       ["char_igor",        "char.igor.name",        "char.igor.role",        "char.igor.con",    "drugs",  3, 3, 8,  "chemist_trade", 0.15,  "biz_shisha",     5],
       ["char_vito",        "char.vito.name",        "char.vito.role",        null,               "tickets",3, 3, 8,  "pit_boss",      0.025, "biz_tipico",     10],
       ["char_kalle",       "char.kalle.name",       "char.kalle.role",       "char.kalle.con",   "fist",   3, 3, 8,  "bruiser_trade", 0.20,  "biz_boxclub",    5],
-      ["char_anwalt",      "char.anwalt.name",      "char.anwalt.role",      null,               "case",   3, 3, 10, "razzia_shield", 0.015, "biz_spielhalle", 10],
+      ["char_anwalt",      "char.anwalt.name",      "char.anwalt.role",      null,               "case",   3, 3, 10, "razzia_shield", 0.015, "biz_privatbank", 10],
       ["char_vesper",      "char.vesper.name",      "char.vesper.role",      null,               "stolen", 4, 4, 8,  "market_mul",    0.08,  "biz_pfandhaus",  10],
       ["char_tarek",       "char.tarek.name",       "char.tarek.role",       null,               "race",   4, 4, 8,  "wheelman",      0.04,  "biz_autohof",    10],
       ["char_weber",       "char.weber.name",       "char.weber.role",       "char.weber.con",   "map",    4, 4, 8,  "customs_trade", 0.12,  "biz_kuehlhaus",  5],
       ["char_pawel",       "char.pawel.name",       "char.pawel.role",       "char.pawel.con",   "weapons",4, 4, 8,  "pyro_trade",    0.05,  "biz_schrottplatz",5],
-      ["char_inkasso",     "char.inkasso.name",     "char.inkasso.role",     null,               "crew",   5, 4, 10, "income_mul",    0.25,  "biz_boxclub",    10]
+      ["char_inkasso",     "char.inkasso.name",     "char.inkasso.role",     null,               "crew",   5, 4, 10, "income_mul",    0.25,  "biz_inkassobuer", 10]
     ];
 
     // 21 Goods & Gear (including starter 3-Drugs Switchblade for immediate Minute-3 loop!)
@@ -5206,15 +5314,28 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
       },
 
       unlockAudio() {
-        if (this.audioUnlocked && this.audioCtx && this.audioCtx.state === "running") return;
+        if (!this._audioStale && this.audioUnlocked && this.audioCtx && this.audioCtx.state === "running") return;
         const AudioCtor = window.AudioContext || window.webkitAudioContext;
         if (!AudioCtor) return;
         try {
+          // iPhone: Nach App-Wechsel bleibt der alte AudioContext oft stumm (meldet teils sogar "running").
+          // Darum beim ersten Tippen danach einen frischen Context bauen. Die dekodierten Ohrfeigen bleiben nutzbar.
+          if (this._audioStale && this.audioCtx) {
+            const old = this.audioCtx;
+            this.audioCtx = null; this.audioUnlocked = false;
+            try { old.onstatechange = null; const r = old.close(); if (r && r.catch) r.catch(() => {}); } catch (_) {}
+            if (!this._slapBufs || !this._slapBufs.length) this._slapLoading = false;   // Dekodieren war noch nicht fertig
+          }
+          this._audioStale = false;
           // iPhone: Ton auch bei stummgeschaltetem Klingelschalter (iOS 16.4+)
           try { if (navigator.audioSession && navigator.audioSession.type !== "playback") navigator.audioSession.type = "playback"; } catch (_) {}
           if (!this.audioCtx) {
             this.audioCtx = new AudioCtor();
-            this.audioCtx.onstatechange = () => { if (this.audioCtx && this.audioCtx.state !== "running") this.audioUnlocked = false; };
+            this.audioCtx.onstatechange = () => {
+              if (!this.audioCtx || this.audioCtx.state === "running") return;
+              this.audioUnlocked = false;
+              if (this.audioCtx.state === "interrupted") this._audioStale = true;   // iOS: Anruf, Siri, App-Wechsel
+            };
           }
           const c = this.audioCtx;
           if (c.state !== "running") { const r = c.resume(); if (r && r.catch) r.catch(() => {}); }
@@ -5222,6 +5343,13 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           this.audioUnlocked = c.state === "running";
           this._loadSlaps();
         } catch (_) {}
+      },
+
+      // App geht in den Hintergrund: Ton anhalten, beim nächsten Tippen neu aufbauen
+      audioToBackground() {
+        this._audioStale = true;
+        this.audioUnlocked = false;
+        try { if (this.audioCtx && this.audioCtx.state === "running") { const r = this.audioCtx.suspend(); if (r && r.catch) r.catch(() => {}); } } catch (_) {}
       },
 
       // Ohrfeigen-Aufnahmen einmalig dekodieren (bis dahin klingt der synthetische Ersatz)
@@ -5495,6 +5623,14 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           mid:  { goal: 68,  mul: 0.75, win: 8, failHeat: 11, failDirty: 0.15 },
           hard: { goal: 85,  mul: 1,   win: 10, failHeat: 14, failDirty: 0.20 }
         }
+      },
+      // --- Kategorien (v61): Revier, Logistik-Routen und Sets stärken Betriebs-Kategorien ---
+      categories: {
+        logPctPerLv: 5,          // Logistik-Route: +% Ertrag pro Stufe auf jede ihrer zwei Kategorien
+        pipelinePctPerLv: 2,     // Holding-Clearing-Pipeline: +% pro Stufe auf alle Kategorien
+        holdingAllPctPerLv: 5,   // Metropol-Holding-Turm: +% pro Stufe auf alle Kategorien (zusätzlich zu Finanzen)
+        set1Lv: 25, set1Pct: 25, // Set: alle Betriebe einer Kategorie ab lvl 25 -> +25 %
+        set2Lv: 100, set2Pct: 50 // ab lvl 100 -> weitere +50 %
       },
       // --- Manager (Automatik) ---
       manager: {
@@ -7673,6 +7809,43 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         };
       },
 
+      // Kategorie-Boni (v61): Revier (ersetzt den alten Epochen-Bonus), Logistik-Routen, Sets
+      getCategoryBonuses() {
+        const B = BALANCE.categories;
+        const add = {}, src = {};
+        CATEGORIES.forEach(c => { add[c.id] = 0; src[c.id] = { turf: 0, log: 0, set: 0 }; });
+        const all = (pct, k) => CATEGORIES.forEach(c => { add[c.id] += pct; src[c.id][k] += pct; });
+        const sortedTurf = KIEZ_API.getSortedCollection("TURF");
+        for (let i = 0; i < sortedTurf.length; i++) {
+          const tf = sortedTurf[i], lv = this.turfLv(tf.id);
+          if (lv <= 0) continue;
+          const c = TURF_CAT[tf.id];
+          if (c && add[c] !== undefined) { add[c] += lv * tf.epochIncomeAddPct; src[c].turf += lv * tf.epochIncomeAddPct; }
+          if (tf.id === "turf_holding") all(lv * B.holdingAllPctPerLv, "turf");
+        }
+        const sortedLog = KIEZ_API.getSortedCollection("LOGISTICS");
+        for (let i = 0; i < sortedLog.length; i++) {
+          const l = sortedLog[i], cats = LOG_CATS[l.id];
+          const lv = (STATE.logistics[l.id] && STATE.logistics[l.id].level) || 0;
+          if (!cats || lv <= 0) continue;
+          if (cats[0] === "*") { all(lv * B.pipelinePctPerLv, "log"); continue; }
+          cats.forEach(c => { if (add[c] !== undefined) { add[c] += lv * B.logPctPerLv; src[c].log += lv * B.logPctPerLv; } });
+        }
+        const setLv = {};
+        CATEGORIES.forEach(c => {
+          const ids = Object.keys(BIZ_CAT).filter(id => BIZ_CAT[id] === c.id);
+          const minLv = Math.min.apply(null, ids.map(id => (STATE.businesses[id] && STATE.businesses[id].level) || 0));
+          setLv[c.id] = minLv;
+          let pct = 0;
+          if (minLv >= B.set1Lv) pct += B.set1Pct;
+          if (minLv >= B.set2Lv) pct += B.set2Pct;
+          add[c.id] += pct; src[c.id].set = pct;
+        });
+        const mul = {};
+        CATEGORIES.forEach(c => { mul[c.id] = 1 + add[c.id] / 100; });
+        return { mul, add, src, setLv };
+      },
+
       getTurfBonuses() {
         let cloutPerMin = 0, clickPowerAddPct = 0, missionChanceAdd = 0, heatDecayBonus = 0;
         let passiveDrugsPerMin = 0, passiveWeaponsPerMin = 0, passiveStolenPerMin = 0, passiveTicketsPerMin = 0;
@@ -8565,6 +8738,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
 
         const logBoni = this.getLogisticsBonuses();
         const turfBoni = this.getTurfBonuses();
+        const catBoni = this.getCategoryBonuses();
         const offBoni = this.getOfficeBonuses();
 
         for (let i = 0; i < sortedBiz.length; i++) {
@@ -8612,7 +8786,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           const supplyMul = (1 + supplyAddMap[b.id]) * supplyMulMap[b.id];
           const branchIncomeMul = st.branch === "A" ? BALANCE.economy.branchAIncomeMul : 1.0;
           const epochItemMul = itemBoni.epochMulMap[b.epochId] || 1;
-          const epochTurfMul = turfBoni.epochTurfMul[b.epochId] || 1;
+          const epochTurfMul = catBoni.mul[BIZ_CAT[b.id]] || 1;   // v61: Kategorie statt Epoche
 
           const baseP = b.baseIncome * st.level * milestoneMul * supplyMul * branchIncomeMul * epochItemMul * epochTurfMul * baseGlobalMul;
           const _lv = b.baseIncome * st.level;
@@ -9167,7 +9341,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         } catch (e) {}
         let vp = "";
         try { vp = innerWidth + "x" + innerHeight; } catch (e) {}
-        this.add("START", "v3.33.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
+        this.add("START", "v3.34.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
         this.flush();
       },
       flush() {
@@ -10090,13 +10264,13 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           ],
           logistics: [
             ["Neu: Viertel", "New: District"],
-            ["Der Laden läuft, doch Scheine und Ware müssen irgendwie von A nach B. Ein Kumpel mit Roller kennt jede Abkürzung im Viertel und fragt nicht viel. Im Viertel baust du unter Logistik Routen aus: Sie waschen Geld, vergrößern dein Depot und halten die Ware in Bewegung.",
-             "The shop is running, but cash and goods still have to get from A to B. A buddy with a scooter knows every shortcut in the neighbourhood and asks no questions. In the District you expand routes that launder money, grow your stash and keep goods moving."]
+            ["Der Laden läuft, doch Scheine und Ware müssen irgendwie von A nach B. Ein Kumpel mit Roller kennt jede Abkürzung im Viertel und fragt nicht viel. Im Viertel baust du unter Logistik Routen aus: Sie waschen Geld, vergrößern dein Depot und halten die Ware in Bewegung. Viele Routen verbinden zwei Kategorien deiner Betriebe und stärken beide.",
+             "The shop is running, but cash and goods still have to get from A to B. A buddy with a scooter knows every shortcut in the neighbourhood and asks no questions. In the District you expand routes that launder money, grow your stash and keep goods moving. Many routes link two categories of your businesses and boost both."]
           ],
           turf: [
             ["Neu im Viertel: Revier", "New in District: Turf"],
-            ["Dein Block gehört dir noch nicht richtig, und andere Banden schauen schon herüber. Im Revier kaufst du Straßenzüge. Sie stärken deine Betriebe und bringen Einfluss. Aber wer Land hat, wird irgendwann angegriffen.",
-             "Your block isn't really yours yet, and other crews are already looking over. In Turf you buy streets. They boost your businesses and bring influence. But whoever holds land gets attacked sooner or later."]
+            ["Dein Block gehört dir noch nicht richtig, und andere Banden schauen schon herüber. Im Revier kaufst du Straßenzüge. Jeder stärkt eine Kategorie deiner Betriebe, zum Beispiel Handel oder Glücksspiel, und bringt Einfluss. Aber wer Land hat, wird irgendwann angegriffen.",
+             "Your block isn't really yours yet, and other crews are already looking over. In Turf you buy streets. Each one boosts a category of your businesses, like Trade or Gambling, and brings influence. But whoever holds land gets attacked sooner or later."]
           ],
           hq: [
             ["Neu: HQ", "New: HQ"],
@@ -10605,6 +10779,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           this.stopHoldBuy();
           if (document.visibilityState === "hidden") {
             Platform.saveGame(true);
+            Platform.audioToBackground();
           } else if (document.visibilityState === "visible") {
             const rep = Engine.processOfflineSinceLastSave(true);
             this.renderActiveTab();
@@ -10615,6 +10790,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
 
         // Touch-drag guard: single tap executes immediately on click, hold-buy triggers after 360ms
         ["touchend", "click", "keydown"].forEach(ev => document.addEventListener(ev, () => Platform.unlockAudio(), { capture: true, passive: true }));
+        window.addEventListener("pagehide", () => Platform.audioToBackground());
+        window.addEventListener("pageshow", (e) => { if (e.persisted) Platform.audioToBackground(); });
         shell.addEventListener("pointerdown", (e) => {
           Platform.unlockAudio();
           this.pointerStart = { x: e.clientX, y: e.clientY };
@@ -11047,6 +11224,9 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
               this.renderActiveTab();
               this.updateTickUI(Engine.getStats(), Engine.smoothedHeatNet);
             }
+          } else if (action === "cat-info") {
+            const cat = actionEl.getAttribute("data-cat");
+            if (cat) this.showCategoryModal(cat);
           } else if (action === "mgr-story-go" || action === "mgr-goto") {
             if (action === "mgr-story-go") document.getElementById("app-modal").classList.remove("open");
             Engine.mgrCheckUnlock();
@@ -11566,6 +11746,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
                       <div class="biz-icon">${renderIcon("lock", 16)}</div>
                       <div class="biz-title-wrap">
                         <div class="biz-name">${t(b.nameKey)}</div>
+                        <div class="biz-type">${t(b.nameKey.replace(/\.name$/, ".type"))} · ${catName(BIZ_CAT[b.id])}</div>
                         <div class="biz-meta">${t("biz.locked.prev", { prevName, minLevel: minLv })}</div>
                       </div>
                     </div>
@@ -11615,6 +11796,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
                     <div class="biz-icon">${renderIcon(b.iconKey, 17)}</div>
                     <div class="biz-title-wrap">
                       <div class="biz-name">${t(b.nameKey)}</div>
+                      <div class="biz-type" data-action="cat-info" data-cat="${BIZ_CAT[b.id] || ""}">${t(b.nameKey.replace(/\.name$/, ".type"))} · <span class="biz-cat">${catName(BIZ_CAT[b.id])}</span></div>
                       <div class="biz-meta"><span class="cur-pre"></span><span class="num" data-bind="biz-cps-${b.id}">0,00</span><span class="cur-suf"> €</span>/s</div>
                     </div>
                   </div>
@@ -11691,6 +11873,9 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
 
             const isMax = st.level >= l.maxLevel;
             const tags = [];
+            const lc = LOG_CATS[l.id];
+            if (lc && lc[0] === "*") tags.push(`<span class="tag-chip active-supply">+${BALANCE.categories.pipelinePctPerLv}% ${L("alle Kategorien", "all categories")}</span>`);
+            else if (lc) lc.forEach(c => tags.push(`<span class="tag-chip active-supply" data-action="cat-info" data-cat="${c}">+${BALANCE.categories.logPctPerLv}% ${catName(c)}</span>`));
             if (l.depotMulAdd > 0) tags.push(`<span class="tag-chip active-supply">+${Math.round(l.depotMulAdd * 100)}% Depot</span>`);
             if (l.washSpeedAddPct > 0) tags.push(`<span class="tag-chip active-supply">+${l.washSpeedAddPct}% ${isEn ? "Wash Speed" : "Wasch-Tempo"}</span>`);
             if (l.washEffBonusPct > 0) tags.push(`<span class="tag-chip">+${formatNumber(l.washEffBonusPct, 1)}% ${isEn ? "Rate" : "Quote"}</span>`);
@@ -11764,7 +11949,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
 
             const isMax = st.level >= tf.maxLevel;
             const tags = [
-              `<span class="tag-chip active-supply">+${tf.epochIncomeAddPct}% ${epName}</span>`,
+              `<span class="tag-chip active-supply" data-action="cat-info" data-cat="${TURF_CAT[tf.id] || ""}">+${tf.epochIncomeAddPct}% ${catName(TURF_CAT[tf.id])}</span>`,
+              ...(tf.id === "turf_holding" ? [`<span class="tag-chip active-supply">+${BALANCE.categories.holdingAllPctPerLv}% ${L("alle Kategorien", "all categories")}</span>`] : []),
               `<span class="tag-chip active-supply">+${formatNumber(tf.cloutPerMin, 2)} ${isEn ? "Clout/m" : "Einfluss/m"}</span>`
             ];
             if (tf.clickPowerAddPct) tags.push(`<span class="tag-chip active-supply">+${tf.clickPowerAddPct}% Hustle</span>`);
@@ -14399,7 +14585,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
               ${devHtml}
 
               <div class="version-footer" data-action="tap-version">
-                Hustlers: Urban Edition • v3.33.0
+                Hustlers: Urban Edition • v3.34.0
               </div>
               <div style="text-align:center;font-size:11px;padding:0 0 22px;"><a href="impressum.html" target="_blank" rel="noopener" style="color:var(--accent-concrete);">Impressum &amp; Datenschutz</a></div>
         </div>`;
@@ -14897,6 +15083,45 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           </div>`;
         document.getElementById("app-modal").classList.add("open");
       },
+
+      showCategoryModal(cat) {
+        const c = CATEGORIES.find(x => x.id === cat);
+        if (!c) return;
+        const body = document.getElementById("app-modal-body");
+        const cb = Engine.getCategoryBonuses();
+        const B = BALANCE.categories;
+        const src = cb.src[cat];
+        const bizRows = Object.keys(BIZ_CAT).filter(id => BIZ_CAT[id] === cat).map(id => {
+          const b = REGISTRY.BUSINESSES[id], st = STATE.businesses[id];
+          const lv = (st && st.level) || 0, open = st && st.unlocked;
+          return `<div class="cat-row"><span>${open ? t(b.nameKey) : "???"} <span style="opacity:.62">${open ? t(b.nameKey.replace(/\.name$/, ".type")) : ""}</span></span><span class="num">lvl ${lv}</span></div>`;
+        }).join("");
+        const turfRows = Object.keys(TURF_CAT).filter(id => TURF_CAT[id] === cat || id === "turf_holding").map(id => {
+          const tf = REGISTRY.TURF[id]; if (!tf) return "";
+          const lv = this._lvOf(STATE.turf, id);
+          const pct = TURF_CAT[id] === cat ? tf.epochIncomeAddPct : B.holdingAllPctPerLv;
+          return `<div class="cat-row"><span>${t(tf.nameKey)}</span><span class="num">+${pct}% × ${lv}</span></div>`;
+        }).join("");
+        const logRows = Object.keys(LOG_CATS).filter(id => LOG_CATS[id][0] === "*" || LOG_CATS[id].includes(cat)).map(id => {
+          const l = REGISTRY.LOGISTICS[id]; if (!l) return "";
+          const lv = this._lvOf(STATE.logistics, id);
+          const pct = LOG_CATS[id][0] === "*" ? B.pipelinePctPerLv : B.logPctPerLv;
+          return `<div class="cat-row"><span>${t(l.nameKey)}</span><span class="num">+${pct}% × ${lv}</span></div>`;
+        }).join("");
+        const setLv = cb.setLv[cat];
+        const setTxt = L(`Alle auf lvl ${B.set1Lv}: +${B.set1Pct}% • alle auf lvl ${B.set2Lv}: +${B.set2Pct}% mehr`, `All at lvl ${B.set1Lv}: +${B.set1Pct}% • all at lvl ${B.set2Lv}: +${B.set2Pct}% more`);
+        body.innerHTML = `<h2 class="panel-title">${L("Kategorie", "Category")}: ${catName(cat)}</h2>
+          <div class="cat-row" style="font-size:14px;"><span>${L("Bonus gesamt", "Total bonus")}</span><span class="num">+${formatNumber(cb.add[cat], 0)}%</span></div>
+          <div class="cat-row"><span>${L("Revier", "Turf")} / ${L("Logistik", "Logistics")} / Set</span><span class="num">+${formatNumber(src.turf, 0)}% / +${formatNumber(src.log, 0)}% / +${src.set}%</span></div>
+          <div class="cat-sec">${L("Betriebe", "Businesses")}</div>${bizRows}
+          <div class="cat-sec">Set</div><div class="cat-row"><span>${setTxt}</span><span class="num">${L("niedrigste", "lowest")} lvl ${setLv}</span></div>
+          <div class="cat-sec">${L("Revier", "Turf")} (${L("pro Stufe", "per level")})</div>${turfRows}
+          <div class="cat-sec">${L("Logistik", "Logistics")} (${L("pro Stufe", "per level")})</div>${logRows}
+          <button type="button" class="comic-btn primary" style="margin-top:10px;" data-action="close-modal">${t("modal.close")}</button>`;
+        document.getElementById("app-modal").classList.add("open");
+        Platform.haptic(10);
+      },
+      _lvOf(coll, id) { const x = coll && coll[id]; return (x && (typeof x === "object" ? x.level : x)) || 0; },
 
       showRadioModal() {
         const en = STATE.settings && STATE.settings.lang === "EN";
