@@ -8,7 +8,7 @@
   <script>try { if (navigator.standalone === true) document.documentElement.classList.add("is-standalone"); } catch (e) {}</script>
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="60ecd08f1d">
+  <meta name="build-id" content="cc8a0e07f5">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -8510,7 +8510,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
 
       evaluateTabBadges() {
         const activeTab = STATE.ui.activeTab;
-        if (STATE.ui.seenSignatures[activeTab] !== undefined) {
+        const onMgr = activeTab === "businesses" && STATE.ui.bizSubTab === "managers";
+        if (STATE.ui.seenSignatures[activeTab] !== undefined && !onMgr) {
           this.markTabSeen(activeTab);
         }
 
@@ -8520,7 +8521,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
             STATE.ui.seenSignatures[key] = "";
             return "none";
           }
-          if (activeTab === key) return "none";
+          if (activeTab === key && !(key === "businesses" && onMgr)) return "none";
           return STATE.ui.seenSignatures[key] !== sig ? "new" : "none";
         };
 
@@ -8530,7 +8531,9 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           const st = STATE.businesses[bizList[i].id];
           if (st && st.level >= 25 && !st.branch) { bizUrgent = true; break; }
         }
-        const bizBadge = (bizUrgent && activeTab !== "businesses") ? "urgent" : checkNewDot("businesses");
+        const bizNew = checkNewDot("businesses");
+        const bizBadge = (bizUrgent && activeTab !== "businesses") ? "urgent" : (activeTab === "businesses" ? "none" : bizNew);
+        const bizSubList = onMgr ? (bizUrgent ? "urgent" : bizNew) : "none";
 
         let hqUrgent = Boolean((STATE.activeMission && STATE.activeMission.remainingSec <= 0) || STATE.pendingBribe);
         if (!hqUrgent) {
@@ -8549,6 +8552,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
 
         const logBadge = checkNewDot("logistics");
         const netUrgent = activeTab !== "network" && STATE.social && ((STATE.social.inbox && STATE.social.inbox.some(e => !e.opened)) || (Online.st.req && Online.st.req.length) || (Online.st.goal && Online.st.goal.claimable));
+        this._lastTabBadges = { logistics: logBadge, turf: turfBadge, bizList: bizSubList };
         return {
           businesses: bizBadge,
           logistics: logBadge,
@@ -8712,6 +8716,16 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         res["hq:vault"] = this.getClaimableFiles() >= 1 ? "urgent" : "none";
         res["district:logistics"] = (ui.tabNew && ui.tabNew.logistics === 2) ? "new" : "none";
         res["district:turf"] = (ui.tabNew && ui.tabNew.turf === 2) ? "new" : ((this.turfOccList ? this.turfOccList() : []).length > 0 && ui.activeTab !== "turf" ? "urgent" : "none");
+        // v61: Unter-Tabs zeigen dieselben Hinweise wie der Haupt-Tab (Betriebe, Logistik, Revier, Netzwerk)
+        const tb = this._lastTabBadges || {};
+        if (res["district:logistics"] === "none" && tb.logistics && tb.logistics !== "none") res["district:logistics"] = tb.logistics;
+        if (res["district:turf"] === "none" && tb.turf === "new") res["district:turf"] = "new";
+        res["biz:list"] = tb.bizList || "none";
+        const soc = STATE.social;
+        const giftOpen = !!(soc && soc.inbox && soc.inbox.some(e => !e.opened));
+        const reqOpen = !!(Online.st.req && Online.st.req.length);
+        res["net:friends"] = ui.activeTab === "network" && (ui.netSubTab || "friends") === "friends" ? "none" : ((giftOpen || reqOpen) ? "urgent" : "none");
+        res["net:goal"] = ui.activeTab === "network" && ui.netSubTab === "goal" ? "none" : ((Online.st.goal && Online.st.goal.claimable) ? "urgent" : "none");
         res["biz:managers"] = (STATE.mgr && STATE.mgr.dot) ? "new" : (this.canUpgradeMgrRank() && STATE.mgr && STATE.mgr.tab ? "new" : "none");
         return res;
       },
@@ -10316,7 +10330,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
       bizSubNavHTML() {
         const sub = STATE.ui.bizSubTab === "managers" ? "managers" : "list";
         return `<div class="subnav-bar-2">
-          <button type="button" class="subtab-btn ${sub === "list" ? "active" : ""}" data-action="switch-biz-sub" data-sub="list">${renderIcon("store", 13)} <span>${L("Betriebe", "Businesses")}</span></button>
+          <button type="button" class="subtab-btn ${sub === "list" ? "active" : ""}" data-action="switch-biz-sub" data-sub="list"><span class="tab-badge sub-badge" data-bind="badge-sub-biz-list"></span>${renderIcon("store", 13)} <span>${L("Betriebe", "Businesses")}</span></button>
           <button type="button" class="subtab-btn ${sub === "managers" ? "active" : ""}" data-action="switch-biz-sub" data-sub="managers"><span class="tab-badge sub-badge" data-bind="badge-sub-biz-managers"></span>${renderIcon("crew", 13)} <span>${L("Manager", "Managers")}</span></button>
         </div>`;
       },
@@ -14943,7 +14957,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         let sub = STATE.ui.netSubTab || "friends";
         if (!subs.some(x => x[0] === sub)) sub = "friends";
         const nav = subs.length > 1 ? `<div class="subnav-bar-${subs.length}">${subs.map(([k, lbl, ic]) =>
-          `<button type="button" class="subtab-btn ${sub === k ? "active" : ""}" data-action="switch-net-sub" data-sub="${k}">${renderIcon(ic, 13)} <span>${lbl}</span></button>`).join("")}</div>` : "";
+          `<button type="button" class="subtab-btn ${sub === k ? "active" : ""}" data-action="switch-net-sub" data-sub="${k}"><span class="tab-badge sub-badge" data-bind="badge-sub-net-${k}"></span>${renderIcon(ic, 13)} <span>${lbl}</span></button>`).join("")}</div>` : "";
         if (sub === "board") {
           vp.innerHTML = eventBanner + nav + this.onlineBoardCardHTML();
         } else if (sub === "goal") {
