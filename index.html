@@ -8,7 +8,7 @@
   <script>try { if (navigator.standalone === true) document.documentElement.classList.add("is-standalone"); } catch (e) {}</script>
   <meta name="format-detection" content="telephone=no">
   <title>Hustlers: Urban Edition</title>
-  <meta name="build-id" content="cc8a0e07f5">
+  <meta name="build-id" content="31673a109e">
   <meta name="description" content="Betriebe aufbauen, Schwarzgeld waschen, die Fahndung austricksen.">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="manifest.webmanifest">
@@ -1086,6 +1086,20 @@ html, body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.mgr-row:has([data-key="prio"]) .buy-mode-group { width: 100%; }
+.mgr-row:has([data-key="prio"]) .mode-btn { flex: 1 1 0; padding: 0 2px; font-size: 10px; }
+.trend-bar { display: flex; gap: 6px; margin: 0 0 10px; }
+.trend-cell { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 1px; padding: 5px 7px; border: 2.5px solid var(--line); background: var(--surface); box-shadow: 2px 2px 0 var(--line); color: var(--text); font-family: inherit; text-align: left; border-radius: 0; }
+.trend-cell b { font-size: 12px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.trend-cell.time { flex: 0 0 auto; }
+.trend-lbl { font-size: 9.5px; font-weight: 900; text-transform: uppercase; letter-spacing: .04em; opacity: .7; display: inline-flex; align-items: center; gap: 3px; }
+.trend-cell.hot { border-left: 6px solid var(--accent-gold); }
+.trend-cell.watch { border-left: 6px solid var(--blue-ink); }
+.trend-mk { display: inline-flex; vertical-align: -1px; }
+.trend-mk.hot { color: var(--accent-gold); }
+.trend-mk.watch { color: var(--blue-ink); }
+.trend-cell.hot .trend-lbl { color: var(--accent-gold); opacity: 1; }
+.trend-cell.watch .trend-lbl { color: var(--blue-ink); opacity: 1; }
 .biz-type .biz-cat { text-decoration: underline; text-underline-offset: 2px; }
 [data-action="cat-info"] { cursor: pointer; }
 .cat-row { display: flex; justify-content: space-between; gap: 8px; padding: 4px 0; border-bottom: 2px solid var(--line); font-weight: 700; font-size: 12.5px; }
@@ -2949,6 +2963,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
       crown: `<svg class="comic-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 17l2-9 6 4 6-4 2 9H4z"/><line x1="4" y1="20" x2="20" y2="20"/></svg>`,
       skyline: `<svg class="comic-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><rect x="3" y="8" width="6" height="13"/><rect x="10" y="3" width="6" height="18"/><rect x="17" y="11" width="4" height="10"/></svg>`,
       desk: `<svg class="comic-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><rect x="2" y="7" width="20" height="4"/><line x1="5" y1="11" x2="5" y2="20"/><line x1="19" y1="11" x2="19" y2="20"/></svg>`,
+      arrowUp: `<svg class="comic-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V5M5 11l7-7 7 7"/></svg>`,
+      eye: `<svg class="comic-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>`,
       radar: `<svg class="comic-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="12" x2="18" y2="6"/></svg>`,
       knife: `<svg class="comic-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M19 5L5 19"/><path d="M14 4l6 6-4 4-6-6 4-4z"/></svg>`
     };
@@ -5136,7 +5152,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
     const Platform = {
       SAVE_KEY: "hustlers_urban_save_v1",
       BACKUP_KEY: "hustlers_urban_backup_v1",
-      CURRENT_VERSION: 12,         // aktuelle Spielstand-Version (bei neuem Format erhöhen + Schritt in migrateSave ergänzen)
+      CURRENT_VERSION: 13,         // aktuelle Spielstand-Version (bei neuem Format erhöhen + Schritt in migrateSave ergänzen)
       PREMIGRATE_KEY: "hustlers_urban_premigrate_v1",   // Kopie des alten Spielstands, bevor er umgewandelt wird
       memoryFallback: {},
       audioCtx: null,
@@ -5244,6 +5260,12 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           }
           if (migrated.ui && typeof migrated.ui === "object" && !migrated.ui.bizSubTab) migrated.ui.bizSubTab = "list";
           migrated.meta.saveVersion = 12;
+        }
+
+        if ((migrated.meta.saveVersion || 11) < 13) {
+          // v62: Stadt-Lage. Wird beim ersten Takt gewürfelt, sobald das Revier frei ist.
+          if (migrated.trend === undefined) migrated.trend = null;
+          migrated.meta.saveVersion = 13;
         }
 
         return migrated;
@@ -5631,6 +5653,23 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         holdingAllPctPerLv: 5,   // Metropol-Holding-Turm: +% pro Stufe auf alle Kategorien (zusätzlich zu Finanzen)
         set1Lv: 25, set1Pct: 25, // Set: alle Betriebe einer Kategorie ab lvl 25 -> +25 %
         set2Lv: 100, set2Pct: 50 // ab lvl 100 -> weitere +50 %
+      },
+      // --- Risikoprofil der Kategorien (v62): wirkt ab Freischaltung des Reviers ---
+      // inc = Ertrag im Hustle-Modus, heat = Fahndungs-Gewicht im Hustle-Modus, wash = Wäsche-Kapazität im Tarnmodus
+      risk: {
+        trade:     { inc: 1.00, heat: 1.00, wash: 1.0 },
+        gastro:    { inc: 1.15, heat: 1.25, wash: 0.9 },
+        style:     { inc: 0.90, heat: 0.80, wash: 1.3 },
+        gamble:    { inc: 1.30, heat: 1.50, wash: 0.8 },
+        transport: { inc: 1.10, heat: 1.10, wash: 1.0 },
+        services:  { inc: 0.90, heat: 0.70, wash: 1.2 },
+        finance:   { inc: 0.85, heat: 0.60, wash: 1.4 }
+      },
+      // --- Stadt-Lage (v62): wechselt regelmäßig ---
+      cityTrend: {
+        periodSec: 1500,   // 25 Minuten
+        hotPct: 30,        // gefragte Kategorie: +% Ertrag (beide Modi)
+        watchHeatMul: 1.5  // Kategorie unter Beobachtung: Fahndungs-Gewicht im Hustle-Modus
       },
       // --- Manager (Automatik) ---
       manager: {
@@ -7298,6 +7337,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         if (kind === "war") { STATE.war = null; const ok = this.warSpawn(); return ok ? "Revierkampf" : "kein Revier gekauft"; }
         if (kind === "raid") { STATE.heat = 90; STATE.razziaCooldown = 0; return "Razzia-Warnung"; }
         if (kind === "bomb") { const r = this.applyBomb(); return r ? "Bombe: " + r.id : "kein Büro-Upgrade vorhanden"; }
+        if (kind === "trend_roll") { if (!this.trendRoll(true)) return L("Erst Revier freischalten.", "Unlock Turf first."); this._trendChanged = true; return L("Neue Stadt-Lage.", "New city mood."); }
+        if (kind === "trend_end") { if (STATE.trend) STATE.trend.until = Date.now() + 10000; return L("Lage endet in 10 s.", "Mood ends in 10 s."); }
         if (kind === "mgr_up" || kind === "mgr_max" || kind === "mgr_reset") {
           const M = this.mgrEnsure();
           M.rank = kind === "mgr_max" ? MANAGER_RANK_MAX : kind === "mgr_reset" ? 1 : Math.min(MANAGER_RANK_MAX, M.rank + 1);
@@ -7809,6 +7850,31 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         };
       },
 
+      // v62: Risikoprofil und Stadt-Lage gelten ab Freischaltung des Reviers
+      riskOn() { return !!(STATE.ui && STATE.ui.tabs && STATE.ui.tabs.turf); },
+      trendNow() {
+        const tr = STATE.trend;
+        if (!this.riskOn() || !tr || !tr.hot) return null;
+        return tr;
+      },
+      trendRoll(force) {
+        if (!this.riskOn()) return false;
+        const now = Date.now();
+        const tr = STATE.trend || null;
+        if (!force && tr && tr.until > now) return false;
+        const owned = CATEGORIES.map(c => c.id).filter(cid => Object.keys(BIZ_CAT).some(id => BIZ_CAT[id] === cid && STATE.businesses[id] && STATE.businesses[id].level >= 1));
+        if (!owned.length) return false;
+        const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+        let hotPool = owned.filter(c => !tr || c !== tr.hot);
+        if (!hotPool.length) hotPool = owned;
+        const hot = pick(hotPool);
+        let watchPool = owned.filter(c => c !== hot && (!tr || c !== tr.watch));
+        if (!watchPool.length) watchPool = owned.filter(c => c !== hot);
+        const watch = watchPool.length ? pick(watchPool) : null;
+        STATE.trend = { hot, watch, until: now + BALANCE.cityTrend.periodSec * 1000, n: ((tr && tr.n) || 0) + 1 };
+        return true;
+      },
+
       // Kategorie-Boni (v61): Revier (ersetzt den alten Epochen-Bonus), Logistik-Routen, Sets
       getCategoryBonuses() {
         const B = BALANCE.categories;
@@ -8264,7 +8330,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         if (key === "budget") return BM.budgetOpts.includes(v);
         if (key === "reserve") return BM.reserveOpts.includes(v);
         if (key === "branch") return ["wait", "A", "B"].includes(v);
-        if (key === "prio") return ["order", "cheap", "milestone", "custom"].includes(v);
+        if (key === "prio") return ["order", "cheap", "milestone", "custom", "hot"].includes(v);
         if (key === "dirty" || key === "dirtyFallback") return v === true || v === false;
         if (key === "dirtyBudget") return BM.dirtyBudgetOpts.includes(v);
         return false;
@@ -8446,7 +8512,12 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
             if (!any) break;
           }
         } else {
-          for (const c of list) { while (tryBuy(c)) { /* bis Budget, Ziel oder Stufen pro Takt erreicht */ } }
+          let ordered = list;
+          if (prio === "hot") {   // v62: Betriebe der gefragten Kategorie zuerst, sonst Listen-Reihenfolge
+            const tr = this.trendNow();
+            if (tr) ordered = list.filter(c => BIZ_CAT[c.id] === tr.hot).concat(list.filter(c => BIZ_CAT[c.id] !== tr.hot));
+          }
+          for (const c of ordered) { while (tryBuy(c)) { /* bis Budget, Ziel oder Stufen pro Takt erreicht */ } }
         }
         // Schwarzkauf: Fahndung wie beim Kauf von Hand (pro Betrieb ein Paket je Takt)
         for (const c of list) if (c.dirtyN > 0) STATE.heat = Math.min(100, STATE.heat + BALANCE.manager.dirtyHeat * Math.min(4, Math.sqrt(c.dirtyN)));
@@ -8585,6 +8656,14 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         }
         if (STATE.war) { const wg = Engine.WAR_GANGS[STATE.war.gang], wt = REGISTRY.TURF[STATE.war.turf]; out.unshift({ kind: "live", key: "war", tag: L("REVIERKAMPF", "TURF WAR"), text: L(`Angriff von ${wg.de} auf ${wt ? t(wt.nameKey) : "dein Revier"}. Noch ${Math.max(0, Math.ceil(STATE.war.left))} s zum Rüsten.`, `Attack by ${wg.en} on ${wt ? t(wt.nameKey) : "your turf"}. ${Math.max(0, Math.ceil(STATE.war.left))} s left to prepare.`) }); }
         try { if (this.weekReady()) out.push({ kind: "hq", key: "week", tag: L("WOCHENZIEL", "WEEKLY"), text: L("Ein Wochenziel ist geschafft. Im HQ unter Ziele wartet die Belohnung.", "A weekly goal is done. The reward is waiting in HQ under Goals.") }); } catch (e) {}
+        { const tr = this.trendNow();
+          if (tr) {
+            const left = Math.max(0, Math.ceil((tr.until - Date.now()) / 60000));
+            out.push({ kind: "live", key: "trend:" + (tr.n || 0), tag: L("LAGE", "STREET"),
+              text: tr.watch
+                ? L(`Gefragt ist ${catName(tr.hot)} (+${BALANCE.cityTrend.hotPct} %). Die Bullen schauen auf ${catName(tr.watch)}. Noch ${left} min.`, `${catName(tr.hot)} is hot (+${BALANCE.cityTrend.hotPct}%). The cops are watching ${catName(tr.watch)}. ${left} min left.`)
+                : L(`Gefragt ist ${catName(tr.hot)} (+${BALANCE.cityTrend.hotPct} %). Noch ${left} min.`, `${catName(tr.hot)} is hot (+${BALANCE.cityTrend.hotPct}%). ${left} min left.`) });
+          } }
         if (STATE.pendingBribe) out.push({ kind: "coup", key: "bribe", tag: L("BEAMTER", "OFFICER"), text: L("Ein Beamter wartet auf dein Angebot. Das Telefon klingelt.", "An officer is waiting for your offer. The phone is ringing.") });
         const claim = this.getClaimableFiles();
         if (claim >= 1) out.push({ kind: "hq", key: "prestige", tag: L("BÜRO", "OFFICE"), text: L(`Der Aktenvernichter läuft heiß: Neustart bringt ${formatNumber(claim, 0)} Akten.`, `The shredder is running hot: a restart yields ${formatNumber(claim, 0)} files.`) });
@@ -8739,9 +8818,11 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         return { netIncomePct, netCostPct, netHeatRate };
       },
 
-      getStats() {
+      getStats(opts) {
         const sortedBiz = KIEZ_API.getSortedCollection("BUSINESSES");
         const supplyAddMap = {};
+        const riskOn = this.riskOn();
+        const trendNow = (opts && opts.noTrend) ? null : this.trendNow();
         const supplyMulMap = {};
 
         for (let i = 0; i < sortedBiz.length; i++) {
@@ -8801,11 +8882,15 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           const branchIncomeMul = st.branch === "A" ? BALANCE.economy.branchAIncomeMul : 1.0;
           const epochItemMul = itemBoni.epochMulMap[b.epochId] || 1;
           const epochTurfMul = catBoni.mul[BIZ_CAT[b.id]] || 1;   // v61: Kategorie statt Epoche
+          const bcat = BIZ_CAT[b.id];
+          const rp = riskOn ? (BALANCE.risk[bcat] || null) : null;
+          const isHot = trendNow && trendNow.hot === bcat, isWatch = trendNow && trendNow.watch === bcat;
+          const riskMul = (rp && st.mode !== "launder" ? rp.inc : 1) * (isHot ? 1 + BALANCE.cityTrend.hotPct / 100 : 1);
 
-          const baseP = b.baseIncome * st.level * milestoneMul * supplyMul * branchIncomeMul * epochItemMul * epochTurfMul * baseGlobalMul;
+          const baseP = b.baseIncome * st.level * milestoneMul * supplyMul * branchIncomeMul * epochItemMul * epochTurfMul * riskMul * baseGlobalMul;
           const _lv = b.baseIncome * st.level;
           bdA0 += _lv; bdA1 += _lv * milestoneMul; bdA2 += _lv * milestoneMul * supplyMul * branchIncomeMul;
-          bdA3 += _lv * milestoneMul * supplyMul * branchIncomeMul * epochItemMul * epochTurfMul;
+          bdA3 += _lv * milestoneMul * supplyMul * branchIncomeMul * epochItemMul * epochTurfMul * riskMul;
           const power = baseP * (st.mode === "launder" ? 1 : radarPenalty) * favorBoostMul;
           const safePower = Number.isFinite(power) ? power : 0;
           bizPower[b.id] = safePower;
@@ -8814,11 +8899,11 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           totalPowerCps += safePower;
 
           const branchHeatFactor = st.branch === "B" ? BALANCE.economy.branchBHeatMul : 1.0;
-          const effHeatMul = b.heatMul * branchHeatFactor;
+          const effHeatMul = b.heatMul * branchHeatFactor * (rp ? rp.heat : 1) * (isWatch ? BALANCE.cityTrend.watchHeatMul : 1);
 
           if (st.mode === "launder") {
             grossDirtyCps += safePower * BALANCE.economy.launderDirtyShare;
-            rawWashCapacityCps += safePower * BALANCE.economy.launderWashShare;
+            rawWashCapacityCps += safePower * BALANCE.economy.launderWashShare * (rp ? rp.wash : 1);
             coolWeight += safePower;
           } else {
             grossDirtyCps += safePower;
@@ -9054,7 +9139,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         if (STATE.activeMission && STATE.activeMission.remainingSec > 0) {
           STATE.activeMission.remainingSec = Math.max(0, STATE.activeMission.remainingSec - (deltaMs / 1000));
         }
-        const sim = this.calculateOfflineGain(deltaMs, this.getStats());
+        const sim = this.calculateOfflineGain(deltaMs, this.getStats({ noTrend: true }));   // v62: Stadt-Lage wirkt nicht offline
         if (sim.cleanGained > 0 || Math.abs(sim.dirtyDelta) > 0.01) {
           this.addCleanCash(sim.cleanGained);
           STATE.currencies.dirtyCash = sim.remainingDirty;
@@ -9119,6 +9204,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         this.sprintTick(dt);
         this.inspectorTick(dt);
         this.warTick(dt);
+        this._trendT = (this._trendT || 0) + dt;
+        if (this._trendT >= 1) { this._trendT = 0; if (this.trendRoll(false)) { this._trendChanged = true; this.emit && this.emit("shell"); } }
 
         if (STATE.boostTimer > 0) {
           STATE.boostTimer = Math.max(0, STATE.boostTimer - dt);
@@ -9355,7 +9442,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         } catch (e) {}
         let vp = "";
         try { vp = innerWidth + "x" + innerHeight; } catch (e) {}
-        this.add("START", "v3.34.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
+        this.add("START", "v3.35.0 | " + (navigator.userAgent || "").slice(0, 120) + " | " + vp);
         this.flush();
       },
       flush() {
@@ -10283,8 +10370,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           ],
           turf: [
             ["Neu im Viertel: Revier", "New in District: Turf"],
-            ["Dein Block gehört dir noch nicht richtig, und andere Banden schauen schon herüber. Im Revier kaufst du Straßenzüge. Jeder stärkt eine Kategorie deiner Betriebe, zum Beispiel Handel oder Glücksspiel, und bringt Einfluss. Aber wer Land hat, wird irgendwann angegriffen.",
-             "Your block isn't really yours yet, and other crews are already looking over. In Turf you buy streets. Each one boosts a category of your businesses, like Trade or Gambling, and brings influence. But whoever holds land gets attacked sooner or later."]
+            ["Dein Block gehört dir noch nicht richtig, und andere Banden schauen schon herüber. Im Revier kaufst du Straßenzüge. Jeder stärkt eine Kategorie deiner Betriebe, zum Beispiel Handel oder Glücksspiel, und bringt Einfluss. Ab jetzt redet auch die Stadt: Alle 25 Minuten ist eine Kategorie gefragt und eine andere unter Beobachtung. Und jede Kategorie hat ihr eigenes Risiko. Aber wer Land hat, wird irgendwann angegriffen.",
+             "Your block isn't really yours yet, and other crews are already looking over. In Turf you buy streets. Each one boosts a category of your businesses, like Trade or Gambling, and brings influence. From now on the city talks too: every 25 minutes one category is hot and another is being watched. And each category has its own risk. But whoever holds land gets attacked sooner or later."]
           ],
           hq: [
             ["Neu: HQ", "New: HQ"],
@@ -10358,7 +10445,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         const M = Engine.mgrEnsure(), BM = BALANCE.manager, rank = M.rank;
         const pct = v => Math.round(v * 100) + "%";
         const resLbl = v => v === 0 ? L("Aus", "Off") : v < 3600 ? (v / 60) + L(" Min", " min") : (v / 3600) + L(" Std", " h");
-        const prioLbl = { order: L("Liste", "List"), cheap: L("Günstig", "Cheap"), milestone: L("Meilen.", "Milest."), custom: L("Eigene", "Custom") };
+        const prioLbl = { order: L("Liste", "List"), cheap: L("Günstig", "Cheap"), milestone: L("Meilen.", "Milest."), custom: L("Eigene", "Custom"), hot: L("Gefragt", "Hot") };
         const featName = {
           2: L("Pause und freie Zielstufe", "Pause and free target level"), 3: L("Budget und Reserve wählbar", "Choose budget and reserve"),
           4: L("Zweig vorwählen", "Preselect branch"), 5: L("Priorität", "Priority"), 6: L("Takt 0,75 s", "Tick 0.75 s"),
@@ -10391,7 +10478,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           ${row(L("Budget", "Budget"), "budget", lk => seg(BM.budgetOpts.map(v => [v, pct(v)]), G.budget, gAttr("budget"), lk))}
           ${row(L("Reserve", "Reserve"), "budget", lk => seg(BM.reserveOpts.map(v => [v, resLbl(v)]), G.reserve, gAttr("reserve"), lk))}
           ${row(L("Zweig", "Branch"), "branch", lk => seg([["wait", L("Warten", "Wait")], ["A", "A"], ["B", "B"]], G.branch, gAttr("branch"), lk))}
-          ${row(L("Priorität", "Priority"), "prio", lk => seg(["order", "cheap", "milestone", "custom"].map(v => [v, prioLbl[v]]), G.prio, gAttr("prio"), lk))}
+          ${row(L("Priorität", "Priority"), "prio", lk => seg(["order", "cheap", "milestone", "custom"].concat(Engine.riskOn() ? ["hot"] : []).map(v => [v, prioLbl[v]]), G.prio, gAttr("prio"), lk))}
           ${row(L("Schwarzgeld", "Dirty cash"), "dirty", lk => seg([[false, L("Aus", "Off")], [true, L("An", "On")]], G.dirty, gAttr("dirty"), lk))}
           ${row(L("Schwarz-Budget", "Dirty budget"), "dirty", lk => seg(BM.dirtyBudgetOpts.map(v => [v, pct(v)]), G.dirtyBudget, gAttr("dirtyBudget"), lk))}
           ${row(L("Nur als Ersatz", "Fallback only"), "dirty", lk => seg([[true, L("Ja", "Yes")], [false, L("Nein", "No")]], G.dirtyFallback, gAttr("dirtyFallback"), lk))}
@@ -11739,7 +11826,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           vp.innerHTML = eventBanner + this.bizSubNavHTML() + this.managersHTML();
         } else if (tab === "businesses") {
           const sortedBiz = KIEZ_API.getSortedCollection("BUSINESSES");
-          const html = [eventBanner, STATE.mgr && STATE.mgr.tab ? this.bizSubNavHTML() : ""];
+          const html = [eventBanner, STATE.mgr && STATE.mgr.tab ? this.bizSubNavHTML() : "", this.trendBarHTML()];
           let shownLockedPreview = false;
 
           for (let i = 0; i < sortedBiz.length; i++) {
@@ -11810,7 +11897,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
                     <div class="biz-icon">${renderIcon(b.iconKey, 17)}</div>
                     <div class="biz-title-wrap">
                       <div class="biz-name">${t(b.nameKey)}</div>
-                      <div class="biz-type" data-action="cat-info" data-cat="${BIZ_CAT[b.id] || ""}">${t(b.nameKey.replace(/\.name$/, ".type"))} · <span class="biz-cat">${catName(BIZ_CAT[b.id])}</span></div>
+                      <div class="biz-type" data-action="cat-info" data-cat="${BIZ_CAT[b.id] || ""}">${t(b.nameKey.replace(/\.name$/, ".type"))} · <span class="biz-cat">${catName(BIZ_CAT[b.id])}</span>${this.trendMark(BIZ_CAT[b.id])}</div>
                       <div class="biz-meta"><span class="cur-pre"></span><span class="num" data-bind="biz-cps-${b.id}">0,00</span><span class="cur-suf"> €</span>/s</div>
                     </div>
                   </div>
@@ -14102,6 +14189,8 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
           }
         }
 
+        if (b["trend-left"]) setTxt(b["trend-left"], this.trendLeftTxt());
+        if (Engine._trendChanged) { Engine._trendChanged = false; if (STATE.ui.activeTab === "businesses") this.renderActiveTab(); }
         const subStates = Engine.evaluateSubBadges();
         Object.keys(subStates).forEach(key => {
           const n = b["badge-sub-" + key.replace(":", "-")];
@@ -14533,6 +14622,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
                     + grp(en ? "Spawn" : "Auslösen", [["insp", "Steuerprüfer", "Tax auditor"], ["insp_off", "Prüfer entfernen", "Remove auditor"], ["dealer", "Händler-Event", "Dealer event"], ["raid", "Razzia-Warnung", "Raid warning"], ["bomb", "Büro-Bombe", "Office bomb"], ["war", "Revierkampf", "Turf war"], ["weekdone", "Wochenziele erfüllen", "Complete weekly goals"], ["vault", "Tresor-Spiel", "Safe game"], ["run", "Schmuggel-Fahrt", "Smuggling run"], ["defuse", "Bomben-Päckchen", "Bomb package"], ["cups", "Becher-Spiel", "Cup game"], ["escape", "Fluchtweg-Spiel", "Escape game"], ["box", "Boxkampf", "Boxing match"], ["hen", "Hahnenkampf", "Cockfight"], ["dog", "Hunderennen", "Dog race"], ["dice", "Straßenwürfeln", "Street dice"], ["dart", "Dart", "Darts"]])
                     + grp(en ? "Progress" : "Fortschritt", [["tabs_all", "Alle Tabs freischalten", "Unlock all tabs"], ["tabs_none", "Tabs wieder sperren", "Lock tabs again"], ["lv10", "Betriebe +10 Lvl", "Businesses +10 lvl"], ["lv100", "Betriebe +100 Lvl", "Businesses +100 lvl"], ["items", "Alle Items", "All items"], ["office", "Büro auf Max", "Office max"]])
                     + grp("Manager", [["mgr_up", "Manager-Rang +1", "Manager rank +1"], ["mgr_max", "Manager-Rang 10", "Manager rank 10"], ["mgr_reset", "Manager-Rang 1", "Manager rank 1"], ["mgr_all", "Alle Manager einstellen", "Hire all managers"], ["mgr_tab", "Manager-Tab + Story", "Manager tab + story"]])
+                    + grp(en ? "City mood" : "Stadt-Lage", [["trend_roll", "Lage neu würfeln", "Reroll mood"], ["trend_end", "Lage endet in 10 s", "Mood ends in 10 s"]])
                     + grp(en ? "Friends" : "Freunde", [["rivals", "3 Test-Freunde", "3 test friends"], ["pkg0", "Päckchen: Geschenk", "Package: gift"], ["pkg1", "Päckchen: Prüfer", "Package: auditor"], ["pkg2", "Päckchen: Bombe", "Package: bomb"], ["team", "Tagesjob: 2 Partner", "Daily job: 2 partners"], ["jobreset", "Tagesjob zurücksetzen", "Reset daily job"]])
                     + `<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:6px;"><button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-soc-reset">${en ? "Reset friend limits" : "Freunde-Limits zurück"}</button><button type="button" class="comic-btn" style="min-height:34px; font-size:11px;" data-action="dev-soc-favors">${en ? "+20 favors" : "+20 Gefallen"}</button></div>`;
                 })()}
@@ -14599,7 +14689,7 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
               ${devHtml}
 
               <div class="version-footer" data-action="tap-version">
-                Hustlers: Urban Edition • v3.34.0
+                Hustlers: Urban Edition • v3.35.0
               </div>
               <div style="text-align:center;font-size:11px;padding:0 0 22px;"><a href="impressum.html" target="_blank" rel="noopener" style="color:var(--accent-concrete);">Impressum &amp; Datenschutz</a></div>
         </div>`;
@@ -15098,6 +15188,27 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         document.getElementById("app-modal").classList.add("open");
       },
 
+      trendBarHTML() {
+        const tr = Engine.trendNow();
+        if (!tr) return "";
+        return `<div class="trend-bar">
+          <button type="button" class="trend-cell hot" data-action="cat-info" data-cat="${tr.hot}"><span class="trend-lbl">${renderIcon("arrowUp", 12)} ${L("Gefragt", "Hot")} +${BALANCE.cityTrend.hotPct}%</span><b>${catName(tr.hot)}</b></button>
+          ${tr.watch ? `<button type="button" class="trend-cell watch" data-action="cat-info" data-cat="${tr.watch}"><span class="trend-lbl">${renderIcon("eye", 12)} ${L("Beobachtung", "Watched")}</span><b>${catName(tr.watch)}</b></button>` : ""}
+          <div class="trend-cell time"><span class="trend-lbl">${L("Wechsel", "Change")}</span><b class="num" data-bind="trend-left">${this.trendLeftTxt()}</b></div>
+        </div>`;
+      },
+      trendLeftTxt() {
+        const tr = Engine.trendNow(); if (!tr) return "";
+        const sec = Math.max(0, Math.ceil((tr.until - Date.now()) / 1000));
+        return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`;
+      },
+      trendMark(cat) {
+        const tr = Engine.trendNow(); if (!tr) return "";
+        if (tr.hot === cat) return ` <span class="trend-mk hot">${renderIcon("arrowUp", 10)}</span>`;
+        if (tr.watch === cat) return ` <span class="trend-mk watch">${renderIcon("eye", 10)}</span>`;
+        return "";
+      },
+
       showCategoryModal(cat) {
         const c = CATEGORIES.find(x => x.id === cat);
         if (!c) return;
@@ -15127,6 +15238,17 @@ html.is-standalone, html.is-standalone body, html.is-standalone #app-shell { hei
         body.innerHTML = `<h2 class="panel-title">${L("Kategorie", "Category")}: ${catName(cat)}</h2>
           <div class="cat-row" style="font-size:14px;"><span>${L("Bonus gesamt", "Total bonus")}</span><span class="num">+${formatNumber(cb.add[cat], 0)}%</span></div>
           <div class="cat-row"><span>${L("Revier", "Turf")} / ${L("Logistik", "Logistics")} / Set</span><span class="num">+${formatNumber(src.turf, 0)}% / +${formatNumber(src.log, 0)}% / +${src.set}%</span></div>
+          ${(() => {
+            const rp = BALANCE.risk[cat]; if (!rp) return "";
+            const on = Engine.riskOn(), tr = Engine.trendNow();
+            const f = v => "×" + formatNumber(v, 2);
+            const lage = tr ? (tr.hot === cat ? L(`Gefragt: +${BALANCE.cityTrend.hotPct} % Ertrag`, `Hot: +${BALANCE.cityTrend.hotPct}% income`) : tr.watch === cat ? L(`Unter Beobachtung: Fahndung ${f(BALANCE.cityTrend.watchHeatMul)} im Hustle-Modus`, `Watched: heat ${f(BALANCE.cityTrend.watchHeatMul)} in hustle mode`) : L("Normal", "Normal")) : "";
+            return `<div class="cat-sec">${L("Risikoprofil", "Risk profile")}${on ? "" : " (" + L("ab Revier", "from Turf") + ")"}</div>
+              <div class="cat-row"><span>${L("Ertrag (Hustle)", "Income (hustle)")}</span><span class="num">${f(rp.inc)}</span></div>
+              <div class="cat-row"><span>${L("Fahndung (Hustle)", "Heat (hustle)")}</span><span class="num">${f(rp.heat)}</span></div>
+              <div class="cat-row"><span>${L("Wäsche (Tarnung)", "Washing (cover)")}</span><span class="num">${f(rp.wash)}</span></div>
+              ${lage ? `<div class="cat-row"><span>${L("Stadt-Lage", "City mood")}</span><span>${lage}</span></div>` : ""}`;
+          })()}
           <div class="cat-sec">${L("Betriebe", "Businesses")}</div>${bizRows}
           <div class="cat-sec">Set</div><div class="cat-row"><span>${setTxt}</span><span class="num">${L("niedrigste", "lowest")} lvl ${setLv}</span></div>
           <div class="cat-sec">${L("Revier", "Turf")} (${L("pro Stufe", "per level")})</div>${turfRows}
